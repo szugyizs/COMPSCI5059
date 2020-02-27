@@ -1,7 +1,7 @@
 package project.storage.lists;
 import java.util.LinkedList;
 
-import project.course.CourseRequirement;
+import project.requests.CourseRequirement;
 
 public class ListOfRequirements {
 	

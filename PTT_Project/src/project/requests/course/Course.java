@@ -1,4 +1,4 @@
-package project.course;
+package project.requests.course;
 
 public class Course 
 {

@@ -1,7 +1,5 @@
 package project.requests;
 
-import project.course.CourseRequirement;
-
 public class TeachingRequest extends Request
 {
 	

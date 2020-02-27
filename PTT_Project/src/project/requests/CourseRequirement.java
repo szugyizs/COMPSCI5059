@@ -1,4 +1,6 @@
-package project.course;
+package project.requests;
+
+import project.requests.course.Course;
 
 public class CourseRequirement 
 {
