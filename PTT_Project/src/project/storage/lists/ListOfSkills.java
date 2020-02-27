@@ -1,3 +1,4 @@
+package project.storage.lists;
 import java.util.LinkedList;
 
 public class ListOfSkills {

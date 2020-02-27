@@ -1,2 +1,5 @@
-public class DBStorage implements Storage{
+package project.storage;
+
+public abstract class Storage 
+{
 }

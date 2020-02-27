@@ -1,2 +1,8 @@
-public class DBRequirements extends Requirement{
+package project.storage;
+
+public class FileStorage extends Storage
+{
+	
+	
+	
 }
