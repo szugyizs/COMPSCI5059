@@ -1,27 +1,27 @@
 package project.requests;
 
-import project.course.Teacher;
+import project.course.TrainingRequirement;
 
 public class TrainingRequest extends Request
 {
 	
-	private Teacher teacher;
+	private TrainingRequirement trainingRequirement;
 	
-	public TrainingRequest(final RequestStatus requestStatus, final Teacher teacher)
+	public TrainingRequest(final RequestStatus requestStatus, final TrainingRequirement trainingRequirement)
 	{
 		super(requestStatus);
 		
-		this.teacher = teacher;
+		this.trainingRequirement = trainingRequirement;
 	}
 	
-	public Teacher getTeacher()
+	public TrainingRequirement getTrainingRequirement()
 	{
-		return teacher;
+		return trainingRequirement;
 	}
 	
-	public void setTeacher(final Teacher teacher)
+	public void setTrainingRequirement(final TrainingRequirement trainingRequirement)
 	{
-		this.teacher = teacher;
+		this.trainingRequirement = trainingRequirement;
 	}
 	
 }
