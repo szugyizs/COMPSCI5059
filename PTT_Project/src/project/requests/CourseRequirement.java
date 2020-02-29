@@ -7,26 +7,37 @@ import project.requests.course.Qualifications;
 public class CourseRequirement 
 {
 	
+	private Course course;
 	private ContactType contactType;
 	private int numberOfStudents;
 	private int numberOfStaff;
 	private int contactHours;
 	private Qualifications requiredStaffQualifications;
-
 	
-	public CourseRequirement(final Course course, final ContactType contactType, final int contactHours, final String typeOfContact,
-							 final int numberOfStaff, final Qualifications requiredStaffQualifications, final int numberOfStudents)
+	/**
+	 * Constructor explicitly instantiates the CourseRequirement instance.
+	 * 
+	 * @param course 						The [Course] course
+	 * @param contactType					The [ContactType] type of contact hours required
+	 * @param numberOfStudents				The [int] number of students
+	 * @param numberOfStaff					The [int] number of staff required
+	 * @param contactHours					The [int] number of contact hours required
+	 * @param requiredStaffQualifications	The [Qualifications] staff qualifications required.
+	 */
+	
+	public CourseRequirement(final Course course, final ContactType contactType, final int numberOfStudents, 
+			final int numberOfStaff, final int contactHours, final Qualifications requiredStaffQualifications)
 	{
 		this.course = course;
 		this.contactType = contactType;
-		this.contactHours = contactHours;
-		this.numberOfStaff = numberOfStaff;
-		this.requiredStaffQualifications = requiredStaffQualifications;
 		this.numberOfStudents = numberOfStudents;
+		this.numberOfStaff = numberOfStaff;
+		this.contactHours = contactHours;
+		this.requiredStaffQualifications = requiredStaffQualifications;
+		
 	}
 	
 
-	private Course course;
 	public Course getCourse() {
 		return course;
 	}
@@ -85,5 +96,18 @@ public class CourseRequirement
 	public void setRequiredStaffQualifications(Qualifications requiredStaffQualifications) {
 		this.requiredStaffQualifications = requiredStaffQualifications;
 	}
-
+	
+	public String toString()
+	{
+		
+		return String.format("Course: %s, Contact Type: %s, Number Of Students: %d" 
+				+ "Number of Staff: %d, Contact Hours: %d, Qualifications: %s",
+				course.getName(),
+				contactType.toString(),
+				numberOfStudents,
+				numberOfStaff,
+				contactHours,
+				requiredStaffQualifications.toString());
+	}
 }
+
