@@ -23,9 +23,7 @@ public enum RequestStatus
 	}
 	
 	/**
-	 * Getter for the user friendly state name.
-	 * 
-	 * @return - a string instance of the user friendly name.
+	 * @return - a user friendly string representation of the request status enumerator.
 	 */
 	public String getName()
 	{
@@ -33,9 +31,7 @@ public enum RequestStatus
 	}
 	
 	/**
-	 * Getter for the user friendly state message.
-	 * 
-	 * @return - a string instance of the user friendly state message.
+	 * @return - a user friendly string message associated with the request status enumerator.
 	 */
 	public String getMessage()
 	{

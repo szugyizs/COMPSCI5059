@@ -6,10 +6,10 @@ public class TrainingRequest extends Request
 	private TrainingRequirement trainingRequirement;
 	
 	/**
-	 * Explicit constructor initialises the TrainingRequest instance.
+	 * Explicit constructor initialises TrainingRequest instance. 
 	 * 
-	 * @param requestStatus - the status of the training request.
-	 * @param trainingRequirement - the training requirement instance for the request.
+	 * @param requestStatus The status of the TrainingRequest instance.
+	 * @param trainingRequirement The TrainingRequirement instance; qualifications that are required.
 	 */
 	public TrainingRequest(final RequestStatus requestStatus, final TrainingRequirement trainingRequirement)
 	{
@@ -18,10 +18,9 @@ public class TrainingRequest extends Request
 	}
 	
 	/**
-	 * Implicit constructor initialises the TrainingRequest instance;
-	 * the requestStatus is set to PENDING implicitly.
+	 * Implicit constructor initialises TrainingRequest instance with an initial requestStatus of PENDING. 
 	 * 
-	 * @param trainingRequirement - the training requirement instance for which the request is being made.
+	 * @param trainingRequirement The TrainingRequrement instance for which the request is/was to be made.
 	 */
 	public TrainingRequest(final TrainingRequirement trainingRequirement)
 	{
@@ -29,9 +28,7 @@ public class TrainingRequest extends Request
 	}
 	
 	/**
-	 * Getter for the training requirement for which the request is being made.
-	 * 
-	 * @return - an instance of the training requirement.
+	 * @return The TrainingRequirement instance for which the request is being made. 
 	 */
 	public TrainingRequirement getTrainingRequirement()
 	{
@@ -39,10 +36,7 @@ public class TrainingRequest extends Request
 	}
 	
 	/**
-	 * Explicitly set the training requirements for the request. Though should not be
-	 * used.
-	 * 
-	 * @param trainingRequirement - the requirement for which the request is being made.
+	 * @param trainingRequirement The TrainingRequirement instance for which the request is/was made.
 	 */
 	public void setTrainingRequirement(final TrainingRequirement trainingRequirement)
 	{
