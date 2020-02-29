@@ -44,9 +44,9 @@ public class Course
 	}
 
 	/**
-	 * Getter for the course name.
+	 * Setter for the course name.
 	 * 
-	 * @return The name [String] of the course.
+	 * @param The name [String] of the course.
 	 */
 	public void setName(final String name)
 	{
