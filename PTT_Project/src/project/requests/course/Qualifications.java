@@ -6,16 +6,19 @@ import java.util.Map;
 public class Qualifications
 {
 
+	// The maximum and minimum skill levels acceptable.
 	private static final short MAX_SKILL_LEVEL = 5;
 	private static final short MIN_SKILL_LEVEL = 0;
 
+	// Mapping from skills to levels.
 	private Map<Skill, Short> skills;
-
+	
 	/**
-	 * Constructor explicitly instantiates the Qualifications instance.
+	 * Constructor explicitly instantiates the Qualifications instance with 
+	 * initial skills and their corresponding levels.
 	 * 
-	 * @param skills The skills [Map<Skill, Short>] a hash map of the skills and
-	 *               levels for each skill.
+	 * @param skills The Map<Skill, Short> [HashMap] instance of the skills alongside 
+	 * 		their corresponding levels.
 	 */
 	public Qualifications(final Map<Skill, Short> skills)
 	{
@@ -23,9 +26,8 @@ public class Qualifications
 	}
 
 	/**
-	 * Constructor explicitly instantiates the Qualifications instance. This
-	 * constructor assumes all skills to be the minimum level.
-	 * 
+	 * Constructor instantiates the Qualifications instance. However,
+	 * the Map containing the skills is implicitly initialised to an empty HashMap. 
 	 */
 	public Qualifications()
 	{
@@ -33,9 +35,11 @@ public class Qualifications
 	}
 
 	/**
-	 * Getter for the whole skill map. TODO: not sure if this is right
+	 * Getter for the map of skills and their corresponding levels. 
 	 * 
-	 * @return The skills [HashMap] of the qualification.
+	 * @return A new instance (not the original) of the skills map. This is done
+	 * 		to prevent the users from bypassing the limitations / checks imposed by the
+	 * 		Qualifications class. 
 	 */
 	public Map<Skill, Short> getSkills()
 	{
@@ -43,23 +47,36 @@ public class Qualifications
 	}
 
 	/**
-	 * Getter for the qualifications, only returning the required qualification
-	 * skills. TODO: not sure if this is right
+	 * Checks whether or not the passed Qualifications (qualificationsToCheck) parameter meets the 
+	 * skill levels associated with the invoked (this) instance.
 	 * 
-	 * @return The required qualifications [Qualifications] .
+	 * Iteratively compares the passed Qualifications (qualificationsToCheck) skills against this instance
+	 * in order to identify the missing SkillType's and their corresponding levels.
+	 * 
+	 * @param qualificationsToCheck The instance containing the skills which are to be tested against.
+	 * @return A new instance of Qualifications representing the skills and levels that are missing.
+	 * 		If there are no skills missing, a new Qualifications instance is still returned, however, 
+	 * 		the skills map will be empty.
 	 */
-	public Qualifications getRequiredSkills(final Qualifications qualifications)
+	public Qualifications getMissingSkills(final Qualifications qualificationsToCheck)
 	{
-		return new Qualifications(getRequiredSkills(qualifications.skills));
+		return new Qualifications(getMissingSkills(qualificationsToCheck.skills));
 	}
 
 	/**
-	 * Getter for the skill map, only returning the required skills. TODO: not sure
-	 * if this is right
+	 * Checks whether or not the passed skills map parameter meets the skill levels
+	 * associated with the invoked (this) instance.
 	 * 
-	 * @return The requiredSkills [Map<Skill, Short>] of the qualification.
+	 * Iteratively compares the passed skills map SkillType's against this instance in order
+	 * to identify the missing SkillType's and their corresponding levels.
+	 * 
+	 * @param skills The map containing the SkillType's alongside their levels. This map is the one
+	 * 		that's to be checked i.e. whether or not it meets the skill levels of the invoked (this)
+	 * 		instance.  
+	 * @return A new instance of a map (HashMap) containing the missing SkillType's and their corresponding
+	 * 		levels. 
 	 */
-	private Map<Skill, Short> getRequiredSkills(final Map<Skill, Short> skills)
+	private Map<Skill, Short> getMissingSkills(final Map<Skill, Short> skills)
 	{
 
 		// If all requirements have been met, return an empty map.
