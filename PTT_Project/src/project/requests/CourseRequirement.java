@@ -1,12 +1,17 @@
 package project.requests;
 
+import project.requests.course.ContactType;
 import project.requests.course.Course;
 import project.requests.course.Qualifications;
 
 public class CourseRequirement 
 {
+	
+	
 
 	private Course course;
+	
+	private ContactType contactType;
 	
 	private short numLecturers;
 	private short numTutors;
@@ -32,11 +37,17 @@ public class CourseRequirement
 	 * @param labContactHours Number of lab contact hours for the said Course instance.
 	 * @param requiredStaffQualifications The qualifications required by lecturers, tutors, and demonstrators.
 	 */
-	public CourseRequirement(final Course course, final short numLecturers, final short numTutors, 
+	
+	
+	
+	
+	private CourseRequirement(final Course course, final short numLecturers, final short numTutors, 
 			final short numDemonstrators, final short numStudents, final short lectureContactHours, 
 			final short tutorialContactHours, final short labContactHours, final Qualifications requiredStaffQualifications)
 	{
 		this.course = course;
+		
+		ContactType.
 		
 		this.numLecturers = numLecturers;
 		this.numTutors = numTutors;
