@@ -1,7 +1,7 @@
 package project.storage.lists;
 import java.util.LinkedList;
 
-import project.course.Teacher;
+import project.requests.course.Teacher;
 
 public class ListOfTeachers {
 	
