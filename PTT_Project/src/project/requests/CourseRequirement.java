@@ -47,8 +47,6 @@ public class CourseRequirement
 	{
 		this.course = course;
 		
-		ContactType.
-		
 		this.numLecturers = numLecturers;
 		this.numTutors = numTutors;
 		this.numDemonstrators = numDemonstrators;
