@@ -192,7 +192,7 @@ public class Qualifications
 		if (checkSkillBounds(skills))
 		{
 			skills.clear();
-			skills.putAll(skills); // TODO: don't know what that does exactly
+			skills.putAll(skills);
 			return true;
 		}
 		return false;
@@ -220,22 +220,15 @@ public class Qualifications
 	 * 
 	 * @param The skill map [Map<Skill, Short>] to check.
 	 * @return A boolean that indicates if all the levels were within the limits.
-	 *         False if a single one was not. //TODO: is that intended? Should it
-	 *         really return after finding one skill out of bounds? (see proposed
-	 *         change)
+	 *         False if a single one was not.
 	 */
 	private boolean checkSkillBounds(final Map<Skill, Short> skills)
 	{
-		// boolean allInBounds = true;
-		for (final Skill skill : skills.keySet())
-		{
-			if (!checkSkillBounds(skills.get(skill)))
-			{
-				// allInBounds = false;
+		for (final Skill skill : skills.keySet()) {
+			if (!checkSkillBounds(skills.get(skill))) {
 				return false;
 			}
 		}
-		// return allInBounds;
 		return true;
 	}
 
@@ -247,13 +240,11 @@ public class Qualifications
 	 */
 	private boolean checkSkillBounds(final short level)
 	{
-		if (level < MIN_SKILL_LEVEL)
-		{
+		if (level < MIN_SKILL_LEVEL) {
 			System.err.println(String.format("Skill level \"%d\" out of bounds, min skill level \"%d\"set.", level,
 					MIN_SKILL_LEVEL));
 			return false;
-		} else if (level > MAX_SKILL_LEVEL)
-		{
+		} else if (level > MAX_SKILL_LEVEL) {
 			System.err.println(String.format("Skill level \"%d\" out of bounds, max skill level \"%d\"set.", level,
 					MAX_SKILL_LEVEL));
 			return false;

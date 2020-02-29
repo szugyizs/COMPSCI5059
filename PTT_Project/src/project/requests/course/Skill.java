@@ -25,7 +25,6 @@ public enum Skill
 
 	private String name;
 	
-	// TODO is this an enum constructor? when is this used?
 	private Skill(final String name)
 	{
 		this.name = name;

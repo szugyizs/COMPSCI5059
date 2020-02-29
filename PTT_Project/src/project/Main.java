@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import project.controllers.Controller;
 import project.storage.Storage;
+import project.storage.FileStorage;
 
 public class Main 
 {
@@ -16,6 +17,7 @@ public class Main
 	public Main()
 	{
 		scanner = new Scanner(System.in);
+		storage = new FileStorage("");
 	}
 	
 	public Scanner getScanner()
@@ -36,6 +38,10 @@ public class Main
 	private void startParsing(final String... args)
 	{
 		
+		// java program_name [you need to log in]
+		// Java program_name admin
+		// Java program name pttdirector
+		// java program_name coursedirector name
 	}
 	
 	public static void main(String... args)
