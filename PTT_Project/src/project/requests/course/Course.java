@@ -1,10 +1,5 @@
 package project.requests.course;
 
-import java.util.List;
-import java.util.Map;
-
-import project.requests.CourseRequirement;
-
 public class Course
 {
 
@@ -12,9 +7,6 @@ public class Course
 	private String name;
 	private String description;
 
-	private Map<ContactType,List<Teacher>> teachingStaff;
-	private Map<ContactType,CourseRequirement> staffRequirement;
-	
 	/**
 	 * Constructor explicitly instantiates the Course instance.
 	 * 
@@ -25,7 +17,6 @@ public class Course
 	{
 		this.courseID = courseID;
 		this.name = name;
-		//teachingStaff.get
 	}
 
 	/**
