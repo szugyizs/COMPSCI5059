@@ -1,5 +1,5 @@
 package project.storage.lists;
 import project.storage.DatabaseStorage;
 
-public class FileStorage implements DatabaseStorage {
+public class FileStorage extends DatabaseStorage {
 }
