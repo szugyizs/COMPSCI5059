@@ -1,11 +1,20 @@
 package project.requests.course;
 
+import java.util.List;	
+import java.util.Map;	
+
+import project.requests.CourseRequirement;	
+
+
 public class Course
 {
 
 	private String courseID;
 	private String name;
 	private String description;
+	
+	private Map<ContactType,List<Teacher>> teachingStaff;	
+	private Map<ContactType,CourseRequirement> staffRequirement;
 
 	/**
 	 * Constructor explicitly instantiates the Course instance.
