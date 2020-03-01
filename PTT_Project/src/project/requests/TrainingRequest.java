@@ -9,10 +9,11 @@ public class TrainingRequest extends Request
 	 * Explicit constructor initialises TrainingRequest instance. 
 	 * 
 	 * @param requestStatus The status of the TrainingRequest instance.
+	 * @param id The request identification relative to a teacher instance. 
 	 * @param trainingRequirement The TrainingRequirement instance; qualifications that are required.
 	 */
 	//TODO: should this be possible to call from outside? maybe this should be made private? 
-	public TrainingRequest(final RequestStatusType requestStatus, final TrainingRequirement trainingRequirement, int id)
+	public TrainingRequest(final RequestStatusType requestStatus, int id, final TrainingRequirement trainingRequirement)
 	{
 		super(requestStatus, id);
 		this.trainingRequirement = trainingRequirement;
@@ -25,7 +26,7 @@ public class TrainingRequest extends Request
 	 */
 	public TrainingRequest(final TrainingRequirement trainingRequirement, int id)
 	{
-		this(RequestStatusType.PENDING, trainingRequirement, id);
+		this(RequestStatusType.PENDING, id, trainingRequirement);
 	}
 	
 	/**

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import project.requests.TrainingRequest;
+import project.requests.TrainingRequirement;
 
 public class Teacher
 {
@@ -127,13 +128,18 @@ public class Teacher
 	{
 		this.qualifications = qualifications;
 	}
-	
-	
-	
+
 	/**
+	 * Adds a training request to the teachers training request list by instantiating one from the passed training requirement.
 	 * 
 	 */
-//	public void addTrainingRequest(TrainingRequest trainingRequest)
+	public TrainingRequest addTrainingRequest(final TrainingRequirement trainingRequirement)
+	{
+		TrainingRequest request = new TrainingRequest(trainingRequirement, getNextTrainingRequestId());
+		this.trainingRequests.add(request);
+		return request;
+		
+	}
 
 	/**
 	 * Getter for the skill map, derrived from the qualifications.
