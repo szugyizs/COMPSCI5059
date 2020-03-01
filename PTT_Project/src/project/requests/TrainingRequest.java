@@ -11,9 +11,10 @@ public class TrainingRequest extends Request
 	 * @param requestStatus The status of the TrainingRequest instance.
 	 * @param trainingRequirement The TrainingRequirement instance; qualifications that are required.
 	 */
-	public TrainingRequest(final RequestStatusType requestStatus, final TrainingRequirement trainingRequirement)
+	//TODO: should this be possible to call from outside? maybe this should be made private? 
+	public TrainingRequest(final RequestStatusType requestStatus, final TrainingRequirement trainingRequirement, int id)
 	{
-		super(requestStatus);
+		super(requestStatus, id);
 		this.trainingRequirement = trainingRequirement;
 	}
 	
@@ -22,9 +23,9 @@ public class TrainingRequest extends Request
 	 * 
 	 * @param trainingRequirement The TrainingRequrement instance for which the request is/was to be made.
 	 */
-	public TrainingRequest(final TrainingRequirement trainingRequirement)
+	public TrainingRequest(final TrainingRequirement trainingRequirement, int id)
 	{
-		this(RequestStatusType.PENDING, trainingRequirement);
+		this(RequestStatusType.PENDING, trainingRequirement, id);
 	}
 	
 	/**

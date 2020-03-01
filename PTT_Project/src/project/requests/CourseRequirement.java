@@ -7,7 +7,6 @@ import project.requests.course.Qualifications;
 public class CourseRequirement 
 {
 	
-	private Course course;
 	private ContactType contactType;
 	private int numberOfStudents;
 	private int numberOfStaff;
@@ -25,10 +24,9 @@ public class CourseRequirement
 	 * @param requiredStaffQualifications	The [Qualifications] staff qualifications required.
 	 */
 	
-	public CourseRequirement(final Course course, final ContactType contactType, final int numberOfStudents, 
+	public CourseRequirement(final ContactType contactType, final int numberOfStudents, 
 			final int numberOfStaff, final int contactHours, final Qualifications requiredStaffQualifications)
 	{
-		this.course = course;
 		this.contactType = contactType;
 		this.numberOfStudents = numberOfStudents;
 		this.numberOfStaff = numberOfStaff;
@@ -36,17 +34,6 @@ public class CourseRequirement
 		this.requiredStaffQualifications = requiredStaffQualifications;
 		
 	}
-	
-
-	public Course getCourse() {
-		return course;
-	}
-
-
-	public void setCourse(Course course) {
-		this.course = course;
-	}
-
 
 	public ContactType getContactType() {
 		return contactType;
@@ -100,9 +87,8 @@ public class CourseRequirement
 	public String toString()
 	{
 		
-		return String.format("Course: %s, Contact Type: %s, Number Of Students: %d" 
+		return String.format("Contact Type: %s, Number Of Students: %d" 
 				+ "Number of Staff: %d, Contact Hours: %d, Qualifications: %s",
-				course.getName(),
 				contactType.toString(),
 				numberOfStudents,
 				numberOfStaff,
