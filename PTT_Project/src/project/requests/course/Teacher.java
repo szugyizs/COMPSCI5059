@@ -12,9 +12,9 @@ public class Teacher
 	private String forename; // !< The forename of the teacher
 	private String surname; // !< The surname of the teacher
 
-	private List<TrainingRequest> trainingRequests;
-	
 	private Qualifications qualifications;
+
+	private List<TrainingRequest> trainingRequests;
 
 	/**
 	 * Constructor explicitly instantiates the Teacher instance.
@@ -36,7 +36,7 @@ public class Teacher
 
 	/**
 	 * Constructor explicitly instantiates the Teacher instance. This teacher will
-	 * does not have any inital qualifications.
+	 * does not have any initial qualifications.
 	 * 
 	 * @param guid     The GUID of the teacher
 	 * @param forename The forename of the teacher
@@ -119,7 +119,7 @@ public class Teacher
 	}
 
 	/**
-	 * Setter for the qualifications.
+	 * Setter for the qualifications. Overwrites possible existing qualifications.
 	 * 
 	 * @return The qualifications [Qualifications] of the teacher.
 	 */
@@ -127,9 +127,16 @@ public class Teacher
 	{
 		this.qualifications = qualifications;
 	}
+	
+	
+	
+	/**
+	 * 
+	 */
+//	public void addTrainingRequest(TrainingRequest trainingRequest)
 
 	/**
-	 * Getter for the skill map.
+	 * Getter for the skill map, derrived from the qualifications.
 	 * 
 	 * @return The skill map [Map<Skill, Short>] of the teacher.
 	 */
@@ -139,10 +146,11 @@ public class Teacher
 	}
 
 	/**
-	 * Getter for the qualifications, only returning the required qualification
-	 * skills. TODO: not sure if this is right
+	 * Compares the teachers qualifications to qualifications that are provided as
+	 * an input and returns the ones that the teacher is missing.
 	 * 
-	 * @return The required qualifications [Qualifications] .
+	 * @param qualifications The qualifications that the teacher should have.
+	 * @return The missing qualifications [Qualifications] .
 	 */
 	public Qualifications getMissingSkills(final Qualifications qualifications)
 	{
@@ -152,9 +160,7 @@ public class Teacher
 	/**
 	 * Checks if the current teacher fulfills the required qualifications.
 	 * 
-	 * TODO: not sure if this is right
-	 * 
-	 * @param The qualifications [Qualifications] that are needed/wanted.
+	 * @param The qualifications [Qualifications] that are needed.
 	 * @return A boolean, true if the qualifications are met.
 	 */
 	public boolean hasSkills(final Qualifications qualifications)
@@ -168,7 +174,7 @@ public class Teacher
 	 * TODO: not sure if this is right, no level needed here?
 	 * 
 	 * @param The skill [Skill] that is needed/wanted.
-	 * @return A boolean, true if the skill has the required level. TODO:
+	 * @return A boolean, true if the teacher has the skill.
 	 */
 	public boolean hasSkill(final SkillType skillType)
 	{
@@ -179,7 +185,7 @@ public class Teacher
 	{
 		return qualifications.hasSkill(skillType, level);
 	}
-	
+
 	/**
 	 * Gets the level of a specified skill of the teacher.
 	 * 
@@ -193,10 +199,10 @@ public class Teacher
 	}
 
 	/**
-	 * Adds a skill to the qualifications of the teacher.
+	 * Adds qualifications skills to the qualifications of the teacher.
 	 * 
 	 * @param The Qualifications [Qualifications] to add.
-	 * @return A boolean TODO what does it say?.
+	 * @return True if the qualifications were set successfully, false if not.
 	 */
 	public boolean addSkills(final Qualifications qualifications)
 	{
@@ -207,7 +213,7 @@ public class Teacher
 	 * Sets skills in the qualifications of the teacher.
 	 * 
 	 * @param The Qualifications [Qualifications] to set.
-	 * @return A boolean TODO what does it say?.
+	 * @return True if the qualifications were set successfully, false if not.
 	 */
 	public boolean setSkills(final Qualifications qualifications)
 	{
@@ -218,11 +224,22 @@ public class Teacher
 	 * Set a skill to the qualifications of the teacher.
 	 * 
 	 * @param The skill [Skill] to set.
-	 * @return A boolean TODO what does it say?.
+	 * @return True if the qualifications were set successfully, false if not.
 	 */
 	public boolean setSkill(final SkillType skill, final short level)
 	{
 		return qualifications.setSkill(skill, level);
+	}
+
+	/**
+	 * Get the request Id for the next request.
+	 * 
+	 * @return The number of current training requests, which can be used to give an
+	 *         ID to the next one.
+	 */
+	private int getNextTrainingRequestId()
+	{// when a new training request is added, it needs a
+		return trainingRequests.size();
 	}
 
 	@Override
