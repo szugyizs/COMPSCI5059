@@ -1,6 +1,9 @@
 package project.requests.course;
 
+import java.util.List;
 import java.util.Map;
+
+import project.requests.TrainingRequest;
 
 public class Teacher
 {
@@ -9,6 +12,8 @@ public class Teacher
 	private String forename; // !< The forename of the teacher
 	private String surname; // !< The surname of the teacher
 
+	private List<TrainingRequest> trainingRequests;
+	
 	private Qualifications qualifications;
 
 	/**
@@ -128,7 +133,7 @@ public class Teacher
 	 * 
 	 * @return The skill map [Map<Skill, Short>] of the teacher.
 	 */
-	public Map<Skill, Short> getSkills()
+	public Map<SkillType, Short> getSkills()
 	{
 		return qualifications.getSkills();
 	}
@@ -139,9 +144,9 @@ public class Teacher
 	 * 
 	 * @return The required qualifications [Qualifications] .
 	 */
-	public Qualifications getRequiredSkills(final Qualifications qualifications)
+	public Qualifications getMissingSkills(final Qualifications qualifications)
 	{
-		return this.qualifications.getRequiredSkills(qualifications);
+		return this.qualifications.getMissingSkills(qualifications);
 	}
 
 	/**
@@ -165,11 +170,16 @@ public class Teacher
 	 * @param The skill [Skill] that is needed/wanted.
 	 * @return A boolean, true if the skill has the required level. TODO:
 	 */
-	public boolean hasSkill(final Skill skill)
+	public boolean hasSkill(final SkillType skillType)
 	{
-		return qualifications.hasSkill(skill);
+		return qualifications.hasSkill(skillType);
 	}
 
+	public boolean hasSkill(final SkillType skillType, final short level)
+	{
+		return qualifications.hasSkill(skillType, level);
+	}
+	
 	/**
 	 * Gets the level of a specified skill of the teacher.
 	 * 
@@ -177,7 +187,7 @@ public class Teacher
 	 * @return The level [short] of the inquired skill, -1 if the skill does not
 	 *         exist.
 	 */
-	public short getSkillLevel(final Skill skill)
+	public short getSkillLevel(final SkillType skill)
 	{
 		return qualifications.getSkillLevel(skill);
 	}
@@ -210,7 +220,7 @@ public class Teacher
 	 * @param The skill [Skill] to set.
 	 * @return A boolean TODO what does it say?.
 	 */
-	public boolean setSkill(final Skill skill, final short level)
+	public boolean setSkill(final SkillType skill, final short level)
 	{
 		return qualifications.setSkill(skill, level);
 	}

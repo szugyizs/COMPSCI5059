@@ -11,7 +11,7 @@ public class TrainingRequest extends Request
 	 * @param requestStatus The status of the TrainingRequest instance.
 	 * @param trainingRequirement The TrainingRequirement instance; qualifications that are required.
 	 */
-	public TrainingRequest(final RequestStatus requestStatus, final TrainingRequirement trainingRequirement)
+	public TrainingRequest(final RequestStatusType requestStatus, final TrainingRequirement trainingRequirement)
 	{
 		super(requestStatus);
 		this.trainingRequirement = trainingRequirement;
@@ -24,7 +24,7 @@ public class TrainingRequest extends Request
 	 */
 	public TrainingRequest(final TrainingRequirement trainingRequirement)
 	{
-		this(RequestStatus.PENDING, trainingRequirement);
+		this(RequestStatusType.PENDING, trainingRequirement);
 	}
 	
 	/**

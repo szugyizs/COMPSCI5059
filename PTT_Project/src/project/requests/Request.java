@@ -3,16 +3,16 @@ package project.requests;
 public abstract class Request 
 {
 	
-	private RequestStatus requestStatus;
+	private RequestStatusType requestStatus;
 	
-	protected Request(final RequestStatus requestStatus)
+	protected Request(final RequestStatusType requestStatus)
 	{
 		this.requestStatus = requestStatus;
 	}
 	
 	protected Request()
 	{
-		this(RequestStatus.PENDING);
+		this(RequestStatusType.PENDING);
 	}
 	
 	/**
@@ -20,7 +20,7 @@ public abstract class Request
 	 * 
 	 * @return - an instance of the RequestState that represents the current request state.
 	 */
-	public RequestStatus getRequestStatus()
+	public RequestStatusType getRequestStatus()
 	{
 		return requestStatus;
 	}
@@ -30,7 +30,7 @@ public abstract class Request
 	 * 
 	 * @param requestStatus - the new state of the request.
 	 */
-	public void setRequestStatus(final RequestStatus requestStatus)
+	public void setRequestStatus(final RequestStatusType requestStatus)
 	{
 		this.requestStatus = requestStatus;
 	}
@@ -40,7 +40,7 @@ public abstract class Request
 	 */
 	public void acceptRequest()
 	{
-		requestStatus = RequestStatus.ACCEPTED;
+		requestStatus = RequestStatusType.ACCEPTED;
 	}
 	
 	/**
@@ -48,7 +48,7 @@ public abstract class Request
 	 */
 	public void denyRequest()
 	{
-		requestStatus = RequestStatus.DENIED;
+		requestStatus = RequestStatusType.DENIED;
 	}
 	
 	@Override

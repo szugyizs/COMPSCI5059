@@ -11,7 +11,7 @@ public class TeachingRequest extends Request
 	 * @param requestStatus - the status of the request.
 	 * @param courseRequirement - the CourseRequirement instance for which the request is being made.
 	 */
-	public TeachingRequest(final RequestStatus requestStatus, final CourseRequirement courseRequirement)
+	public TeachingRequest(final RequestStatusType requestStatus, final CourseRequirement courseRequirement)
 	{
 		super(requestStatus);
 		this.courseRequirement = courseRequirement;
@@ -25,7 +25,7 @@ public class TeachingRequest extends Request
 	 */
 	public TeachingRequest(final CourseRequirement courseRequirement)
 	{
-		this(RequestStatus.PENDING, courseRequirement);
+		this(RequestStatusType.PENDING, courseRequirement);
 	}
 	
 	/**

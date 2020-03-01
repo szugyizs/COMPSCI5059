@@ -3,6 +3,7 @@ package project;
 import java.util.Scanner;
 
 import project.controllers.Controller;
+import project.requests.course.SkillType;
 import project.storage.Storage;
 import project.storage.FileStorage;
 
@@ -45,7 +46,7 @@ public class Main
 	}
 	
 	public static void main(String... args)
-	{
+	{		
 		Main main = new Main();
 		main.startParsing(args);
 	}

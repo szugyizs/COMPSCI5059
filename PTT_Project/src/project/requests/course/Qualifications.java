@@ -6,12 +6,10 @@ import java.util.Map;
 public class Qualifications
 {
 
-	// The maximum and minimum skill levels acceptable.
-	private static final short MAX_SKILL_LEVEL = 5;
-	private static final short MIN_SKILL_LEVEL = 0;
+	private static final short MAX_SKILL_LEVEL = 5; // The maximum skill level that can be set.
+	private static final short MIN_SKILL_LEVEL = 0; // The minimum skill level that can be set.
 
-	// Mapping from skills to levels.
-	private Map<Skill, Short> skills;
+	private HashMap<SkillType, Short> skills; // A mapping from the skill types to their corresponding level.
 	
 	/**
 	 * Constructor explicitly instantiates the Qualifications instance with 
@@ -20,7 +18,7 @@ public class Qualifications
 	 * @param skills The Map<Skill, Short> [HashMap] instance of the skills alongside 
 	 * 		their corresponding levels.
 	 */
-	public Qualifications(final Map<Skill, Short> skills)
+	public Qualifications(final HashMap<SkillType, Short> skills)
 	{
 		this.skills = skills;
 	}
@@ -31,7 +29,7 @@ public class Qualifications
 	 */
 	public Qualifications()
 	{
-		this(new HashMap<Skill, Short>());
+		this(new HashMap<SkillType, Short>());
 	}
 
 	/**
@@ -41,70 +39,70 @@ public class Qualifications
 	 * 		to prevent the users from bypassing the limitations / checks imposed by the
 	 * 		Qualifications class. 
 	 */
-	public Map<Skill, Short> getSkills()
+	public Map<SkillType, Short> getSkills()
 	{
-		return new HashMap<Skill, Short>(skills);
+		return new HashMap<SkillType, Short>(skills);
 	}
 
 	/**
-	 * Checks whether or not the passed Qualifications (qualificationsToCheck) parameter meets the 
-	 * skill levels associated with the invoked (this) instance.
+	 * Iteratively checks whether or not the invoked Qualifications instance (this) possesses the 
+	 * SkillTypes and the corresponding skill level as defined by the qualificationsToBeMet parameter.
 	 * 
-	 * Iteratively compares the passed Qualifications (qualificationsToCheck) skills against this instance
-	 * in order to identify the missing SkillType's and their corresponding levels.
+	 * Note, that a SkillType is defined as missing in the event the invoked Qualifications instance
+	 * this does not possess it, or the level is less than that one defined in qualificationsToBeMet.
 	 * 
-	 * @param qualificationsToCheck The instance containing the skills which are to be tested against.
-	 * @return A new instance of Qualifications representing the skills and levels that are missing.
-	 * 		If there are no skills missing, a new Qualifications instance is still returned, however, 
-	 * 		the skills map will be empty.
+	 * @param qualificationsToBeMet The instance containing the skills that should be met by the 
+	 * 		invoked Qualifications instance (this).
+	 * @return An instance of Qualifications, representing the missing SkillTypes and the corresponding
+	 * 		levels. Note, if no skills are missing, a Qualifications instance will still be returned
+	 * 		to prevent the need to deal with nulls. Thus, check if skills is empty.
 	 */
-	public Qualifications getMissingSkills(final Qualifications qualificationsToCheck)
+	public Qualifications getMissingSkills(final Qualifications qualificationsToBeMet)
 	{
-		return new Qualifications(getMissingSkills(qualificationsToCheck.skills));
+		return new Qualifications(getMissingSkills(qualificationsToBeMet.skills));
 	}
-
+	
 	/**
-	 * Checks whether or not the passed skills map parameter meets the skill levels
-	 * associated with the invoked (this) instance.
+	 * Iteratively checks whether or not the invoked Qualifications instance (this) possesses the 
+	 * SkillTypes and the corresponding skill level as defined by the qualificationsToBeMet HashMap
+	 * parameter.
 	 * 
-	 * Iteratively compares the passed skills map SkillType's against this instance in order
-	 * to identify the missing SkillType's and their corresponding levels.
+	 * Note, that a SkillType is defined as missing in the event the invoked Qualifications instance
+	 * this does not possess it, or the level is less than that one defined in qualificationsToBeMet.
 	 * 
-	 * @param skills The map containing the SkillType's alongside their levels. This map is the one
-	 * 		that's to be checked i.e. whether or not it meets the skill levels of the invoked (this)
-	 * 		instance.  
-	 * @return A new instance of a map (HashMap) containing the missing SkillType's and their corresponding
-	 * 		levels. 
+	 * @param qualificationsToBeMet The HashMao instance containing the skills that should be met by the
+	 * 		invoked Qualifications instance (this).
+	 * @return An instance of HashMap, representing the missing SkillType's and the corresponding levels.
+	 * 		Note, if no skills are missing, an empty HashMap will be returned.
 	 */
-	private Map<Skill, Short> getMissingSkills(final Map<Skill, Short> skills)
+	private HashMap<SkillType, Short> getMissingSkills(final HashMap<SkillType, Short> qualificationsToBeMet)
 	{
-
-		// If all requirements have been met, return an empty map.
-		Map<Skill, Short> requiredSkills = new HashMap<Skill, Short>();
-		if (!hasSkills(skills))
-		{
-			return requiredSkills;
+		
+		// If all the skills have been met, return an empty hashmap.
+		HashMap<SkillType, Short> missingSkills = new HashMap<SkillType, Short>();
+		if (hasSkills(qualificationsToBeMet)) {
+			return missingSkills;
 		}
-
+		
 		// Find the skills that are required.
-		for (final Skill skill : skills.keySet())
-		{
-			if (!this.skills.containsKey(skill) || this.skills.get(skill) > skills.get(skill))
-			{
-				requiredSkills.put(skill, this.skills.get(skill));
+		for (final SkillType skillType : qualificationsToBeMet.keySet()) {
+			if (!skills.containsKey(skillType) || skills.get(skillType) < qualificationsToBeMet.get(skillType)) {
+				missingSkills.put(skillType, qualificationsToBeMet.get(skillType));
 			}
 		}
-
-		return requiredSkills;
+		
+		return missingSkills;
 	}
-
+	
 	/**
-	 * Checks if the current instance fulfills the required qualifications.
+	 * Checks whether or not the invoked Qualification instance (this) contains the
+	 * SkillType's and the corresponding skill levels as defined in the qualifications 
+	 * parameter.
 	 * 
-	 * TODO: not sure if this is right
-	 * 
-	 * @param The qualifications [Qualifications] that are needed/wanted.
-	 * @return A boolean, true if the qualifications are met.
+	 * @param qualifications The instance defining the map of SkillType's that are to be checked for
+	 * 		in the invoked (this) Qualifications instance.
+	 * @return True of all SkillType's and the corresponding levels have been met by the invoked instance,
+	 * 		false otherwise.
 	 */
 	public boolean hasSkills(final Qualifications qualifications)
 	{
@@ -112,136 +110,164 @@ public class Qualifications
 	}
 
 	/**
-	 * Checks if the current instance has the required skills.
+	 * Checks whether or not the invoked Qualification instance (this) contains the
+	 * SkillType's and the corresponding skill levels as defined in the qualifications 
+	 * HashMap parameter.
 	 * 
-	 * TODO: not sure if this is right
-	 * 
-	 * @param The skills [Map<Skill, Short>] that are needed/wanted.
-	 * @return A boolean, true if the qualifications are met.
+	 * @param requiredSkills A HashMap containing SkillType's and levels that are to be checked for.
+	 * @return True if all the SkillType's and levels are present within the invoked Qualifications
+	 * 		instance skill map, false otherwise.
 	 */
-	private boolean hasSkills(final Map<Skill, Short> skills)
+	private boolean hasSkills(final Map<SkillType, Short> requiredSkills)
 	{
-		for (final Skill skill : skills.keySet())
-		{
-			if (!this.skills.containsKey(skill) || this.skills.get(skill) > skills.get(skill))
-			{
+		for (final SkillType skillType : requiredSkills.keySet()){
+			if (!skills.containsKey(skillType) || skills.get(skillType) < requiredSkills.get(skillType)) {
 				return false;
 			}
 		}
 		return true;
 	}
-
+	
 	/**
-	 * Checks if the current instance has the required (single) skill.
+	 * Checks whether or not the invoked instance has the provided skill type.
+	 * Note, this method does not account for the level.
 	 * 
-	 * TODO: not sure if this is right, no level needed here?
-	 * 
-	 * @param The skill [Skill] that is needed/wanted.
-	 * @return A boolean, true if the skill has the required level. TODO:
+	 * @param skillType The SkillType that is being checked for.
+	 * @return True if the SkillType is present, false otherwise.
 	 */
-	public boolean hasSkill(final Skill skill)
+	public boolean hasSkill(final SkillType skillType)
 	{
-		return skills.containsKey(skill);
+		return skills.containsKey(skillType);
+	}
+	
+	/**
+	 * Checks whether or not the invoked instance has the provided skill type.
+	 * Note, this method takes into account the level.
+	 * 
+	 * @param skillType The SkillType that is being checked for.
+	 * @param level The level that should be met; levels greater than this are regarded as being met.
+	 * @return True if the SkillType is present, false otherwise. 
+	 */
+	public boolean hasSkill(final SkillType skillType, final short level)
+	{
+		return skills.containsKey(skillType) && skills.get(skillType) >= level;
 	}
 
 	/**
-	 * Gets the level of a specified skill.
+	 * Gets the level of a specified SkillType.
 	 * 
-	 * @param The skill [Skill] of which the level is inquired.
-	 * @return The level [short] of the inquired skill, -1 if the skill does not
+	 * @param The SkillType of which the level is inquired.
+	 * @return The level of the inquired skill, -1 if the skill does not
 	 *         exist.
 	 */
-	public short getSkillLevel(final Skill skill)
+	public short getSkillLevel(final SkillType skill)
 	{
-		if (skills.containsKey(skill))
-		{
+		if (skills.containsKey(skill)) {
 			return skills.get(skill);
 		}
 		return -1;
 	}
-
+	
 	/**
-	 * Adds a skill to the qualifications.
+	 * Adds the map of SkillTypes that have been defined within the qualifications parameter
+	 * to the invoked instance.
 	 * 
-	 * @param The Qualifications [Qualifications] to add.
-	 * @return A boolean TODO what does it say?.
+	 * Note, if the SkillType is already present, the corresponding level will be 
+	 * _overwritten_ by the SkillType level defined within the parameter.
+	 * 
+	 * @param qualifications An instance of Qualifications containing the map of SkillTypes and
+	 * 		levels that are to be added.
+	 * @return True if the level bounds have been met, false otherwise.
 	 */
 	public boolean addSkills(final Qualifications qualifications)
 	{
+		if (qualifications == null) {
+			return false;
+		}
 		return addSkills(qualifications.skills);
 	}
 
 	/**
-	 * Adds a skill to the qualifications.
+	 * Adds the map of SkillTypes that have been defined within skills HashMap.
 	 * 
-	 * @param The skills [Map<Skill, Short>] to add.
-	 * @return A boolean TODO what does it say?.
+	 * Note, if the SkillType is already present, the corresponding level will be 
+	 * _overwritten_ by the SkillType level defined within the parameter.
+	 * 
+	 * @param skills An instance of HashMap containing the SkillType's and the corresponding
+	 * 		levels that are to be added to the invoked instance.
+	 * @return True if the level bounds have been met, false otherwise.
 	 */
-	private boolean addSkills(final Map<Skill, Short> skills)
+	private boolean addSkills(final HashMap<SkillType, Short> skills)
 	{
-		if (checkSkillBounds(skills))
-		{
+		if (skills != null && checkSkillBounds(skills)){
 			skills.putAll(skills);
 			return true;
 		}
 		return false;
 	}
-
+	
 	/**
-	 * Sets skill levels.
+	 * Sets the map of SkillType's and the corresponding levels of the invoked instance (this)
+	 * to that map defined within the qualifications parameter. Note, the reference is not set,
+	 * instead the map is copied in order to avoid the user bypassing the limitations imposed by
+	 * the class. Furthermore, this only occurs if the be level bounds have been met.
 	 * 
-	 * @param The skills [Map<Skill, Short>] to set.
-	 * @return A boolean TODO what does it say?.
+	 * @param qualifications The instance from which the SkillType's and levels are to be copied.
+	 * @return True if the SkillTypes and levels have been successfully set, false otherwise.
 	 */
 	public boolean setSkills(final Qualifications qualifications)
 	{
+		if (qualifications == null) {
+			return false;
+		}
 		return setSkills(qualifications.skills);
 	}
 
 	/**
-	 * Sets skill levels.
+	 * Sets the map of SkillType's and the corresponding levels of the invoked instance (this)
+	 * to that map defined by the parameter. Note, the reference is not set, instead the map is copied 
+	 * in order to avoid the user bypassing the limitations imposed by the class. Furthermore, this
+	 * only occurs if the be level bounds have been met.
 	 * 
-	 * @param The skills [Map<Skill, Short>] to set.
-	 * @return A boolean TODO what does it say?.
+	 * @param skills The map that the SkillType's are to be copied from.
+	 * @return True if the SkillTypes and levels have been successfully set, false otherwise.
 	 */
-	private boolean setSkills(final Map<Skill, Short> skills)
+	private boolean setSkills(final HashMap<SkillType, Short> skills)
 	{
-		if (checkSkillBounds(skills))
-		{
-			skills.clear();
-			skills.putAll(skills);
+		if (checkSkillBounds(skills)) {
+			this.skills.clear();
+			this.skills.putAll(skills);
 			return true;
 		}
 		return false;
 	}
 
 	/**
-	 * Sets skill levels.
-	 * 
-	 * @param The skill [Skill] of which the level is to be set.
-	 * @param The level [short] to set the skill to.
-	 * @return A boolean TODO what does it say?.
+	 * Sets a SkillType and level. If the skillType is not present, one will be added. 
+	 *  
+	 * @param skillType The skill that is to be set.
+	 * @param level The level of the skillType that is being set.
+	 * @return True if the skillType and level have been successfully set, false otherwise.
 	 */
-	public boolean setSkill(final Skill skill, final short level)
+	public boolean setSkill(final SkillType skillType, final short level)
 	{
-		if (checkSkillBounds(level))
-		{
-			skills.put(skill, level);
+		if (skillType != null && checkSkillBounds(level)) {
+			skills.put(skillType, level);
 			return true;
 		}
 		return false;
 	}
 
 	/**
-	 * Checks if the skill bounds are within the specified limits.
+	 * Checks whether or not the HashMap of SkillType's meets the bounds 
+	 * i.e. MIN_SKILL_LEVEL <= levels <= MAX_SKILL_LEVEL.
 	 * 
-	 * @param The skill map [Map<Skill, Short>] to check.
-	 * @return A boolean that indicates if all the levels were within the limits.
-	 *         False if a single one was not.
+	 * @param skills The HashMap instance of skills that are to be checked.
+	 * @return True if all the SkillType's meet the said requirements, false otherwise.
 	 */
-	private boolean checkSkillBounds(final Map<Skill, Short> skills)
+	private boolean checkSkillBounds(final HashMap<SkillType, Short> skills)
 	{
-		for (final Skill skill : skills.keySet()) {
+		for (final SkillType skill : skills.keySet()) {
 			if (!checkSkillBounds(skills.get(skill))) {
 				return false;
 			}
@@ -250,10 +276,11 @@ public class Qualifications
 	}
 
 	/**
-	 * Checks if the skill bounds are within the specified limits.
+	 * Checks whether or not the level of the skills falls within the valid bounds i.e.
+	 * MIN_SKILL_LEVEL <= levels <= MAX_SKILL_LEVEL.
 	 * 
-	 * @param The level [short] to set.
-	 * @return A boolean that indicates if all the level is within the limits.
+	 * @param The level that is to be checked.
+	 * @return True if the level falls within the valid bounds, false otherwise.
 	 */
 	private boolean checkSkillBounds(final short level)
 	{
@@ -273,7 +300,7 @@ public class Qualifications
 	public String toString()
 	{
 		StringBuilder skillsString = new StringBuilder();
-		for (final Skill skill : skills.keySet())
+		for (final SkillType skill : skills.keySet())
 		{
 			skillsString.append(String.format("%s: %d, ", skill.getName(), skills.get(skill)));
 		}
