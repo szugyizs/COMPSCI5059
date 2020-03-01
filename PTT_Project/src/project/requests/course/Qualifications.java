@@ -96,7 +96,7 @@ public class Qualifications
 	
 	/**
 	 * Checks whether or not the invoked Qualification instance (this) contains the
-	 * SkillType's and the corresponding skill levels as defined in the qualifications 
+	 * SkillTypes and the corresponding skill levels as defined in the qualifications 
 	 * parameter.
 	 * 
 	 * @param qualifications The instance defining the map of SkillType's that are to be checked for
