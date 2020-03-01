@@ -1,16 +1,17 @@
 package project.requests;
 
 import project.requests.course.ContactType;
-import project.requests.course.Course;
 import project.requests.course.Qualifications;
 
 public class CourseRequirement 
 {
 	
 	private ContactType contactType;
+	
 	private int numberOfStudents;
 	private int numberOfStaff;
 	private int contactHours;
+	
 	private Qualifications requiredStaffQualifications;
 	
 	/**
@@ -35,22 +36,26 @@ public class CourseRequirement
 		
 	}
 
-	public ContactType getContactType() {
+	public ContactType getContactType()
+	{
 		return contactType;
 	}
 
 
-	public void setContactType(ContactType contactType) {
+	public void setContactType(ContactType contactType) 
+	{
 		this.contactType = contactType;
 	}
 
 
-	public int getNumberOfStudents() {
+	public int getNumberOfStudents()
+	{
 		return numberOfStudents;
 	}
 
 
-	public void setNumberOfStudents(int numberOfStudents) {
+	public void setNumberOfStudents(int numberOfStudents) 
+	{
 		this.numberOfStudents = numberOfStudents;
 	}
 
@@ -60,7 +65,8 @@ public class CourseRequirement
 	}
 
 
-	public void setNumberOfStaff(int numberOfStaff) {
+	public void setNumberOfStaff(int numberOfStaff)
+	{
 		this.numberOfStaff = numberOfStaff;
 	}
 
@@ -70,17 +76,20 @@ public class CourseRequirement
 	}
 
 
-	public void setContactHours(int contactHours) {
+	public void setContactHours(int contactHours) 
+	{
 		this.contactHours = contactHours;
 	}
 
 
-	public Qualifications getRequiredStaffQualifications() {
+	public Qualifications getRequiredStaffQualifications() 
+	{
 		return requiredStaffQualifications;
 	}
 
 
-	public void setRequiredStaffQualifications(Qualifications requiredStaffQualifications) {
+	public void setRequiredStaffQualifications(Qualifications requiredStaffQualifications)
+	{
 		this.requiredStaffQualifications = requiredStaffQualifications;
 	}
 	

@@ -8,13 +8,14 @@ import project.requests.TrainingRequest;
 public class Teacher
 {
 
-	private String guid; // !< The GUID of the teacher
-	private String forename; // !< The forename of the teacher
-	private String surname; // !< The surname of the teacher
+	private String guid; // The GUID of the teacher.
+	
+	private String forename; // The forename of the teacher.
+	private String surname; // The surname of the teacher
 
-	private Qualifications qualifications;
+	private Qualifications qualifications; // The qualifications (skills) the teacher possesses.
 
-	private List<TrainingRequest> trainingRequests;
+	private List<TrainingRequest> trainingRequests; // The training requests associated with the teacher.
 
 	/**
 	 * Constructor explicitly instantiates the Teacher instance.
@@ -128,13 +129,6 @@ public class Teacher
 		this.qualifications = qualifications;
 	}
 	
-	
-	
-	/**
-	 * 
-	 */
-//	public void addTrainingRequest(TrainingRequest trainingRequest)
-
 	/**
 	 * Getter for the skill map, derrived from the qualifications.
 	 * 
