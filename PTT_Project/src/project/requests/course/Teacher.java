@@ -130,7 +130,10 @@ public class Teacher
 	}
 
 	/**
-	 * Adds a training request to the teachers training request list by instantiating one from the passed training requirement.
+	 * Adds a training request to the teachers training request list by
+	 * instantiating one from the passed training requirement.
+	 * @param trainingRequirement The training requirement that needs to be met with a training.
+	 * @return request The instantiated training request for the requirement.
 	 * 
 	 */
 	public TrainingRequest addTrainingRequest(final TrainingRequirement trainingRequirement)
@@ -138,9 +141,20 @@ public class Teacher
 		TrainingRequest request = new TrainingRequest(trainingRequirement, getNextTrainingRequestId());
 		this.trainingRequests.add(request);
 		return request;
-		
+
 	}
 
+	/**
+	 * Returns all the training requests of the teacher instance.
+	 * 
+	 * @return trainingRequests The list of training request for the teacher.
+	 * 
+	 */
+	public List<TrainingRequest> getTrainingRequests()
+	{
+		return this.trainingRequests;
+	}
+	
 	/**
 	 * Getter for the skill map, derrived from the qualifications.
 	 * 
