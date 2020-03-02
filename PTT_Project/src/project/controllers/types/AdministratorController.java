@@ -55,44 +55,34 @@ public class AdministratorController extends Controller
 	public boolean processCommand(final String command, final String... args)
 	{
 		String[] commandArgs;
-//		do {
-			// Splits the command for further processing.
-			commandArgs = command.split(" ");
+		
+		// Splits the command for further processing.
+		commandArgs = command.split(" ");
 
-//			if (command.equalsIgnoreCase("logout")) { // TODO do
-//				logout();
-//				return true;
-//			}
+		if (command.equalsIgnoreCase("get-teachers")) {
+			this.listOfTeachers.printTeachers(printStream);
+			return true;
+		}
 
-			if (command.equalsIgnoreCase("get-teachers")) {
-				this.listOfTeachers.printTeachers(printStream);
-//				printStream.println(getListOfTeachers().toString()); //TODO do
-				return true;
-			}
+		if (command.equalsIgnoreCase("get-teachingRequests")) {
 
-			if (command.equalsIgnoreCase("get-teachingRequests")) {
+			// printStream.println(getTeachingRequests()); //TODO do
+			return true;
+		}
 
-				// printStream.println(getTeachingRequests()); //TODO do
-				return true;
-			}
+		if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("make")) {
+			Teacher t = listOfTeachers.getTeacher(args[2]);
+			HashMap<SkillType, Short> sk = new HashMap<SkillType, Short>();// args[5], Short.parseShort(args[6]));
+																			// //TODO do
+			Qualifications q = new Qualifications(sk);
+			TrainingRequirement tr = new TrainingRequirement(q);
+			t.addTrainingRequest(tr);
+		}
 
-			if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("make")) {
-				Teacher t = listOfTeachers.getTeacher(args[2]);
-				HashMap<SkillType, Short> sk = new HashMap<SkillType, Short>();// args[5], Short.parseShort(args[6]));
-																				// //TODO do
-				Qualifications q = new Qualifications(sk);
-				TrainingRequirement tr = new TrainingRequirement(q);
-				t.addTrainingRequest(tr);
-			}
-
-			if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("update-skill")) {
-				Teacher t = listOfTeachers.getTeacher(args[1]);
-				// t.setSkill(args[2], Short.parseShort(args[3])); //TODO do
-			}
-			
-			
-			
-//		} while (!(command.equalsIgnoreCase("quit")));
+		if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("update-skill")) {
+			Teacher t = listOfTeachers.getTeacher(args[1]);
+			// t.setSkill(args[2], Short.parseShort(args[3])); //TODO do
+		}
 
 		return false;
 	}
