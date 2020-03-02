@@ -8,7 +8,8 @@ import project.storage.lists.ListOfTeachers;
 
 public abstract class Controller
 {
-	
+	//TODO - comment this class
+	//TODO - review functionality
 	private Storage storage;
 	
 	private PrintStream printStream;

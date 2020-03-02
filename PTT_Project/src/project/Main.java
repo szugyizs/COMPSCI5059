@@ -21,7 +21,9 @@ import project.storage.FileStorage;
 
 public class Main 
 {
-	
+
+	//TODO - comment this class
+	//TODO - review functionality
 	private PrintStream printStream;
 	private Scanner scanner;
 	
@@ -71,6 +73,15 @@ public class Main
 				continue;
 			}
 			
+			// If the controller is not equal to null, then attempt to process the command.
+			if (controller != null) {
+				if (!controller.processCommand(command, commandArgs)) {
+					printStream.println(String.format("Failed to process command \"%s\"; type \"help\"", command));
+					continue;
+				}
+			}
+
+			
 			// If the command is logout, logout of the existing controller.
 			else if (command.equalsIgnoreCase("logout")) {
 				if (controller == null) {
@@ -78,14 +89,6 @@ public class Main
 					continue;
 				}
 				controller.logout();
-			}
-			
-			// If the controller is not equal to null, then attempt to process the command.
-			if (controller != null) {
-				if (!controller.processCommand(command, commandArgs)) {
-					printStream.println(String.format("Failed to process command \"%s\"; type \"help\"", command));
-					continue;
-				}
 			}
 			
 			// The controller is null, therefore process the login code.
@@ -103,8 +106,8 @@ public class Main
 		
 		// If we quit and a controller exists, save the storage.
 		if (controller != null) {
+			controller.logout();
 			printStream.println("Successfully logged out! Work saved!");
-			storage.save();
 		}
 		printStream.println("Successfully quit the program.");
 	}

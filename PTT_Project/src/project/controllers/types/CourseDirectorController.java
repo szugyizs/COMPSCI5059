@@ -1,6 +1,7 @@
 package project.controllers.types;
 
 import java.io.PrintStream;
+import java.util.Scanner;
 
 import project.controllers.Controller;
 import project.requests.course.Course;
@@ -8,6 +9,11 @@ import project.storage.Storage;
 
 public class CourseDirectorController extends Controller
 {
+
+	//TODO - comment this class
+	//TODO - review functionality
+	private PrintStream printStream;
+	private Scanner scanner;
 	
 	private Course course;
 	
@@ -15,6 +21,8 @@ public class CourseDirectorController extends Controller
 	{
 		super(storage);
 		this.course = course;
+		printStream = System.out;
+		scanner = new Scanner(System.in);
 	}
 	
 	public Course getCourse()
@@ -23,12 +31,17 @@ public class CourseDirectorController extends Controller
 	}
 	
 	@Override
-	public void printHelpMessages() 
+	public void printHelpMessages() //TODO
 	{	
+		//Course Director Specific help commands
+		printStream.println("\nCourse Director commands:");
+		printStream.println("make request <params>- ");
+		printStream.println("get status - ");
+		
 	}
 	
 	@Override
-	public boolean processCommand(final String command, final String... args)
+	public boolean processCommand(final String command, final String... args) //TODO
 	{
 		
 		
@@ -36,9 +49,10 @@ public class CourseDirectorController extends Controller
 	}
 
 	@Override
-	public void logout() {
-		// TODO Auto-generated method stub
-		
+	public void logout() //TODO
+	{
+		//storage.save();
+		//destroy self?
 	}
 	
 }

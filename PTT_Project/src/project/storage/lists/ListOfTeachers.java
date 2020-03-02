@@ -9,7 +9,9 @@ import project.requests.course.Teacher;
 
 public class ListOfTeachers 
 {
-	
+
+	//TODO - comment this class
+	//TODO - review functionality
 	private LinkedList<Teacher> teachers;
 	
 	public ListOfTeachers(final LinkedList<Teacher> teachers)

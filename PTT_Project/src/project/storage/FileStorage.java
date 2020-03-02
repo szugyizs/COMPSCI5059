@@ -1,40 +1,137 @@
 package project.storage;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException; 
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import project.storage.lists.ListOfCourses;
+import project.storage.lists.ListOfTeachers;
+
 public class FileStorage extends Storage
 {
-	
-	public FileStorage(final String path)
-	{
-		
+
+	//TODO - comment this class
+	//TODO - review functionality
+	String path;
+	String temp = "{'name':'Jon Snow','age':22,'student':{'id':'Jon_Snow_22','subjects':['Maths','Science']}}";
+
+	public FileStorage(final String path) {
+		this.path = path;
 	}
 
 	@Override
 	public boolean isAvailable() 
 	{
+
+		//error checking
 		return false;
 	}
 
 	@Override
 	public boolean reload() 
 	{
+		if (isAvailable()) 
+		{
+			save();
+			load();
+		}
+		
 		return false;
 	}
 
 	@Override
 	public void load() 
 	{	
+		if (isAvailable()) 
+		{
+			setListOfTeachers(null);
+			setListOfCourses(null);
+		}
 	}
 
 	@Override
 	public boolean save() 
 	{
+		if (isAvailable()) 
+		{
+			
+		}
 		return false;
 	}
+
+
+
+	public String loadLists(ListOfCourses courseList, ListOfTeachers teacherList) { 
+		return "";
+	}
+	
+	public void reload(ListOfCourses courseList, ListOfTeachers teacherList) {
+		saveLists(courseList, teacherList);
+		loadLists(courseList, teacherList);
+	}
+	
+	public String saveLists(ListOfCourses courseList, ListOfTeachers teacherList) {
+		path = "lib/out.json";
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        try (FileWriter writer = new FileWriter(path)) {
+    		gson.toJson(courseList, writer);
+    		gson.toJson(teacherList, writer);
+        }
+        catch (IOException e) {
+        	e.printStackTrace();
+			return "Error saving";
+        }
+
+		return "Success Saving!";
+	}
+	
+	public String saveAllToFile() {
+		path = "lib/out.json";
+		
+		try (FileWriter writer = new FileWriter(path)) {
+			writer.write(temp);
+			writer.flush();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			return "Error saving";
+		}
+		
+		return "Success Saving!";
+	}
+
+	public String readAllToString() {
+
+    	String json = "";
+        try (BufferedReader reader = new BufferedReader(new FileReader(path)))
+        {
+        	try {
+        	    StringBuilder builder = new StringBuilder();
+        	    String line = reader.readLine();
+
+        	    while (line != null) {
+        	    	builder.append(line);
+        	        line = reader.readLine();
+        	    }
+        	    json = builder.toString().replaceAll("\\s+","");
+        	} finally {
+        	    reader.close();
+        	}
+        }
+        catch (FileNotFoundException e) { e.printStackTrace(); }
+        catch (IOException e) { e.printStackTrace(); }
+        
+		return json;
+	}
+	
 	
 }

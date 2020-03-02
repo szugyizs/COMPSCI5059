@@ -8,7 +8,9 @@ import project.requests.course.Course;
 
 public class ListOfCourses 
 {
-	
+
+	//TODO - comment this class
+	//TODO - review functionality
 	private LinkedList<Course> courses;
 	
 	public ListOfCourses(final LinkedList<Course> courses)
