@@ -12,9 +12,20 @@ public class AdministratorController extends Controller
 	}
 	
 	@Override
-	public boolean processCommand(final String... args)
+	public void printHelpMessages()
+	{
+	}
+	
+	@Override
+	public boolean processCommand(final String command, final String... args)
 	{
 		return false;
+	}
+
+	@Override
+	public void logout() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

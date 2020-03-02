@@ -1,5 +1,7 @@
 package project.requests;
 
+import java.io.PrintStream;
+
 public class TeachingRequest extends Request
 {
 
@@ -51,6 +53,19 @@ public class TeachingRequest extends Request
 	public void setCourseRequirement(final CourseRequirement courseRequirement)
 	{
 		this.courseRequirement = courseRequirement;
+	}
+	
+	@Override
+	public void printRequest(final PrintStream printStream)
+	{
+		super.printRequest(printStream);
+		courseRequirement.printCourseRequirement(printStream);
+	}
+	
+	@Override
+	public String toString()
+	{
+		return String.format("Status: %s; Course Requirements: %s", courseRequirement.toString());
 	}
 
 }

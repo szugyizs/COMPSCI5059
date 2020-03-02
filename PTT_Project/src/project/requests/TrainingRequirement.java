@@ -1,5 +1,7 @@
 package project.requests;
 
+import java.io.PrintStream;
+
 import project.requests.course.Qualifications;
 
 public class TrainingRequirement
@@ -36,6 +38,12 @@ public class TrainingRequirement
 	public void setQualifications(final Qualifications qualifications)
 	{
 		this.qualifications = qualifications;
+	}
+	
+	public void printTrainingRequirement(final PrintStream printStream)
+	{
+		printStream.println("Required Qualifications:");
+		qualifications.printSkills(printStream);
 	}
 
 	@Override

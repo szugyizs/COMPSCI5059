@@ -1,5 +1,7 @@
 package project.requests;
 
+import java.io.PrintStream;
+
 public abstract class Request 
 {
 	
@@ -12,7 +14,7 @@ public abstract class Request
 
 	public RequestStatusType getRequestStatus()
 	{
-		return requestStatus;
+		return this.requestStatus;
 	}
 	
 	/**
@@ -30,7 +32,7 @@ public abstract class Request
 	 */
 	public void acceptRequest()
 	{
-		requestStatus = RequestStatusType.ACCEPTED;
+		this.requestStatus = RequestStatusType.ACCEPTED;
 	}
 	
 	/**
@@ -39,6 +41,16 @@ public abstract class Request
 	public void denyRequest()
 	{
 		requestStatus = RequestStatusType.DENIED;
+	}
+	
+	/**
+	 * Called to print the status of the request to the print stream.
+	 * 
+	 * @param printStream The PrintStream to which the print should occur.
+	 */
+	public void printRequest(final PrintStream printStream)
+	{
+		printStream.println(String.format("Request Status: %s", this.requestStatus.getName()));
 	}
 	
 	@Override

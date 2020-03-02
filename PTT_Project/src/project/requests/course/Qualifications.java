@@ -1,5 +1,6 @@
 package project.requests.course;
 
+import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -304,6 +305,13 @@ public class Qualifications
 			return false;
 		}
 		return true;
+	}
+	
+	public void printSkills(final PrintStream printStream)
+	{
+		for (final SkillType skillType : skills.keySet()) {
+			printStream.println(String.format("%s: %d", skillType.getName(), this.skills.get(skillType)));
+		}
 	}
 
 	@Override

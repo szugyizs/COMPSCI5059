@@ -1,5 +1,7 @@
 package project.requests;
 
+import java.io.PrintStream;
+
 import project.requests.course.ContactType;
 import project.requests.course.Qualifications;
 
@@ -93,6 +95,15 @@ public class CourseRequirement
 		this.requiredStaffQualifications = requiredStaffQualifications;
 	}
 	
+	public void printCourseRequirement(final PrintStream printStream)
+	{
+		printStream.println(String.format("Contact Type: %s\nNo. of Students: %d\nNo. of Staff: %d\nNo. Contact Hours: %d", 
+				contactType.getName(), numberOfStudents, numberOfStaff, contactHours));
+		printStream.println("Required Staff Qualifications:");
+		requiredStaffQualifications.printSkills(printStream);
+	}
+	
+	@Override
 	public String toString()
 	{
 		

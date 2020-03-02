@@ -1,15 +1,27 @@
 package project.controllers;
 
+import java.io.PrintStream;
+
 import project.storage.Storage;
+import project.storage.lists.ListOfCourses;
+import project.storage.lists.ListOfTeachers;
 
 public abstract class Controller
 {
 	
-	protected Storage storage;
+	private Storage storage;
+	
+	private PrintStream printStream;
+	
+	private ListOfTeachers listOfTeachers;
+	private ListOfCourses listOfCourses;
 	
 	protected Controller(final Storage storage)
 	{
 		this.storage = storage;
+		
+		this.listOfTeachers = storage.getListOfTeachers();
+		this.listOfCourses = storage.getListOfCourses();
 	}
 	
 	public Storage getStorage()
@@ -17,11 +29,25 @@ public abstract class Controller
 		return storage;
 	}
 	
-	public void setStorage(final Storage storage)
+	public PrintStream getPrintStream()
 	{
-		this.storage = storage;
+		return printStream;
 	}
 	
-	public abstract boolean processCommand(final String... args);
+	public ListOfTeachers getListOfTeachers()
+	{
+		return this.listOfTeachers;
+	}
+	
+	public ListOfCourses getListOfCourses()
+	{
+		return this.listOfCourses;
+	}
+	
+	public abstract void printHelpMessages();
+	
+	public abstract boolean processCommand(final String command, final String... args);
 
+	public abstract void logout();
+	
 }

@@ -1,5 +1,7 @@
 package project.requests.course;
 
+import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -54,9 +56,16 @@ public class Course
 	 */
 	public Course(final String courseID, final String name, final String description)
 	{
-		this( courseID, name, description,
-				new HashMap<ContactType, TeachingRequest>(),
-				new HashMap<ContactType, List<Teacher>>());
+		this.courseID = courseID;
+		this.name = name;
+		this.description = description;
+		
+		this.teachingStaffRequirementsRequests = new HashMap<ContactType, TeachingRequest>();
+		
+		this.teachingStaff = new HashMap<ContactType, List<Teacher>>();
+		this.teachingStaff.put(ContactType.LAB, new ArrayList<Teacher>());
+		this.teachingStaff.put(ContactType.TUTORIAL, new ArrayList<Teacher>());
+		this.teachingStaff.put(ContactType.LECTURE, new ArrayList<Teacher>());
 	}
 	
 	/**
@@ -206,6 +215,30 @@ public class Course
 			this.teachingStaff.get(contactType).clear();
 		}
 		return true;
+	}
+	
+	/**
+	 * Checks whether or not the course has a ContactType TeachingRequest.
+	 * 
+	 * @param contactType The ContactType being checked.
+	 * @return True if the ContactType TeachingRequest exists, false otherwise.
+	 */
+	public boolean hasContactTypeTeachingRequest(final ContactType contactType)
+	{
+		return teachingStaffRequirementsRequests.containsKey(contactType);
+	}
+	
+	/**
+	 * Checks whether or not the course has a ContactType with the provided RequestStatusType.
+	 * 
+	 * @param contactType The ContactType that is being queried.
+	 * @param requestStatusType The state of the contactType TeachingRequest.
+	 * @return True if the course possesses the contactType with the state requestStatusType.
+	 */
+	public boolean hasContactTypeTeachingRequest(final ContactType contactType, final RequestStatusType requestStatusType)
+	{
+		return teachingStaffRequirementsRequests.containsKey(contactType)
+				&& teachingStaffRequirementsRequests.get(contactType).getRequestStatus() == requestStatusType;
 	}
 
 	/**
@@ -448,5 +481,64 @@ public class Course
 		final Qualifications missingQualifications = teacher.getMissingSkills(requiredQualifications);
 		return missingQualifications != null && missingQualifications.isEmpty();
 	}
-
+	
+	/**
+	 * Checks whether or not the requirements of the course have been fulfilled.
+	 * 
+	 * @return True if the course requirements have been fulfilled, false otherwise.
+	 */
+	public boolean areRequirementsFulfilled()
+	{
+		for (final ContactType contactType : ContactType.values()) {
+			if (!checkTeachersMeetRequirements(contactType, this.teachingStaff.get(contactType))) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public void printCourse(final PrintStream printStream)
+	{
+		printStream.println(String.format("Course ID: %s\nName: %s\nDescription: %s\nFulfilled: %b", 
+				this.courseID, this.name, this.description, areRequirementsFulfilled()));
+	}
+	
+	public void printTeachingRequests(final PrintStream printStream)
+	{
+		if (this.teachingStaffRequirementsRequests.isEmpty()) {
+			printStream.println("There are no teaching requests / course requirements for this course");
+		}
+		for (final ContactType contactType : teachingStaffRequirementsRequests.keySet()) {
+			printTeachingRequests(printStream, contactType);
+			printStream.println("\n----------------------------------------\n");
+		}
+	}
+	
+	public void printTeachingRequests(final PrintStream printStream, final RequestStatusType requestStatusType)
+	{
+		for (final ContactType contactType : this.teachingStaffRequirementsRequests.keySet()) {
+			if (this.teachingStaffRequirementsRequests.get(contactType).getRequestStatus() == requestStatusType) {
+				printTeachingRequests(printStream, contactType);
+			}
+		}
+	}
+	
+	public void printTeachingRequests(final PrintStream printStream, final ContactType contactType)
+	{
+		if (!this.teachingStaffRequirementsRequests.containsKey(contactType)) {
+			printStream.println(String.format("There is no teaching reqest / course requirement for %s", contactType.getName()));
+			return;
+		}
+		this.teachingStaffRequirementsRequests.get(contactType).printRequest(printStream);
+	}
+	
+	public void printUnfulfillments(final PrintStream printStream)
+	{
+		for (final ContactType contactType : this.teachingStaffRequirementsRequests.keySet()) {
+			if (!checkTeachersMeetRequirements(contactType, this.teachingStaff.get(contactType))) {
+				printStream.println(String.format("Allocated teachers: %d", this.teachingStaff.get(contactType).size()));
+				this.teachingStaffRequirementsRequests.get(contactType).printRequest(printStream);
+			}
+		}
+	}
 }

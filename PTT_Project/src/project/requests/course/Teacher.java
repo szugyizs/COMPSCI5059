@@ -1,5 +1,6 @@
 package project.requests.course;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +44,22 @@ public class Teacher
 		this.trainingRequests = new ArrayList<TrainingRequest>();
 	}
 
+	/**
+	 * Constructor instantiates the Teacher instance with basic values. The trainingRequests array will be 
+	 * instantiated to an empty array, implicitly.
+	 * 
+	 * @param guid The unique GUID of the teacher; a means of identification.
+	 * @param forename The first name of the teacher.
+	 * @param surname The last name of the teacher.
+	 * @param qualifications The teachers qualifications.
+	 */
+	public Teacher(final String guid, String forename, final String surname,
+			final Qualifications qualifications)
+	{
+		this(guid, forename, surname, qualifications, new ArrayList<TrainingRequest>());
+	}
+
+	
 	/**
 	 * Constructor instantiates the Teacher instance with basic values. The qualifications
 	 * will be instantiated with no skills. Moreover, the trainingRequests array will be 
@@ -283,6 +300,17 @@ public class Teacher
 	}
 	
 	/**
+	 * Checks whether or not the teacher has any training requests with a given state.
+	 * 
+	 * @param requestStatusType Defines the TrainingRequest states that are being searched for.
+	 * @return True if there are TrainingRequests with the state requestStatusType, false otherwise.
+	 */
+	public boolean hasTrainingRequestsWithState(final RequestStatusType requestStatusType) 
+	{
+		return !getTrainingRequests(requestStatusType).isEmpty();
+	}
+	
+	/**
 	 * Fundamentally, this function is responsible for generating the next TrainingRequest id.
 	 * This is done in order to differentiate between the various training requirements requests
 	 * submitted for the teacher.
@@ -292,6 +320,37 @@ public class Teacher
 	private int getNextTrainingRequestId()
 	{
 		return this.trainingRequests.size();
+	}
+	
+	public void printTeacher(final PrintStream printStream)
+	{
+		printStream.println(String.format("Teacher GUID: %s\nForename: %s\nSurname: %s", guid, forename, surname));
+		printStream.println("Qualifications:");
+		qualifications.printSkills(printStream);
+	}
+	
+	public void printTrainingRequests(final PrintStream printStream)
+	{
+		for (final RequestStatusType requestStatusType : RequestStatusType.values()) {
+			printTrainingRequests(printStream, requestStatusType);
+		}
+	}
+	
+	public void printTrainingRequests(final PrintStream printStream, final RequestStatusType requestStatusType)
+	{
+		
+		// Get the list of training requests for a request status type.
+		List<TrainingRequest> trainingRequests = getTrainingRequests(requestStatusType);
+		if (trainingRequests.isEmpty()) {
+			printStream.println(String.format("There are no %s training requests", requestStatusType.getName()));
+			return;
+		}
+		
+		// Print the training requests with that type.
+		for (final TrainingRequest trainingRequest : trainingRequests) {
+			trainingRequest.printRequest(printStream);
+			printStream.println("\n----------------------------------------\n");
+		}
 	}
 
 	@Override

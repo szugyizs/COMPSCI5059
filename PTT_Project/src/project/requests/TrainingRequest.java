@@ -1,5 +1,7 @@
 package project.requests;
 
+import java.io.PrintStream;
+
 public class TrainingRequest extends Request
 {
 	
@@ -61,6 +63,14 @@ public class TrainingRequest extends Request
 	public void setTrainingRequirement(final TrainingRequirement trainingRequirement)
 	{
 		this.trainingRequirement = trainingRequirement;
+	}
+	
+	@Override
+	public void printRequest(final PrintStream printStream)
+	{
+		printStream.println(String.format("Training Request ID: %d", this.id));
+		super.printRequest(printStream);
+		this.trainingRequirement.printTrainingRequirement(printStream);
 	}
 	
 }
