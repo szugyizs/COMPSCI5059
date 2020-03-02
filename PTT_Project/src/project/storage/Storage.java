@@ -38,4 +38,5 @@ public abstract class Storage
 	
 	public abstract void save();
 	
+	public abstract void isAvailable();
 }

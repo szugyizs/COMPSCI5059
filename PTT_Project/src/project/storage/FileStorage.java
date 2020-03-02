@@ -17,7 +17,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import project.requests.TrainingRequest;
+import project.requests.TrainingRequirement;
 import project.requests.course.Course;
+import project.requests.course.Qualifications;
+import project.requests.course.SkillType;
 import project.requests.course.Teacher;
 import project.storage.lists.ListOfCourses;
 import project.storage.lists.ListOfTeachers;
@@ -69,7 +73,7 @@ public class FileStorage extends Storage
 	}
 
 	@Override
-	public void save() //TODO do
+	public void save() //TODO one file not two
 	{
 		path = "lib/dataCO.json";
 		
@@ -94,6 +98,36 @@ public class FileStorage extends Storage
         } catch (IOException e) {
             e.printStackTrace();
         }
+	}
+
+	@Override
+	public void isAvailable() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void mockTeacher() {
+		LinkedList<Teacher> mock = new LinkedList<Teacher>();
+		
+		for (int i = 0; i<5; i++) {
+			Qualifications qualifications = new Qualifications();
+			qualifications.setSkill(SkillType.ALGORITHMS_AND_DATA_STRUCTURES, (short) 2);
+			qualifications.setSkill(SkillType.BIG_DATA, (short) 3);
+			qualifications.setSkill(SkillType.CYBER_SECURITY, (short) 2);
+			
+			TrainingRequirement trainingRequirement = new TrainingRequirement(qualifications);
+			TrainingRequest trainingRequest = new TrainingRequest(0, trainingRequirement);
+			
+			Teacher teacher = new Teacher("111"+i, "Bob"+i, "Bob"+i, qualifications);
+			mock.add(teacher);
+		}
+
+		Gson gson = new Gson();
+		String jsonString = gson.toJson(mock);
+		System.out.println(jsonString);
+		
+		listOfTeachers = new ListOfTeachers(mock);
+		
 	}
 	
 }

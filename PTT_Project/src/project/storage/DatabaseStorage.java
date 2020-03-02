@@ -20,5 +20,12 @@ public class DatabaseStorage extends Storage
 	{
 		
 	}
+
+	@Override
+	public void isAvailable()
+	{
+		
+		
+	}
 	
 }
