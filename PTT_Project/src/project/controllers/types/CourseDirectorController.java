@@ -46,7 +46,7 @@ public class CourseDirectorController extends Controller
 	public boolean processCommand(final String command, final String... args) //TODO
 	{
 		String[] commandArgs;
-		do {
+//		do {
 			// Splits the command for further processing.
 			commandArgs = command.split(" ");
 				
@@ -65,7 +65,7 @@ public class CourseDirectorController extends Controller
 			if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("show")) {
 				printStream.println(course.toString());
 			}
-		} while (!(command.equalsIgnoreCase("quit")));
+//		} while (!(command.equalsIgnoreCase("quit")));
 		
 		return false;
 	}

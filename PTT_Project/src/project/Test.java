@@ -9,7 +9,7 @@ import project.storage.FileStorage;
 import project.storage.Storage;
 
 public class Test { // TODO ensure test class tests all user stories 
-	private Storage storage = new FileStorage("");
+	private FileStorage storage = new FileStorage("");
 	
     public void testAdminCommands() { // TODO
     	AdministratorController adminController = new AdministratorController(storage);

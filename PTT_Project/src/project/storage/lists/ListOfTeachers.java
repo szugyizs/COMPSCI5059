@@ -111,4 +111,16 @@ public class ListOfTeachers
 			printStream.println("\n----------------------------------------\n");
 		}
 	}
+	
+	public void printTeachers(final PrintStream printStream)
+	{
+		if( this.teachers.isEmpty() == true) {
+			printStream.println("\nNo teachers in system. Polulate teachers.");
+			printStream.println("----------------------------------------\n");
+		}
+		for (final Teacher teacher : this.teachers) {
+			teacher.printTeacher(printStream);
+			printStream.println("\n----------------------------------------\n");
+		}
+	}
 }

@@ -55,17 +55,17 @@ public class FileStorage extends Storage
             e.printStackTrace();
         }
 	
-		path = "lib/dataT.json";
-		gson = new Gson();
-		
-		Type teacherType = new TypeToken<HashMap<String, LinkedList<Teacher>>>(){}.getType();
-        try (FileReader reader = new FileReader(path)) {
-			HashMap<String, LinkedList<Teacher>> teacher = gson.fromJson(reader, teacherType);
-			LinkedList<Teacher> listTeachers = teacher.get("teachers");
-			listOfTeachers = new ListOfTeachers(listTeachers);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//		path = "lib/dataT.json";
+//		gson = new Gson();
+//		
+//		Type teacherType = new TypeToken<HashMap<String, LinkedList<Teacher>>>(){}.getType();
+//        try (FileReader reader = new FileReader(path)) {
+//			HashMap<String, LinkedList<Teacher>> teacher = gson.fromJson(reader, teacherType);
+//			LinkedList<Teacher> listTeachers = teacher.get("teachers");
+//			listOfTeachers = new ListOfTeachers(listTeachers);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 	}
 
 	@Override

@@ -310,7 +310,7 @@ public class Qualifications
 	public void printSkills(final PrintStream printStream)
 	{
 		for (final SkillType skillType : skills.keySet()) {
-			printStream.println(String.format("%s: %d", skillType.getName(), this.skills.get(skillType)));
+			printStream.print(String.format("%s: %d /", skillType.getName(), this.skills.get(skillType)));
 		}
 	}
 

@@ -20,15 +20,15 @@ import project.storage.lists.ListOfTeachers;
 public class AdministratorController extends Controller
 {
 
-	//TODO - comment this class
-	//TODO - review functionality
+	// TODO - comment this class
+	// TODO - review functionality
 	private PrintStream printStream;
 	private Scanner scanner;
 	private FileStorage storage;
 
 	private ListOfTeachers listOfTeachers;
 	private ListOfCourses listOfCourses;
-	
+
 	public AdministratorController(final FileStorage storage)
 	{
 		super(storage);
@@ -37,66 +37,72 @@ public class AdministratorController extends Controller
 		this.listOfTeachers = storage.getListOfTeachers();
 		this.listOfCourses = storage.getListOfCourses();
 	}
-	
+
 	@Override
-	public void printHelpMessages() //TODO review
+	public void printHelpMessages() // TODO review
 	{
-		//Administrator Specific help commands
+		// Administrator Specific help commands
 		printStream.println("\nAdministrator commands:");
-		printStream.println("get teaching-requests - get list of teaching requests");
-		printStream.println("get teachers - get list of teachers and their skills");
-		printStream.println("make training-request <guid status id skillType skillLevel> - create a training request with the");
+		printStream.println("get-tereq:			get list of teaching requests");
+		printStream.println("get-teachers:		get list of teachers and their skills");
+		printStream.println(
+				"make training-request <guid status id skillType skillLevel> - create a training request with the");
 		printStream.println("update-skill <guid skillType skillLevel> - updates the skill level of a teacher");
-		
+
 	}
-	
+
 	@Override
 	public boolean processCommand(final String command, final String... args)
 	{
 		String[] commandArgs;
-		do {
+//		do {
 			// Splits the command for further processing.
 			commandArgs = command.split(" ");
-				
-			if (command.equalsIgnoreCase("logout")) { //TODO do
-				logout();
+
+//			if (command.equalsIgnoreCase("logout")) { // TODO do
+//				logout();
+//				return true;
+//			}
+
+			if (command.equalsIgnoreCase("get-teachers")) {
+				this.listOfTeachers.printTeachers(printStream);
+//				printStream.println(getListOfTeachers().toString()); //TODO do
 				return true;
 			}
-			
-			if(command.equalsIgnoreCase("get-teachers")) {
-//				this.listOfTeachers.getTeachers()
-				//printStream.println(getListOfTeachers().toString()); //TODO do
+
+			if (command.equalsIgnoreCase("get-teachingRequests")) {
+
+				// printStream.println(getTeachingRequests()); //TODO do
 				return true;
 			}
-			
-			if(command.equalsIgnoreCase("get-teachingRequests")) {
-				//printStream.println(getTeachingRequests()); //TODO do
-				return true;
-			}
-			
+
 			if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("make")) {
 				Teacher t = listOfTeachers.getTeacher(args[2]);
-				HashMap<SkillType, Short> sk = new HashMap<SkillType, Short>();//args[5], Short.parseShort(args[6])); //TODO do
+				HashMap<SkillType, Short> sk = new HashMap<SkillType, Short>();// args[5], Short.parseShort(args[6]));
+																				// //TODO do
 				Qualifications q = new Qualifications(sk);
 				TrainingRequirement tr = new TrainingRequirement(q);
 				t.addTrainingRequest(tr);
 			}
-			
+
 			if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("update-skill")) {
 				Teacher t = listOfTeachers.getTeacher(args[1]);
-				//t.setSkill(args[2], Short.parseShort(args[3])); //TODO do
+				// t.setSkill(args[2], Short.parseShort(args[3])); //TODO do
 			}
-		} while (!(command.equalsIgnoreCase("quit")));
-		
+			
+			
+			
+//		} while (!(command.equalsIgnoreCase("quit")));
+
 		return false;
 	}
 
 	@Override
-	public void logout() //TODO do
+	public void logout() // TODO do
 	{
 		// TODO:
-		//storage.save();
-		//destroy self?
+		// storage.save();
+		// destroy self?
 	}
 
 	public ListOfCourses getListOfCourses()
@@ -108,15 +114,15 @@ public class AdministratorController extends Controller
 	{
 		return this.listOfTeachers;
 	}
-	
-	public String getTeachingRequests() //TODO do
+
+	public String getTeachingRequests() // TODO do
 	{
 		String out = "";
 		LinkedList<Course> requests = getListOfCourses().getCourses();
 		ListIterator listIterator = requests.listIterator();
-		while(listIterator.hasNext()){ 
-			//out.concat(listIterator.next().getTeachingRequests()); 
-	    } 
+		while (listIterator.hasNext()) {
+			// out.concat(listIterator.next().getTeachingRequests());
+		}
 		return out;
 	}
 }
