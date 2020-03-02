@@ -3,34 +3,11 @@ package project.requests;
 public abstract class Request 
 {
 	
-	private int id; // The request id relative to the type of request and the object which it relates to.
 	private RequestStatusType requestStatus; // The status of the request.
 	
-	protected Request(final RequestStatusType requestStatus, final int id)
+	protected Request(final RequestStatusType requestStatus)
 	{
 		this.requestStatus = requestStatus;
-		this.id = id; 
-	}
-	
-	/**
-	 * Getter for the Request id, note that this is a relative id to the object on which it was invoked.
-	 * 
-	 * @param id
-	 */
-	protected Request(final int id)
-	{	
-		this(RequestStatusType.PENDING, id);
-	}
-
-
-	/**
-	 * Getter for the request id.
-	 * 
-	 * @return - integer value for the request id.
-	 */
-	public int getId()
-	{
-		return id;
 	}
 
 	public RequestStatusType getRequestStatus()

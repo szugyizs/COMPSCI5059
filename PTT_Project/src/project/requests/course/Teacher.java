@@ -1,9 +1,12 @@
 package project.requests.course;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import project.requests.RequestStatusType;
 import project.requests.TrainingRequest;
+import project.requests.TrainingRequirement;
 
 public class Teacher
 {
@@ -18,35 +21,40 @@ public class Teacher
 	private List<TrainingRequest> trainingRequests; // The training requests associated with the teacher.
 
 	/**
-	 * Constructor explicitly instantiates the Teacher instance.
+	 * Constructor explicitly instantiates the teacher instance. This constructor permits the
+	 * definition of all teacher attributes.
 	 * 
-	 * @param guid           The GUID of the teacher
-	 * @param forename       The forename of the teacher
-	 * @param surname        The surname of the teacher
-	 * @param qualifications The qualifications of the teacher
-	 * 
+	 * @param guid The unique GUID of the teacher; a means of identification.
+	 * @param forename The first name of the teacher.
+	 * @param surname The last name of the teacher.
+	 * @param qualifications The teachers qualifications.
+	 * @param trainingRequests the training requirements requests submitted for the teacher.
 	 */
-	public Teacher(final String guid, final String forename, final String surname, final Qualifications qualifications)
+	public Teacher(final String guid, final String forename, final String surname, 
+			final Qualifications qualifications, final List<TrainingRequest> trainingRequests)
 	{
 		this.guid = guid;
+		
 		this.forename = forename;
 		this.surname = surname;
 
 		this.qualifications = qualifications;
+		
+		this.trainingRequests = new ArrayList<TrainingRequest>();
 	}
 
 	/**
-	 * Constructor explicitly instantiates the Teacher instance. This teacher will
-	 * does not have any initial qualifications.
+	 * Constructor instantiates the Teacher instance with basic values. The qualifications
+	 * will be instantiated with no skills. Moreover, the trainingRequests array will be 
+	 * instantiated to an empty array, implicitly.
 	 * 
-	 * @param guid     The GUID of the teacher
-	 * @param forename The forename of the teacher
-	 * @param surname  The surname of the teacher
-	 * 
+	 * @param guid The unique GUID of the teacher; a means of identification.
+	 * @param forename The first name of the teacher.
+	 * @param surname The last name of the teacher.
 	 */
 	public Teacher(final String guid, String forename, final String surname)
 	{
-		this(guid, forename, surname, new Qualifications());
+		this(guid, forename, surname, new Qualifications(), new ArrayList<TrainingRequest>());
 	}
 
 	/**
@@ -60,9 +68,9 @@ public class Teacher
 	}
 
 	/**
-	 * Setter for the GUI.
+	 * Setter for the GUID.
 	 * 
-	 * @param The GUID [String] of the teacher.
+	 * @param The GUID of the teacher.
 	 */
 	public void setGUID(final String guid)
 	{
@@ -72,7 +80,7 @@ public class Teacher
 	/**
 	 * Getter for the forename.
 	 * 
-	 * @return The forename [String] of the teacher.
+	 * @return The forename of the teacher.
 	 */
 	public String getForename()
 	{
@@ -82,7 +90,7 @@ public class Teacher
 	/**
 	 * Setter for the forename.
 	 * 
-	 * @return The forename [String] of the teacher
+	 * @return The forename of the teacher
 	 */
 	public void setForename(final String forename)
 	{
@@ -92,7 +100,7 @@ public class Teacher
 	/**
 	 * Getter for the surname.
 	 * 
-	 * @return The surname [String] of the teacher
+	 * @return The surname of the teacher
 	 */
 	public String getSurname()
 	{
@@ -102,7 +110,7 @@ public class Teacher
 	/**
 	 * Setter for the surname.
 	 * 
-	 * @return The surname [String] of the teacher.
+	 * @return The surname of the teacher.
 	 */
 	public void setSurname(final String surname)
 	{
@@ -112,17 +120,17 @@ public class Teacher
 	/**
 	 * Getter for the qualifications.
 	 * 
-	 * @return The qualifications [Qualifications] of the teacher.
+	 * @return The qualifications instance of the teacher.
 	 */
 	public Qualifications getQualifications()
 	{
-		return qualifications;
+		return this.qualifications;
 	}
 
 	/**
 	 * Setter for the qualifications. Overwrites possible existing qualifications.
 	 * 
-	 * @return The qualifications [Qualifications] of the teacher.
+	 * @return The qualifications (skills) of the teacher.
 	 */
 	public void setQualifications(final Qualifications qualifications)
 	{
@@ -130,13 +138,13 @@ public class Teacher
 	}
 	
 	/**
-	 * Getter for the skill map, derrived from the qualifications.
+	 * Getter for the raw SkillType map defined within the teachers qualifications instance.
 	 * 
-	 * @return The skill map [Map<Skill, Short>] of the teacher.
+	 * @return The SkillType map of the teacher that's held within qualifications.
 	 */
 	public Map<SkillType, Short> getSkills()
 	{
-		return qualifications.getSkills();
+		return this.qualifications.getSkills();
 	}
 
 	/**
@@ -152,10 +160,11 @@ public class Teacher
 	}
 
 	/**
-	 * Checks if the current teacher fulfills the required qualifications.
+	 * Checks if the current teacher fulfils the required qualifications.
 	 * 
-	 * @param The qualifications [Qualifications] that are needed.
-	 * @return A boolean, true if the qualifications are met.
+	 * @param The qualifications that are needed.
+	 * @return True if all the SkillType's within the qualifications instance have been
+	 * 		met by the teacher. This includes the levels.
 	 */
 	public boolean hasSkills(final Qualifications qualifications)
 	{
@@ -165,31 +174,37 @@ public class Teacher
 	/**
 	 * Checks if the current teacher has the required (single) skill.
 	 * 
-	 * TODO: not sure if this is right, no level needed here?
-	 * 
-	 * @param The skill [Skill] that is needed/wanted.
-	 * @return A boolean, true if the teacher has the skill.
+	 * @param The SkillType that is needed/wanted.
+	 * @return True if the teacher has skillType (regardless of the level), false
+	 * 		otherwise.
 	 */
 	public boolean hasSkill(final SkillType skillType)
 	{
-		return qualifications.hasSkill(skillType);
-	}
-
-	public boolean hasSkill(final SkillType skillType, final short level)
-	{
-		return qualifications.hasSkill(skillType, level);
+		return this.qualifications.hasSkill(skillType);
 	}
 
 	/**
-	 * Gets the level of a specified skill of the teacher.
+	 * Checks whether or not the teacher possesses a SkillType at a specific level.
 	 * 
-	 * @param The skill [Skill] of which the level is inquired.
-	 * @return The level [short] of the inquired skill, -1 if the skill does not
-	 *         exist.
+	 * @param skillType The SkillType that is being queried for the level and existence.
+	 * @param level The level of the SkillType.
+	 * @return True if the teacher possesses the skillType at the defined level (level).
 	 */
-	public short getSkillLevel(final SkillType skill)
+	public boolean hasSkill(final SkillType skillType, final short level)
 	{
-		return qualifications.getSkillLevel(skill);
+		return this.qualifications.hasSkill(skillType, level);
+	}
+
+	/**
+	 * Gets the level of the SkillType that the teacher possesses.
+	 * 
+	 * @param skillType The SkillType that is being queried for the level.
+	 * @return The level of the skillType parameter, or -1 if the teach does not possess
+	 * 		the skillType parameter.
+	 */
+	public short getSkillLevel(final SkillType skillType)
+	{
+		return this.qualifications.getSkillLevel(skillType);
 	}
 
 	/**
@@ -222,18 +237,61 @@ public class Teacher
 	 */
 	public boolean setSkill(final SkillType skill, final short level)
 	{
-		return qualifications.setSkill(skill, level);
+		return this.qualifications.setSkill(skill, level);
+	}
+	
+	/**
+	 * Adds a training request to the teachers trainingRequests list. Fundamentally,
+	 * this function wraps the parameter trainingRequirements in a TrainingRequest instance.
+	 * 
+	 * @param trainingRequirement The training requirement that needs to be met with a training.
+	 * @return request The instantiated training request for the requirement.
+	 */
+	public TrainingRequest addTrainingRequest(final TrainingRequirement trainingRequirement)
+	{
+		final TrainingRequest request = new TrainingRequest(getNextTrainingRequestId(), trainingRequirement);
+		this.trainingRequests.add(request);
+		return request;
 	}
 
 	/**
-	 * Get the request Id for the next request.
+	 * Returns all of the TrainingRequest instances associated with the teacher instance.
 	 * 
-	 * @return The number of current training requests, which can be used to give an
-	 *         ID to the next one.
+	 * @return A list containing the training requirements.
+	 */
+	public List<TrainingRequest> getTrainingRequests()
+	{
+		return this.trainingRequests;
+	}
+	
+	/**
+	 * Returns all of the TrainingRequests instances with a particular status that are associated
+	 * with the teacher instance.
+	 * 
+	 * @param requestStatusType The status of the requests that are required.
+	 * @return A list of TrainingRequests with the said status.
+	 */
+	public List<TrainingRequest> getTrainingRequests(final RequestStatusType requestStatusType)
+	{
+		List<TrainingRequest> statusTrainingRequests = new ArrayList<TrainingRequest>();
+		for (final TrainingRequest trainingRequest : this.trainingRequests) {
+			if (trainingRequest.getRequestStatus() == requestStatusType) {
+				statusTrainingRequests.add(trainingRequest);
+			}
+		}
+		return statusTrainingRequests;
+	}
+	
+	/**
+	 * Fundamentally, this function is responsible for generating the next TrainingRequest id.
+	 * This is done in order to differentiate between the various training requirements requests
+	 * submitted for the teacher.
+	 * 
+	 * @return The next TrainingRequest id.
 	 */
 	private int getNextTrainingRequestId()
-	{// when a new training request is added, it needs a
-		return trainingRequests.size();
+	{
+		return this.trainingRequests.size();
 	}
 
 	@Override

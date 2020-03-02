@@ -95,6 +95,16 @@ public class Qualifications
 	}
 	
 	/**
+	 * Query the skills map for whether or not it is empty.
+	 * 
+	 * @return True if there are no skills, false otherwise.
+	 */
+	public boolean isEmpty()
+	{
+		return skills.isEmpty();
+	}
+	
+	/**
 	 * Checks whether or not the invoked Qualification instance (this) contains the
 	 * SkillTypes and the corresponding skill levels as defined in the qualifications 
 	 * parameter.

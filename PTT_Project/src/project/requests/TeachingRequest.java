@@ -3,19 +3,19 @@ package project.requests;
 public class TeachingRequest extends Request
 {
 
-	private CourseRequirement courseRequirement;
+	private CourseRequirement courseRequirement; // The course requirement for which the teaching request is being submitted.
 
 	/**
 	 * Explicit constructor used to initialise an instance of the TeachingRequest.
 	 * 
-	 * @param requestStatus     - the status of the request.
-	 * @param courseRequirement - the CourseRequirement instance for which the
-	 *                          request is being made.
+	 * @param requestStatus The status of the request.
+	 * @param courseRequirement The CourseRequirement instance for which the
+	 * 		request is being made.
 	 */
-	public TeachingRequest(final RequestStatusType requestStatus, final CourseRequirement courseRequirement,
-			final int id)
+	public TeachingRequest(final RequestStatusType requestStatus,
+			final CourseRequirement courseRequirement)
 	{
-		super(requestStatus, id);
+		super(requestStatus);
 		this.courseRequirement = courseRequirement;
 	}
 
@@ -23,19 +23,19 @@ public class TeachingRequest extends Request
 	 * Implicit constructor used to initialise the instance of TeachingRequest; the
 	 * request status of the Request is set to PENDING implicitly.
 	 * 
-	 * @param courseRequirement - the instance of the CourseRequirement for which
-	 *                          the request is being made.
+	 * @param courseRequirement The instance of the CourseRequirement for which
+	 * 		the request is being made.
 	 */
-	public TeachingRequest(final CourseRequirement courseRequirement, final int id)
+	public TeachingRequest(final CourseRequirement courseRequirement)
 	{
-		this(RequestStatusType.PENDING, courseRequirement, id);
+		this(RequestStatusType.PENDING, courseRequirement);
 	}
 
 	/**
 	 * Getter for the CourseRequirement instance for which the request is being
 	 * made.
 	 * 
-	 * @return - an instance of the CourseRequirement; can return null.
+	 * @return An instance of the CourseRequirement; can return null.
 	 */
 	public CourseRequirement getCourseRequirement()
 	{
@@ -46,7 +46,7 @@ public class TeachingRequest extends Request
 	 * Setter for the CourseRequirement; should not be used. However, if used, do
 	 * not set this to null!
 	 * 
-	 * @param courseRequirement - the instance for which the request is being made.
+	 * @param courseRequirement The instance for which the request is being made.
 	 */
 	public void setCourseRequirement(final CourseRequirement courseRequirement)
 	{
