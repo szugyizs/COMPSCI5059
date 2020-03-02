@@ -5,15 +5,9 @@ public class DatabaseStorage extends Storage
 	//TODO - comment this class
 	//TODO - review functionality
 	@Override
-	public boolean isAvailable() 
+	public void reload() 
 	{
-		return false;
-	}
-
-	@Override
-	public boolean reload() 
-	{
-		return false;
+		
 	}
 
 	@Override
@@ -22,9 +16,9 @@ public class DatabaseStorage extends Storage
 	}
 
 	@Override
-	public boolean save() 
+	public void save() 
 	{
-		return false;
+		
 	}
 	
 }

@@ -4,14 +4,21 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException; 
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import project.requests.course.Course;
+import project.requests.course.Teacher;
 import project.storage.lists.ListOfCourses;
 import project.storage.lists.ListOfTeachers;
 
@@ -21,119 +28,72 @@ public class FileStorage extends Storage
 	//TODO - comment this class
 	//TODO - review functionality
 	String path;
-	String temp = "{'name':'Jon Snow','age':22,'student':{'id':'Jon_Snow_22','subjects':['Maths','Science']}}";
-
+	
 	public FileStorage(final String path) {
-		super.listOfTeachers = new ListOfTeachers();
-		super.listOfCourses = new ListOfCourses();
 		this.path = path;
 	}
 
 	@Override
-	public boolean isAvailable() //TODO do
+	public void reload()
 	{
-
-		//error checking
-		return false;
+		save();
+		load();
 	}
 
 	@Override
-	public boolean reload() //TODO do
-	{
-		if (isAvailable()) 
-		{
-			save();
-			load();
-		}
-		
-		return false;
-	}
-
-	@Override
-	public void load() //TODO do
+	public void load() //TODO in one file not two
 	{	
-		if (isAvailable()) 
-		{
-			setListOfTeachers(null);
-			setListOfCourses(null);
-		}
+		path = "lib/dataC.json";
+		Gson gson = new Gson();
+		
+		Type courseType = new TypeToken<HashMap<String, LinkedList<Course>>>(){}.getType();
+        try (FileReader reader = new FileReader(path)) {
+			HashMap<String, LinkedList<Course>> course = gson.fromJson(reader, courseType);
+			LinkedList<Course> listCourses = course.get("courses");
+			listOfCourses = new ListOfCourses(listCourses);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	
+		path = "lib/dataT.json";
+		gson = new Gson();
+		
+		Type teacherType = new TypeToken<HashMap<String, LinkedList<Teacher>>>(){}.getType();
+        try (FileReader reader = new FileReader(path)) {
+			HashMap<String, LinkedList<Teacher>> teacher = gson.fromJson(reader, teacherType);
+			LinkedList<Teacher> listTeachers = teacher.get("teachers");
+			listOfTeachers = new ListOfTeachers(listTeachers);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 
 	@Override
-	public boolean save() //TODO do
+	public void save() //TODO do
 	{
-		if (isAvailable()) 
-		{
-			
-		}
-		return false;
-	}
-
-
-
-	public String loadLists(ListOfCourses courseList, ListOfTeachers teacherList) { //TODO review if necessary
-		return "";
-	}
-	
-	public void reloadLists(ListOfCourses courseList, ListOfTeachers teacherList) { //TODO review if necessary
-		saveLists(courseList, teacherList);
-		loadLists(courseList, teacherList);
-	}
-	
-	public String saveLists(ListOfCourses courseList, ListOfTeachers teacherList) { //TODO review if necessary
-		path = "lib/out.json";
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-        try (FileWriter writer = new FileWriter(path)) {
-    		gson.toJson(courseList, writer);
-    		gson.toJson(teacherList, writer);
-        }
-        catch (IOException e) {
-        	e.printStackTrace();
-			return "Error saving";
-        }
-
-		return "Success Saving!";
-	}
-	
-	public String saveAllToFile() { //TODO review if necessary
-		path = "lib/out.json";
+		path = "lib/dataCO.json";
 		
-		try (FileWriter writer = new FileWriter(path)) {
-			writer.write(temp);
-			writer.flush();
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-			return "Error saving";
-		}
-		
-		return "Success Saving!";
-	}
-
-	public String readAllToString() { //TODO review if necessary
-
-    	String json = "";
-        try (BufferedReader reader = new BufferedReader(new FileReader(path)))
-        {
-        	try {
-        	    StringBuilder builder = new StringBuilder();
-        	    String line = reader.readLine();
-
-        	    while (line != null) {
-        	    	builder.append(line);
-        	        line = reader.readLine();
-        	    }
-        	    json = builder.toString().replaceAll("\\s+","");
-        	} finally {
-        	    reader.close();
-        	}
-        }
-        catch (FileNotFoundException e) { e.printStackTrace(); }
-        catch (IOException e) { e.printStackTrace(); }
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
-		return json;
+        String json = gson.toJson(listOfCourses);
+        
+        try (FileWriter writer = new FileWriter(path)) {
+            gson.toJson(listOfCourses, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+		path = "lib/dataTO.json";
+		
+         gson = new GsonBuilder().setPrettyPrinting().create();
+        
+        json = gson.toJson(listOfTeachers);
+        
+        try (FileWriter writer = new FileWriter(path)) {
+            gson.toJson(listOfTeachers, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
-	
 	
 }
