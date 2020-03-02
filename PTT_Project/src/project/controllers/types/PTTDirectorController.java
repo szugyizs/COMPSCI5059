@@ -38,13 +38,15 @@ public class PTTDirectorController extends Controller
 		return false;
 	}
 	
-	
-
 	public void logout() //TODO
 	{
 		//storage.save();
 		//destroy self?
-		
 	}
 	
+	public void getTeachingRequests() {}
+	public void getTrainingRequests() {}
+	public void setStatus(String type) {
+		
+	}
 }

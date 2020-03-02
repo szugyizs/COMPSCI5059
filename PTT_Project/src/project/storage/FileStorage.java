@@ -28,7 +28,7 @@ public class FileStorage extends Storage
 	}
 
 	@Override
-	public boolean isAvailable() 
+	public boolean isAvailable() //TODO do
 	{
 
 		//error checking
@@ -36,7 +36,7 @@ public class FileStorage extends Storage
 	}
 
 	@Override
-	public boolean reload() 
+	public boolean reload() //TODO do
 	{
 		if (isAvailable()) 
 		{
@@ -48,7 +48,7 @@ public class FileStorage extends Storage
 	}
 
 	@Override
-	public void load() 
+	public void load() //TODO do
 	{	
 		if (isAvailable()) 
 		{
@@ -58,7 +58,7 @@ public class FileStorage extends Storage
 	}
 
 	@Override
-	public boolean save() 
+	public boolean save() //TODO do
 	{
 		if (isAvailable()) 
 		{
@@ -69,16 +69,16 @@ public class FileStorage extends Storage
 
 
 
-	public String loadLists(ListOfCourses courseList, ListOfTeachers teacherList) { 
+	public String loadLists(ListOfCourses courseList, ListOfTeachers teacherList) { //TODO review if necessary
 		return "";
 	}
 	
-	public void reload(ListOfCourses courseList, ListOfTeachers teacherList) {
+	public void reloadLists(ListOfCourses courseList, ListOfTeachers teacherList) { //TODO review if necessary
 		saveLists(courseList, teacherList);
 		loadLists(courseList, teacherList);
 	}
 	
-	public String saveLists(ListOfCourses courseList, ListOfTeachers teacherList) {
+	public String saveLists(ListOfCourses courseList, ListOfTeachers teacherList) { //TODO review if necessary
 		path = "lib/out.json";
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -94,7 +94,7 @@ public class FileStorage extends Storage
 		return "Success Saving!";
 	}
 	
-	public String saveAllToFile() {
+	public String saveAllToFile() { //TODO review if necessary
 		path = "lib/out.json";
 		
 		try (FileWriter writer = new FileWriter(path)) {
@@ -109,7 +109,7 @@ public class FileStorage extends Storage
 		return "Success Saving!";
 	}
 
-	public String readAllToString() {
+	public String readAllToString() { //TODO review if necessary
 
     	String json = "";
         try (BufferedReader reader = new BufferedReader(new FileReader(path)))
