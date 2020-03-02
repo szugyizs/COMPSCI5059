@@ -34,15 +34,12 @@ public class PTTDirectorController extends Controller
 	
 	@Override
 	public boolean processCommand(final String command, final String... args) //TODO
-	{String[] commandArgs;
-	do {
-		// Splits the command for further processing.
+	{
+		String[] commandArgs;
+	
+			// Splits the command for further processing.
 		commandArgs = command.split(" ");
 			
-		if (command.equalsIgnoreCase("logout")) {
-			logout();
-			return true;
-		}
 		if(command.equalsIgnoreCase("get teaching-requests")) {
 			//printStream.println(getListOfTeachers().toString());
 			return true;
@@ -52,8 +49,6 @@ public class PTTDirectorController extends Controller
 			return true;
 		}
 		
-		
-	} while (!(command.equalsIgnoreCase("quit")));
 		return false;
 	}
 	

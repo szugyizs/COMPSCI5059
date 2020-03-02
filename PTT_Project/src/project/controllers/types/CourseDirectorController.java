@@ -46,26 +46,20 @@ public class CourseDirectorController extends Controller
 	public boolean processCommand(final String command, final String... args) //TODO
 	{
 		String[] commandArgs;
-//		do {
-			// Splits the command for further processing.
-			commandArgs = command.split(" ");
-				
-			if (command.equalsIgnoreCase("logout")) { //TODO do
-				logout();
-				return true;
-			}
-			if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("add")) { //TODO do
-				addRequirement();
-			}
+
+		commandArgs = command.split(" ");
 			
-			if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("make")) { //TODO do
-				
-			}
+		if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("add")) { //TODO do
+			addRequirement();
+		}
+		
+		if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("make")) { //TODO do
 			
-			if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("show")) {
-				printStream.println(course.toString());
-			}
-//		} while (!(command.equalsIgnoreCase("quit")));
+		}
+		
+		if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("show")) {
+			printStream.println(course.toString());
+		}
 		
 		return false;
 	}

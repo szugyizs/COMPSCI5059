@@ -37,6 +37,7 @@ public class Main
 
 		storage = new FileStorage("");
 		storage.load();
+		storage.mockTeacher();
 	}
 
 	public PrintStream getPrintStream()
@@ -79,7 +80,7 @@ public class Main
 					printStream.println("In order to logout, you must first be logged in. See \"help\"");
 					continue;
 				}
-				controller.logout(); // TODO:  just save?
+				controller.logout(); // TODO: just save?
 				controller = null;
 				printStream.println("Successfully logged out! Work saved!");
 				continue;
@@ -89,7 +90,7 @@ public class Main
 			if (controller != null) {
 				if (!controller.processCommand(command, commandArgs)) {
 					printStream.println(String.format("Failed to process command \"%s\"; type \"help\"", command));
-					break;
+					continue;
 				}
 				continue;// TODO:check with dan
 			}

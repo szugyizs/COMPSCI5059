@@ -72,7 +72,7 @@ public class ListOfCourses
 		}
 		return null;
 	}
-	
+
 	public void printUnfulfilledCourses(final PrintStream printStream)
 	{
 		
@@ -87,6 +87,16 @@ public class ListOfCourses
 			course.printCourse(printStream);
 			printStream.println();
 			course.printUnfulfillments(printStream);
+		}
+	}
+	
+
+	public void print(final PrintStream printStream)
+	{
+		// Print all of the courses.
+		for (final Course course : this.courses) {
+			course.printCourse(printStream);
+			printStream.println();
 		}
 	}
 }

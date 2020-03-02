@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import project.controllers.Controller;
 import project.requests.TrainingRequirement;
+import project.requests.course.ContactType;
 import project.requests.course.Course;
 import project.requests.course.Qualifications;
 import project.requests.course.SkillType;
@@ -43,12 +44,16 @@ public class AdministratorController extends Controller
 	{
 		// Administrator Specific help commands
 		printStream.println("\nAdministrator commands:");
-		printStream.println("get-tereq:			get list of teaching requests");
-		printStream.println("get-teachers:		get list of teachers and their skills");
-		printStream.println(
-				"make training-request <guid status id skillType skillLevel> - create a training request with the");
-		printStream.println("update-skill <guid skillType skillLevel> - updates the skill level of a teacher");
-
+		printStream.println("get req <courseId>: get list of teaching requests for a course");
+		printStream.println("get req <teacher>:  get list of training requests for a teacher");
+		printStream.println("get teachers:       get list of teachers and their skills");
+		printStream.println("get courses:        get list of courses and their description");
+		printStream.println("set <courseID> <ContactType> <teacher>: adds a teacher to a course request");
+		printStream.println("set <teacher> <SkillType>: adds a training request to a teacher");
+		printStream.println("set <teacher> <SkillType> <Level>: changes the skill level of a teacher");
+		
+		printStream.println("");
+		
 	}
 
 	@Override
@@ -58,18 +63,56 @@ public class AdministratorController extends Controller
 		
 		// Splits the command for further processing.
 		commandArgs = command.split(" ");
-
-		if (command.equalsIgnoreCase("get-teachers")) {
-			this.listOfTeachers.printTeachers(printStream);
-			return true;
+		
+		if( commandArgs.length >=2 && commandArgs[0].equalsIgnoreCase("get"))
+		{
+			if (commandArgs[1].equalsIgnoreCase("teachers")) { //TODO: empty lists throws nullpointer exception
+				this.listOfTeachers.print(printStream);
+				return true;
+			}
+			else if (commandArgs[1].equalsIgnoreCase("courses")) {
+				this.listOfCourses.print(printStream);
+				return true;
+			}
+//			else if{
+//				
+//			}
+			
+			
 		}
+
 
 		if (command.equalsIgnoreCase("get-teachingRequests")) {
-
-			// printStream.println(getTeachingRequests()); //TODO do
+			this.listOfCourses.printUnfulfilledCourses(printStream);
 			return true;
 		}
-
+		
+		if (commandArgs.length == 3 && commandArgs[0].equalsIgnoreCase("set")) {
+					
+			Course course = this.listOfCourses.getCourse(commandArgs[1]);
+			if( course == null )
+			{
+				return false;
+			}
+			
+			Teacher teacher = this.listOfTeachers.getTeacher(commandArgs[3]);
+			if( teacher == null )
+			{
+				return false;
+			}
+			
+			ContactType type;
+			try{
+				type = ContactType.valueOf(commandArgs[2]);// TODO: currently needs Try catch
+				course.addTeachingStaff(type, teacher);
+			}
+			catch(IllegalArgumentException e){	 
+					return false;
+			}
+			
+			return true;
+		}
+		
 		if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("make")) {
 			Teacher t = listOfTeachers.getTeacher(args[2]);
 			HashMap<SkillType, Short> sk = new HashMap<SkillType, Short>();// args[5], Short.parseShort(args[6]));

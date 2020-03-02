@@ -1,6 +1,10 @@
 package project.storage;
 
 import project.storage.lists.ListOfTeachers;
+
+import java.util.LinkedList;
+
+import project.requests.course.Course;
 import project.storage.lists.ListOfCourses;
 
 public abstract class Storage 
@@ -10,6 +14,13 @@ public abstract class Storage
 	//TODO - review functionality
 	protected ListOfTeachers listOfTeachers;
 	protected ListOfCourses listOfCourses;
+	
+	
+	public Storage()
+	{
+		listOfTeachers = new ListOfTeachers();
+		listOfCourses = new ListOfCourses();
+	}
 	
 	public ListOfTeachers getListOfTeachers()
 	{
