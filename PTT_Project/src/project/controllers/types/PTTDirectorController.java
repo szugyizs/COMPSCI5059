@@ -4,7 +4,7 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 import project.controllers.Controller;
-import project.storage.Storage;
+import project.storage.FileStorage;
 
 public class PTTDirectorController extends Controller
 {
@@ -14,7 +14,7 @@ public class PTTDirectorController extends Controller
 	private PrintStream printStream;
 	private Scanner scanner;
 	
-	public PTTDirectorController(final Storage storage) 
+	public PTTDirectorController(final FileStorage storage) 
 	{
 		super(storage);
 		printStream = System.out;

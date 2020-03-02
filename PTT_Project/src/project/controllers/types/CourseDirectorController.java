@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 import project.controllers.Controller;
 import project.requests.course.Course;
-import project.storage.Storage;
+import project.storage.FileStorage;
 
 public class CourseDirectorController extends Controller
 {
@@ -18,7 +18,7 @@ public class CourseDirectorController extends Controller
 	
 	private Course course;
 	
-	public CourseDirectorController(final Storage storage, final Course course) 
+	public CourseDirectorController(final FileStorage storage, final Course course) 
 	{
 		super(storage);
 		this.course = course;

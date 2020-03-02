@@ -8,8 +8,8 @@ public abstract class Storage
 
 	//TODO - comment this class
 	//TODO - review functionality
-	private ListOfTeachers listOfTeachers;
-	private ListOfCourses listOfCourses;
+	protected ListOfTeachers listOfTeachers;
+	protected ListOfCourses listOfCourses;
 	
 	public ListOfTeachers getListOfTeachers()
 	{
@@ -17,6 +17,7 @@ public abstract class Storage
 	}
 	
 	public ListOfCourses getListOfCourses()
+	
 	{
 		return listOfCourses;
 	}

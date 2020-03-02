@@ -24,6 +24,8 @@ public class FileStorage extends Storage
 	String temp = "{'name':'Jon Snow','age':22,'student':{'id':'Jon_Snow_22','subjects':['Maths','Science']}}";
 
 	public FileStorage(final String path) {
+		super.listOfTeachers = new ListOfTeachers();
+		super.listOfCourses = new ListOfCourses();
 		this.path = path;
 	}
 

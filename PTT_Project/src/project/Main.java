@@ -27,7 +27,7 @@ public class Main
 	private PrintStream printStream;
 	private Scanner scanner;
 	
-	private Storage storage;
+	private FileStorage storage;
 	private Controller controller;
 	
 	public Main()
@@ -141,12 +141,17 @@ public class Main
 			} else if (commandArgs.length == 3 && commandArgs[1].equalsIgnoreCase("coursedirector") && !commandArgs[2].isEmpty()) {
 				
 				// Attempt to find the course, if it exists, create a new course director for it.
-				final Course course = storage.getListOfCourses().getCourse(commandArgs[2]);
-				if (course == null) {
-					printStream.println("");
-					return null;
+				if( storage.getListOfCourses().getCourses().isEmpty() == true ) {
+					printStream.println("No courses specified, login not possible.");
+					return null;					
 				}
-				return new CourseDirectorController(storage, course);
+
+				final Course course = storage.getListOfCourses().getCourse(commandArgs[2]);	
+				if (course == null) {
+					printStream.println("Specified course not found.");
+					return null;
+				}		
+				return new CourseDirectorController(storage, course);		
 			}
 		}
 		return null;
@@ -155,6 +160,9 @@ public class Main
 	public static void main(String... args)
 	{	
 		Main main = new Main();
+		//TODO: load file !!!
+		//main.storage.load();
+		
 		main.startParsing(args);
 		
 		/*

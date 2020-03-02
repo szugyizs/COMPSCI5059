@@ -12,7 +12,8 @@ import project.requests.course.Course;
 import project.requests.course.Qualifications;
 import project.requests.course.SkillType;
 import project.requests.course.Teacher;
-import project.storage.Storage;
+import project.storage.FileStorage;
+
 import project.storage.lists.ListOfCourses;
 import project.storage.lists.ListOfTeachers;
 
@@ -23,12 +24,12 @@ public class AdministratorController extends Controller
 	//TODO - review functionality
 	private PrintStream printStream;
 	private Scanner scanner;
-	private Storage storage;
+	private FileStorage storage;
 
 	private ListOfTeachers listOfTeachers;
 	private ListOfCourses listOfCourses;
 	
-	public AdministratorController(final Storage storage)
+	public AdministratorController(final FileStorage storage)
 	{
 		super(storage);
 		printStream = System.out;
@@ -62,12 +63,13 @@ public class AdministratorController extends Controller
 				return true;
 			}
 			
-			if(command.equalsIgnoreCase("get teachers")) {
+			if(command.equalsIgnoreCase("get-teachers")) {
+//				this.listOfTeachers.getTeachers()
 				//printStream.println(getListOfTeachers().toString()); //TODO do
 				return true;
 			}
 			
-			if(command.equalsIgnoreCase("get teaching-requests")) {
+			if(command.equalsIgnoreCase("get-teachingRequests")) {
 				//printStream.println(getTeachingRequests()); //TODO do
 				return true;
 			}
@@ -92,6 +94,7 @@ public class AdministratorController extends Controller
 	@Override
 	public void logout() //TODO do
 	{
+		// TODO:
 		//storage.save();
 		//destroy self?
 	}

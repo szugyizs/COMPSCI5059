@@ -18,7 +18,7 @@ public class Course
 	// The teaching requests submitted for the course; one for each ContactType.
 	private HashMap<ContactType, TeachingRequest> teachingStaffRequirementsRequests;
 																	
-	// Lists containing the teaching staff for each of the ContactType's.
+	// Lists containing the teaching staff for each of the ContactTypes.
 	private HashMap<ContactType, List<Teacher>> teachingStaff;
 												
 	/**
