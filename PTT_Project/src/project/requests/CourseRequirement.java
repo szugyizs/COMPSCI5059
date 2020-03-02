@@ -6,25 +6,25 @@ import project.requests.course.ContactType;
 import project.requests.course.Qualifications;
 
 /**
- * CourseRequirement contains all the information about a requirement
+ * CourseRequirement contains all the information about a requirement.
  */
 
 public class CourseRequirement 
 {
 	
-	private ContactType contactType; // the type of contact hours required 
-	private int numberOfStudents; // the number of students 
-	private int numberOfStaff; // the number of staff required 
-	private int contactHours; // the number of contact hours required 
-	private Qualifications requiredStaffQualifications; // the staff qualifications required
+	private ContactType contactType; // The type of contact hours required.
+	private int numberOfStudents; // The number of students.
+	private int numberOfStaff; // The number of staff required. 
+	private int contactHours; // The number of contact hours required. 
+	private Qualifications requiredStaffQualifications; // The staff qualifications required.
 	
 	/**
 	 * Constructor explicitly instantiates the CourseRequirement instance.
 	 * 
-	 * @param contactType					The [ContactType] type of contact hours required
-	 * @param numberOfStudents				The [int] number of students
-	 * @param numberOfStaff					The [int] number of staff required
-	 * @param contactHours					The [int] number of contact hours required
+	 * @param contactType					The [ContactType] type of contact hours required.
+	 * @param numberOfStudents				The [int] number of students.
+	 * @param numberOfStaff					The [int] number of staff required.
+	 * @param contactHours					The [int] number of contact hours required.
 	 * @param requiredStaffQualifications	The [Qualifications] staff qualifications required.
 	 */
 	
@@ -50,9 +50,9 @@ public class CourseRequirement
 	}
 
 	/**
-	 * A setter method for contactType
+	 * A setter method for contactType.
 	 * 
-	 * @param contactType	The [ContactType] type of contact hours required
+	 * @param contactType	The [ContactType] type of contact hours required.
 	 */
 	public void setContactType(ContactType contactType) 
 	{
@@ -60,9 +60,9 @@ public class CourseRequirement
 	}
 
 	/**
-	 * a getter method for numberOfStudents
+	 * A getter method for numberOfStudents.
 	 * 
-	 * @return A int instance representing the number of students in a requirement
+	 * @return A int instance representing the number of students in a requirement.
 	 */
 	public int getNumberOfStudents()
 	{
@@ -70,9 +70,9 @@ public class CourseRequirement
 	}
 
 	/**
-	 * a setter method for numberOfStudents
+	 * A setter method for numberOfStudents.
 	 * 
-	 * @param numberOfStudents	The [int] number of students
+	 * @param numberOfStudents	The [int] number of students.
 	 */
 	public void setNumberOfStudents(int numberOfStudents) 
 	{
@@ -81,9 +81,9 @@ public class CourseRequirement
 
 
 	/**
-	 * a getter method for numberOfStaff
+	 * A getter method for numberOfStaff.
 	 * 
-	 * @return A int instance representing the number of staff in a requirement 
+	 * @return A int instance representing the number of staff in a requirement. 
 	 */
 	public int getNumberOfStaff() {
 		return numberOfStaff;
@@ -92,7 +92,7 @@ public class CourseRequirement
 	/**
 	 * A setter method for numberOfStaff.
 	 * 
-	 * @param numberOfStaff		The [int] number of staff required
+	 * @param numberOfStaff		The [int] number of staff required.
 	 */
 	public void setNumberOfStaff(int numberOfStaff)
 	{
@@ -101,18 +101,18 @@ public class CourseRequirement
 
 
 	/**
-	 * a getter method for contactHours
+	 * A getter method for contactHours.
 	 * 
-	 * @return A int instance representing the contact hours required
+	 * @return A int instance representing the contact hours required.
 	 */
 	public int getContactHours() {
 		return contactHours;
 	}
 
 	/**
-	 * a setter method for contactHours
+	 * A setter method for contactHours.
 	 * 
-	 *  @param contactHours	The [int] number of contact hours required
+	 *  @param contactHours	The [int] number of contact hours required.
 	 */
 	public void setContactHours(int contactHours) 
 	{
@@ -120,9 +120,9 @@ public class CourseRequirement
 	}
 
 	/**
-	 * a getter method for requiredStaffQualifications
+	 * A getter method for requiredStaffQualifications.
 	 * 
-	 * @return A qualifications instance representing the required staff qualification 
+	 * @return A qualifications instance representing the required staff qualification.
 	 */
 	public Qualifications getRequiredStaffQualifications() 
 	{
@@ -130,7 +130,7 @@ public class CourseRequirement
 	}
 
 	/**
-	 * a setter method for requiredStaffQualifications
+	 * A setter method for requiredStaffQualifications.
 	 * 
 	 * @param requiredStaffQualifications	The [Qualifications] staff qualifications required.
 	 */
@@ -140,8 +140,7 @@ public class CourseRequirement
 	}
 	
 	/**
-	 * a method to print the course requirement
-	 * 
+	 * A method to print the course requirement.
 	 */
 	public void printCourseRequirement(final PrintStream printStream)
 	{
@@ -153,7 +152,7 @@ public class CourseRequirement
 	
 	@Override
 	/**
-	 * a method to return the course requirement as a String
+	 * A method to return the course requirement as a string.
 	 */
 	public String toString()
 	{
