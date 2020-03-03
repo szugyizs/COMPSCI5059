@@ -4,21 +4,29 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 import project.controllers.Controller;
-import project.storage.FileStorage;
+import project.requests.course.Course;
+import project.requests.course.Teacher;
+import project.storage.Storage;
+import project.storage.lists.ListOfCourses;
+import project.storage.lists.ListOfTeachers;
 
 public class PTTDirectorController extends Controller
 {
 
 	//TODO - comment this class
 	//TODO - review functionality
-	private PrintStream printStream;
+	
 	private Scanner scanner;
 	
-	public PTTDirectorController(final FileStorage storage) 
+	private ListOfTeachers listOfTeachers;
+	private ListOfCourses listOfCourses;
+	
+	public PTTDirectorController(final Storage storage) 
 	{
-		super(storage);
-		printStream = System.out;
+		super(storage, System.out);
 		scanner = new Scanner(System.in);
+		this.listOfTeachers = storage.getListOfTeachers();
+		this.listOfCourses = storage.getListOfCourses();
 	}
 	
 	@Override
@@ -26,10 +34,10 @@ public class PTTDirectorController extends Controller
 	{
 		//PTT Director Specific help commands
 		printStream.println("\nPTT Director commands:");
-		printStream.println("get teaching-requests");
-		printStream.println("get training-requests");
-		printStream.println("set status of teaching request <id status>");
-		printStream.println("set status of training request <teacher-firstname teacher-surname id status>");
+		printStream.println("get teachreqs <courseID>: get list of teaching requests for a course");
+		printStream.println("get trainreq <teacherID>: get list of training requests for a teacher");
+		printStream.println("set status teachreq <id status>");
+		printStream.println("set status trainreq <teacher-firstname teacher-surname id status>");
 	}
 	
 	@Override
@@ -37,16 +45,37 @@ public class PTTDirectorController extends Controller
 	{
 		String[] commandArgs;
 	
-			// Splits the command for further processing.
+		// Splits the command for further processing.
 		commandArgs = command.split(" ");
+		
+		// check the get commands
+		if (commandArgs.length >= 3 && commandArgs[0].equalsIgnoreCase("get")) {
+		
 			
-		if(command.equalsIgnoreCase("get teaching-requests")) {
-			//printStream.println(getListOfTeachers().toString());
-			return true;
+			if(commandArgs[1].equalsIgnoreCase("teachreq")) {
+				getTeachingRequests(commandArgs[2]);
+				return true;
+			}
+			if(commandArgs[1].equalsIgnoreCase("trainreq")) {
+				getTrainingRequests(commandArgs[2]);
+				
+				return true;
+			}
 		}
-		if(command.equalsIgnoreCase("get training-requests")) {
-			//printStream.println(getTeachingRequests());
-			return true;
+		
+		// Check all the set commands
+		else if (commandArgs.length >= 4 && commandArgs[0].equalsIgnoreCase("set")) {
+			if(commandArgs[2].equalsIgnoreCase("teachreq")) {
+				setStatus("");
+				return true;
+			}
+			
+			if(commandArgs[2].equalsIgnoreCase("trainreq")) {
+				setStatus("");
+				return true;
+			}
+			
+			
 		}
 		
 		return false;
@@ -58,9 +87,25 @@ public class PTTDirectorController extends Controller
 		//destroy self?
 	}
 	
-	public void getTeachingRequests() {}
-	public void getTrainingRequests() {}
+	public boolean getTeachingRequests(String courseID) {
+		Course course = this.listOfCourses.getCourse(courseID);
+		if (course == null) {
+			printStream.println("Course not found, use course ID");
+			return false;}
+		course.printTeachingRequests(printStream);
+		return true;
+	}
+	
+	public boolean getTrainingRequests(String teacherID) {
+		Teacher teacher = this.listOfTeachers.getTeacher(teacherID);
+		if (teacher == null) {
+			printStream.println("Teacher not found, use GUID");
+			return false;}
+		teacher.printTrainingRequests(printStream);
+		return true;
+	}
 	public void setStatus(String type) {
 		
 	}
+	
 }
