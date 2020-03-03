@@ -4,6 +4,9 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 import project.controllers.Controller;
+import project.requests.RequestStatusType;
+import project.requests.TeachingRequest;
+import project.requests.course.ContactType;
 import project.requests.course.Course;
 import project.requests.course.Teacher;
 import project.storage.Storage;
@@ -13,8 +16,7 @@ import project.storage.lists.ListOfTeachers;
 public class PTTDirectorController extends Controller
 {
 
-	//TODO - comment this class
-	//TODO - review functionality
+	
 	
 	private Scanner scanner;
 	
@@ -70,10 +72,10 @@ public class PTTDirectorController extends Controller
 				return true;
 			}
 			
-			if(commandArgs[2].equalsIgnoreCase("trainreq")) {
-				setStatusTrainReq("");
-				return true;
-			}
+//			if(commandArgs[2].equalsIgnoreCase("trainreq")) {
+//				setStatusTrainReq("");
+//				return true;
+//			}
 			
 			
 		}
@@ -105,4 +107,39 @@ public class PTTDirectorController extends Controller
 		return true;
 	}
 	
+	public boolean setStatusTeachReq(String courseID, String type, String status) {
+		Course course = this.listOfCourses.getCourse(courseID);
+		if (course == null) {
+			printStream.println("Course not found, use course ID");
+			return false;}
+		RequestStatusType eStatus = null;
+		try {
+			eStatus = RequestStatusType.valueOf(status);
+		} catch (IllegalArgumentException e) {
+			printStream.println("Invalid request type, use:");
+			//TODO ContactType.printContactTypes(super.printStream);
+			return false;
+		}
+		
+		ContactType eType = null;
+		try {
+			eType = ContactType.valueOf(type);
+		} catch (IllegalArgumentException e) {
+			printStream.println("Invalid request type, use:");
+			ContactType.printContactTypes(super.printStream);
+			return false;
+		}
+		
+		TeachingRequest temp = course.getTeachingStaffRequirementsRequests().get(eType);
+		temp.setRequestStatus(eStatus);
+		
+		return true;
+		
+		
+		
+		
+		
+	}
+	
 }
+
