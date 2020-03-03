@@ -34,9 +34,9 @@ public class PTTDirectorController extends Controller
 	{
 		//PTT Director Specific help commands
 		printStream.println("\nPTT Director commands:");
-		printStream.println("get teachreqs <courseID>: get list of teaching requests for a course");
+		printStream.println("get teachreq <courseID>: get list of teaching requests for a course");
 		printStream.println("get trainreq <teacherID>: get list of training requests for a teacher");
-		printStream.println("set status teachreq <id status>");
+		printStream.println("set status teachreq <courseID> <type> <id status>");
 		printStream.println("set status trainreq <teacher-firstname teacher-surname id status>");
 	}
 	
@@ -66,12 +66,12 @@ public class PTTDirectorController extends Controller
 		// Check all the set commands
 		else if (commandArgs.length >= 4 && commandArgs[0].equalsIgnoreCase("set")) {
 			if(commandArgs[2].equalsIgnoreCase("teachreq")) {
-				setStatus("");
+				setStatusTeachReq(commandArgs[3], commandArgs[4], commandArgs[5]);
 				return true;
 			}
 			
 			if(commandArgs[2].equalsIgnoreCase("trainreq")) {
-				setStatus("");
+				setStatusTrainReq("");
 				return true;
 			}
 			
@@ -103,9 +103,6 @@ public class PTTDirectorController extends Controller
 			return false;}
 		teacher.printTrainingRequests(printStream);
 		return true;
-	}
-	public void setStatus(String type) {
-		
 	}
 	
 }
