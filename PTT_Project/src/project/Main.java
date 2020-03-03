@@ -169,38 +169,6 @@ public class Main
 		
 		main.startParsing(args);
 
-//		Qualifications qualifications = new Qualifications();
-//		qualifications.setSkill(SkillType.ALGORITHMS_AND_DATA_STRUCTURES, (short) 2);
-//		qualifications.setSkill(SkillType.BIG_DATA, (short) 3);
-//		qualifications.setSkill(SkillType.CYBER_SECURITY, (short) 2);
-//		
-//		TrainingRequirement trainingRequirement = new TrainingRequirement(qualifications);
-//		TrainingRequest trainingRequest = new TrainingRequest(0, trainingRequirement);
-//		trainingRequest.printRequest(System.out);
-//		
-//		System.out.println();
-//		
-//		Teacher teacher = new Teacher("123", "Daniels", "Vasiljevs", qualifications);
-//		teacher.printTeacher(System.out);
-//		
-//		System.out.println();
-//		teacher.printTrainingRequests(System.out);
-//		
-//		System.out.println();
-//		
-//		// TODO: We dont need a parameter for contact type because it's defined within course requirement.
-//		CourseRequirement courseRequirement = new CourseRequirement(ContactType.LAB, 10, 20, 200, qualifications);
-//		TeachingRequest teachingRequest = new TeachingRequest(courseRequirement);
-//		teachingRequest.printRequest(System.out);
-//		
-//		System.out.println();
-//		
-//		Course course = new Course("COMPSCI", "Software Engineering", "Basics of software engineering");
-//		course.printCourse(System.out);
-//		
-//		System.out.println();
-//		
-//		course.printTeachingRequests(System.out);
 	}
 
 }

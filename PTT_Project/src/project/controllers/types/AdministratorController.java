@@ -46,12 +46,12 @@ public class AdministratorController extends Controller
 		printStream.println("\nAdministrator commands:");
 		printStream.println("get req <courseId>: get list of teaching requests for a course");
 		printStream.println("get req <teacher>:  get list of training requests for a teacher");
-		printStream.println("get courses:        get list of courses and their description"); // TODO: fails currently
+		printStream.println("get courses:        get list of courses and their description"); 
 		printStream.println("get teachers:       get list of teachers and their qualifications");
-																								// if request is open
+
 		printStream.println("set course <courseID> <ContactType> <teacher>:  adds a teacher to a course request");
-		printStream.println("set req <teacher>                 adds a training request to a teacher");// TODO:untested, populate teachers
-		printStream.println("set quali <teacher> <ReqID>:        changes the skill level of a teacher");// TODO:not implemented
+		printStream.println("set req <teacher>:                              adds a training request to a teacher");
+		printStream.println("set quali <teacher> <ReqID>:                    changes the skill level of a teacher");
 
 		printStream.println("");
 
@@ -92,7 +92,7 @@ public class AdministratorController extends Controller
 
 		}
 		// Check all the set commands
-		else if (commandArgs.length >= 4 && commandArgs[0].equalsIgnoreCase("set")) {
+		else if (commandArgs.length >= 3 && commandArgs[0].equalsIgnoreCase("set")) {
 
 			if (commandArgs[1].equalsIgnoreCase("course")) {
 				return attemptAddTeacher(commandArgs);
@@ -137,7 +137,7 @@ public class AdministratorController extends Controller
 			try {
 				type = ContactType.valueOf(commandArgs[3]);
 				course.addTeachingStaff(type, teacher);
-			} catch (NumberFormatException e) {
+			} catch (IllegalArgumentException e) {
 				printStream.println("Invalid contact type, use:");
 				ContactType.printContactTypes(super.printStream);
 				return false;
@@ -184,7 +184,7 @@ public class AdministratorController extends Controller
 				return false;
 			} else {
 
-				printStream.println("Training request  successfully added to course.");
+				printStream.println("Training request  successfully added to teacher.");
 				trainingRequest.printRequest(printStream);
 			}
 
@@ -199,14 +199,7 @@ public class AdministratorController extends Controller
 			printStream.println("Invalid number of arguments.");
 			return false;
 		} else {
-
-			Teacher teacher = this.listOfTeachers.getTeacher(commandArgs[2]);
-			if (teacher == null) {
-				printStream.println("Teacher not found, use GUID");
-				return false;
-			}
-
-			//TODO:
+			printStream.println("Updating of teacher qualifications currently not supoorted");
 		}
 
 		return true;

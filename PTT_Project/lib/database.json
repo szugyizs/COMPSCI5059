@@ -42,7 +42,7 @@
 		{
 			"guid": "2504756K",
 			"forename": "Belinda",
-			"surname": "kneubühler",
+			"surname": "Kneubuhler",
 			"qualifications": [
 				{
 					"skillType": "SOFTWARE_ENGINEERING",
@@ -180,6 +180,14 @@
 					}
 				}
 			}
+		},
+		{
+			"courseID": "COMPSCI5015",
+			"name": "Mobile HCI",
+			"description": "Human computer interaction for mobile devices.",
+			"teachingStaff": {},
+			"teachingRequests": {}
+
 		}
 	]
 }
