@@ -106,6 +106,21 @@
 					"level": "2"
 				}
 			]
+		},
+		{
+			"guid": "2418750S",
+			"forename": "Zsuzsi",
+			"surname": "Szügyi",
+			"qualifications": [
+				{
+					"skillType": "HUMAN_COMPUTER_INTERACTION",
+					"level": "3"
+				},
+				{
+					"skillType": "SOFTWARE_ENGINEERING",
+					"level": "2"
+				}
+			]
 		}
 	],
 	"courses": [
@@ -180,6 +195,30 @@
 					}
 				}
 			}
+		},
+		{
+			"courseID": "COMPSCI5015",
+			"name": "Mobile HCI",
+			"description": "Human computer interaction for mobile devices.",
+			"teachingStaff": {},
+			"teachingRequests": {}
+
+		},
+		{
+			"courseID": "COMPSCI1023",
+			"name": "Web Application Systems ",
+			"description": "Web application design and the underlying networking concepts.",
+			"teachingStaff": {},
+			"teachingRequests": {}
+
+		},
+		{
+			"courseID": "COMPSCI2003",
+			"name": "Algorithmic ",
+			"description": "Human computer interaction for mobile devices.",
+			"teachingStaff": {},
+			"teachingRequests": {}
+
 		},
 		{
 			"courseID": "COMPSCI5015",

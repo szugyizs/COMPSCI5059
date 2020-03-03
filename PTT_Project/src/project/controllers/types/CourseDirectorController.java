@@ -1,7 +1,6 @@
 package project.controllers.types;
 
 import java.io.PrintStream;
-import java.util.HashMap;
 import java.util.Scanner;
 
 import project.controllers.Controller;
@@ -9,7 +8,6 @@ import project.requests.CourseRequirement;
 import project.requests.course.ContactType;
 import project.requests.course.Course;
 import project.requests.course.Qualifications;
-import project.requests.course.SkillType;
 import project.storage.Storage;
 
 //TODO: add super before every printStream

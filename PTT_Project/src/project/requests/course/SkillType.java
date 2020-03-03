@@ -12,9 +12,6 @@ import java.io.PrintStream;
  */
 public enum SkillType
 {
-
-	SW("Software Engineering"), 
-	PL("Software Engineering"), 
 	SOFTWARE_ENGINEERING("Software Engineering"), 
 	PROGRAMMING_LANGUAGES("Programming Languages"),
 	ALGORITHMS_AND_DATA_STRUCTURES("Algorithms and Data Structures"),

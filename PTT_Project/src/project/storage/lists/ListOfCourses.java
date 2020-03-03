@@ -98,13 +98,11 @@ public class ListOfCourses
 
 	public void print(final PrintStream printStream)
 	{
+
+		//	Print all of the courses.
 		for (final Course course : this.courses) {
-			printStream.println(course.getCourseID());
+			course.printCourse(printStream);
+			printStream.println();
 		}
-		// Print all of the courses.
-//		for (final Course course : this.courses) {
-//			course.printCourse(printStream);
-//			printStream.println();
-//		}
 	}
 }
