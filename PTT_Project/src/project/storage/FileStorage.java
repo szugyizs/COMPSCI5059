@@ -25,11 +25,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
-
 import project.requests.CourseRequirement;
 import project.requests.RequestStatusType;
 import project.requests.TeachingRequest;
