@@ -49,7 +49,7 @@ public class PTTDirectorController extends Controller
 		commandArgs = command.split(" ");
 		
 		// check the get commands
-		if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("get")) {
+		if (commandArgs.length >= 3 && commandArgs[0].equalsIgnoreCase("get")) {
 		
 			
 			if(commandArgs[1].equalsIgnoreCase("teachreq")) {
@@ -87,22 +87,25 @@ public class PTTDirectorController extends Controller
 		//destroy self?
 	}
 	
-	public void getTeachingRequests(String courseID) {
+	public boolean getTeachingRequests(String courseID) {
 		Course course = this.listOfCourses.getCourse(courseID);
+		if (course == null) {
+			printStream.println("Course not found, use course ID");
+			return false;}
 		course.printTeachingRequests(printStream);
-		
-		
-		
-		
+		return true;
 	}
-	public void getTrainingRequests(String teacherID) {
-		
+	
+	public boolean getTrainingRequests(String teacherID) {
 		Teacher teacher = this.listOfTeachers.getTeacher(teacherID);
+		if (teacher == null) {
+			printStream.println("Teacher not found, use GUID");
+			return false;}
 		teacher.printTrainingRequests(printStream);
-		
-		
+		return true;
 	}
 	public void setStatus(String type) {
 		
 	}
+	
 }
