@@ -69,9 +69,11 @@ public class FileStorage extends Storage
 			super.listOfTeachers = parseTeachers(jsonTeachers);
 			super.listOfCourses = parseCourses(listOfTeachers, jsonCourses);
 			
-			Teacher teacher = listOfTeachers.getTeachers().get(0);
-			teacher.printTeacher(System.out);
-			teacher.printTrainingRequests(System.out);
+			Teacher teacher = super.listOfTeachers.getTeachers().get(0);
+			System.out.println(teacher.getForename() + " " + teacher.getTrainingRequests().size());
+			super.listOfTeachers.printTrainingRequests(System.out);
+			
+			listOfCourses.print(System.out);
 			
 		} catch (IOException | org.json.simple.parser.ParseException e) {
 			e.printStackTrace();
@@ -96,6 +98,10 @@ public class FileStorage extends Storage
 			if (teacher == null) {
 				return null;
 			}
+			System.out.println("\n\n" + teacher.getTrainingRequests().size());
+			teacher.printTeacher(System.out);
+			teacher.printTrainingRequests(System.out);
+			System.out.println("\n\n");
 			listOfTeachers.addTeacher(teacher);
 		}
 		
@@ -127,15 +133,15 @@ public class FileStorage extends Storage
 			qualifications = new Qualifications();
 		}
 		
-		// The training requests associated with the teacher.
-		List<TrainingRequest> teacherTrainingRequests = new ArrayList<TrainingRequest>();
-		
 		// Check whether or not there are any training requests.
 		JSONArray jsonTeacherTrainingRequests = (JSONArray) jsonTeacher.get("trainingRequests");
 		if (jsonTeacherTrainingRequests == null) {
 			return new Teacher(teacherGUID, teacherForename, teacherSurname, qualifications);
 		}
 		
+		// The training requests associated with the teacher.
+		List<TrainingRequest> teacherTrainingRequests = new ArrayList<TrainingRequest>();
+				
 		// Parse each of the training requests for the teacher.
 		Iterator<JSONObject> iter = jsonTeacherTrainingRequests.iterator();
 		TrainingRequest trainingRequest;
@@ -146,7 +152,6 @@ public class FileStorage extends Storage
 			if (trainingRequest == null) {
 				return null;
 			}
-			trainingRequest.printRequest(System.out);
 			teacherTrainingRequests.add(trainingRequest);
 		}
 		
@@ -225,7 +230,10 @@ public class FileStorage extends Storage
 		final TrainingRequirement teacherTrainingRequirement = parseTrainingRequirement(jsonTrainingRequirement);
 		
 		// Finally, create and return an instance that represents the teachers qualifications.
-		return new TrainingRequest(teacherTrainingRequestId, teacherTrainingRequirement);
+		TrainingRequest tr = new TrainingRequest(teacherTrainingRequestId, teacherTrainingRequirement);
+		tr.printRequest(System.out);
+		System.out.println("\n\n");
+		return tr;
 	}
 	
 	private TrainingRequirement parseTrainingRequirement(final JSONObject jsonTrainingRequirement)
@@ -278,17 +286,29 @@ public class FileStorage extends Storage
 			teachingStaff = new HashMap<ContactType, List<Teacher>>();
 		}
 		
+		System.out.println("PRINTING TEACHING STAFF!!!");
+		for (ContactType contactType : teachingStaff.keySet()) {
+			for (Teacher t : teachingStaff.get(contactType)) {
+				t.printTeacher(System.out);
+			}
+		}
+		
+		System.out.println("HERE!!!!!!!!!");
+		
 		// Get the JSON object containing the teachingRequests.
 		final JSONObject jsonTeachingRequests = (JSONObject) jsonCourse.get("teachingRequests");
 		HashMap<ContactType, TeachingRequest> teachingRequests;
 		if (jsonTeachingRequests != null) {
 			teachingRequests = parseTeachingRequests(jsonTeachingRequests);
 			if (teachingRequests == null) {
+				System.out.println("FAILS HERE!");
 				return null;
 			}
 		} else {
 			teachingRequests = new HashMap<ContactType, TeachingRequest>();
 		}
+		
+		System.out.println("GOT TO HERE!!");
 		
 		// Finally, create the course based on the parsed values.
 		return new Course(courseID, courseName, courseDescription,
@@ -350,7 +370,7 @@ public class FileStorage extends Storage
 			}
 			
 			// Serialise the teaching request.
-			TeachingRequest teachingRequest = parseTeachingRequest(jsonTeachingRequests);
+			TeachingRequest teachingRequest = parseTeachingRequest(jsonTeachingRequest);
 			if (teachingRequest == null) {
 				return null;
 			}
@@ -362,15 +382,22 @@ public class FileStorage extends Storage
 	private TeachingRequest parseTeachingRequest(final JSONObject jsonRequest)
 	{
 		
+		System.out.println("JIDSJIDJSIAODJIAS DOASJ");
+		System.out.println(jsonRequest.toJSONString());
+		
 		// Parse the status of the teaching request.
 		final String jsonRequestStatus = (String) jsonRequest.get("status");
 		if (jsonRequestStatus == null) {
 			return null;
 		}
+		System.out.println("HERE, OKAY!");
+		
 		final RequestStatusType requestStatus = RequestStatusType.valueOf(jsonRequestStatus);
 		if (requestStatus == null) {
 			return null;
 		}
+		
+		System.out.println("HERE, OKAY!");
 		
 		// Get the course requirement for parsing.
 		final JSONObject jsonTeachingRequest = (JSONObject) jsonRequest.get("teachingRequest");

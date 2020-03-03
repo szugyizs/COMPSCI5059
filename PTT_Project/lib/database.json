@@ -1,20 +1,63 @@
 {
 	"teachers": [
 		{
-			"guid": "123",
+			"guid": "2500414V",
 			"forename": "Daniels",
-			"surname": "Vasilejsv",
+			"surname": "Vasiljevs",
 			"qualifications": [
 				{
 					"skillType": "SOFTWARE_ENGINEERING",
-					"level": "1"
+					"level": "5"
 				},
 				{
-					"skillType": "SOFTWARE_ENGINEERING",
-					"level": "2"
+					"skillType": "PROGRAMMING_LANGUAGES",
+					"level": "3"
 				},
 				{
+					"skillType": "ALGORITHMS_AND_DATA_STRUCTURES",
+					"level": "4"
+				}
+			],
+			"trainingRequests": [
+				{
+					"status": "PENDING",
+					"trainingRequest": {
+						"id": "0",
+						"trainingRequirement": {
+							"qualifications": [
+								{
+									"skillType": "ALGORITHMS_AND_DATA_STRUCTURES",
+									"level": "5"
+								},
+								{
+									"skillType": "PROGRAMMING_LANGUAGES",
+									"level": "5"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"guid": "2504756K",
+			"forename": "Belinda",
+			"surname": "kneubühler",
+			"qualifications": [
+				{
 					"skillType": "SOFTWARE_ENGINEERING",
+					"level": "3"
+				},
+				{
+					"skillType": "MOBILE_HUMAN_COMPUTER_INTERACTION",
+					"level": "5"
+				},
+				{
+					"skillType": "CYBER_SECURITY",
+					"level": "3"
+				},
+				{
+					"skillType": "INFORMATION_RETRIEVAL",
 					"level": "3"
 				}
 			],
@@ -22,43 +65,58 @@
 				{
 					"status": "PENDING",
 					"trainingRequest": {
-						"id": "12",
+						"id": "0",
 						"trainingRequirement": {
 							"qualifications": [
 								{
-									"skillType": "SOFTWARE_ENGINEERING",
+									"skillType": "SAFETY_CRITICAL_SYSTEMS_DEVELOPMENT",
 									"level": "1"
-								},
+								}
+							]
+						}
+					}
+				},
+				{
+					"status": "DENIED",
+					"trainingRequest": {
+						"id": "1",
+						"trainingRequirement": {
+							"qualifications": [
 								{
-									"skillType": "SOFTWARE_ENGINEERING",
-									"level": "2"
-								},
-								{
-									"skillType": "SOFTWARE_ENGINEERING",
-									"level": "3"
+									"skillType": "BIG_DATA",
+									"level": "1"
 								}
 							]
 						}
 					}
 				}
 			]
+		},
+		{
+			"guid": "2418750S",
+			"forename": "Zsuzsi",
+			"surname": "Szügyi",
+			"qualifications": [
+				{
+					"skillType": "HUMAN_COMPUTER_INTERACTION",
+					"level": "3"
+				},
+				{
+					"skillType": "SOFTWARE_ENGINEERING",
+					"level": "2"
+				}
+			]
 		}
 	],
 	"courses": [
 		{
-			"courseID": "COMPSCI1",
+			"courseID": "COMPSCI5059",
 			"name": "Software Engineering",
-			"description": "Basics of software engineering 1",
+			"description": "Software engineering and project management.",
 			"teachingStaff": {
 				"LAB": [
-					"",
-					"S"
-				],
-				"TUTORIAL": [
-
-				],
-				"LECTURE": [
-
+					"2418750S",
+					"2504756K"
 				]
 			},
 			"teachingRequests": {
@@ -67,31 +125,59 @@
 					"teachingRequest": {
 						"courseRequirement":{
 							"contactType": "LAB",
-							"numberOfStudents": "0",
+							"numberOfStudents": "40",
 							"numberOfStaff": "2",
-							"contactHours": "200",
+							"contactHours": "300",
 							"qualifications":[
 								{
 									"skillType": "SOFTWARE_ENGINEERING",
-									"level": "1"
-								},
-								{
-									"skillType": "SOFTWARE_ENGINEERING",
 									"level": "2"
-								},
-								{
-									"skillType": "SOFTWARE_ENGINEERING",
-									"level": "3"
 								}
 							]
 						}
 					}
 				},
 				"TUTORIAL": {
-
+					"status": "DENIED",
+					"teachingRequest": {
+						"courseRequirement":{
+							"contactType": "TUTORIAL",
+							"numberOfStudents": "30",
+							"numberOfStaff": "1",
+							"contactHours": "20",
+							"qualifications":[
+								{
+									"skillType": "SOFTWARE_ENGINEERING",
+									"level": "4"
+								},
+								{
+									"skillType": "ALGORITHMS_AND_DATA_STRUCTURES",
+									"level": "5"
+								}
+							]
+						}
+					}
 				},
 				"LECTURE": {
-
+					"status": "ACCEPTED",
+					"teachingRequest": {
+						"courseRequirement":{
+							"contactType": "LECTURE",
+							"numberOfStudents": "200",
+							"numberOfStaff": "1",
+							"contactHours": "20",
+							"qualifications":[
+								{
+									"skillType": "SOFTWARE_ENGINEERING",
+									"level": "3"
+								},
+								{
+									"skillType": "ALGORITHMS_AND_DATA_STRUCTURES",
+									"level": "2"
+								}
+							]
+						}
+					}
 				}
 			}
 		}

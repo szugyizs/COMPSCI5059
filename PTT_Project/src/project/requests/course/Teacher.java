@@ -41,7 +41,7 @@ public class Teacher
 
 		this.qualifications = qualifications;
 		
-		this.trainingRequests = new ArrayList<TrainingRequest>();
+		this.trainingRequests = trainingRequests;
 	}
 
 	/**

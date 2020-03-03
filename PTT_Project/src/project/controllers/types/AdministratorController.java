@@ -67,7 +67,7 @@ public class AdministratorController extends Controller
 		if( commandArgs.length >=2 && commandArgs[0].equalsIgnoreCase("get"))
 		{
 			if (commandArgs[1].equalsIgnoreCase("teachers")) { //TODO: empty lists throws nullpointer exception
-				this.listOfTeachers.print(printStream);
+				this.listOfTeachers.printTeachers(printStream);
 				return true;
 			}
 			else if (commandArgs[1].equalsIgnoreCase("courses")) {
