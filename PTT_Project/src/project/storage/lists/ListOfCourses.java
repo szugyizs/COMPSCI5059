@@ -27,6 +27,11 @@ public class ListOfCourses
 	{
 		return this.courses;
 	}
+	
+	public void addCourse(final Course course)
+	{
+		courses.add(course);
+	}
 
 	public LinkedList<Course> getCoursesWithContactTypesState(final RequestStatusType requestStatusType)
 	{
