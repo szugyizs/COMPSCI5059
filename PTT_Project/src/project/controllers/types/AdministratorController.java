@@ -26,8 +26,6 @@ public class AdministratorController extends Controller
 	// TODO - comment this class
 	// TODO - review functionality
 	private Scanner scanner;
-	private FileStorage storage;
-
 	private ListOfTeachers listOfTeachers;
 	private ListOfCourses listOfCourses;
 

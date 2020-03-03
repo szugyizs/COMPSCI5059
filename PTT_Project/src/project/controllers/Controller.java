@@ -86,7 +86,7 @@ public abstract class Controller
 				}
 
 				try {
-					level = Short.parseShort(commandArgs[1]); // TODO: negative values?
+					level = Short.parseShort(commandArgs[1]); 
 				} catch (NumberFormatException e) {
 					printStream.println("Level invalid, use 0-5.");
 				}
@@ -108,7 +108,9 @@ public abstract class Controller
 	{
 
 		// General help commands.
-		this.printStream.println("Explain get qulaifications:");
+		this.printStream.println("Enter qualifications:");
+		this.printStream.println("<SkillType> <0-5>");
+		this.printStream.println("done to exit");
 
 	}
 }
