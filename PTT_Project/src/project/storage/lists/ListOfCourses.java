@@ -27,6 +27,11 @@ public class ListOfCourses
 	{
 		return this.courses;
 	}
+	
+	public void addCourse(final Course course)
+	{
+		courses.add(course);
+	}
 
 	public LinkedList<Course> getCoursesWithContactTypesState(final RequestStatusType requestStatusType)
 	{
@@ -93,15 +98,13 @@ public class ListOfCourses
 
 	public void print(final PrintStream printStream)
 	{
-
 		for (final Course course : this.courses) {
-			course.printTeachingRequests(printStream);
+			printStream.println(course.getCourseID());
 		}
-		
-//		// Print all of the courses.
+		// Print all of the courses.
 //		for (final Course course : this.courses) {
-//			course.printCourse(printStream); // TODO: NULLPOINTER EXCEPTION
-//			printStream.println(); 
+//			course.printCourse(printStream);
+//			printStream.println();
 //		}
 	}
 }

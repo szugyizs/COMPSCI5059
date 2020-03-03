@@ -2,30 +2,24 @@ package project.storage;
 public class DatabaseStorage extends Storage
 {
 
-	//TODO - comment this class
-	//TODO - review functionality
 	@Override
-	public void reload() 
+	public boolean load() 
 	{
-		
+		return false;
 	}
 
 	@Override
-	public void load() 
-	{	
+	public boolean save() 
+	{
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
-	public void save() 
+	public boolean isAvailable() 
 	{
-		
-	}
-
-	@Override
-	public void isAvailable()
-	{
-		
-		
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

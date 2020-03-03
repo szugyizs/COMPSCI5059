@@ -35,7 +35,7 @@ public class Main
 		printStream = System.out;
 		scanner = new Scanner(System.in);
 
-		storage = new FileStorage("");
+		storage = new FileStorage("lib/database.json");
 		storage.load();
 		//storage.mockTeacher();
 	}

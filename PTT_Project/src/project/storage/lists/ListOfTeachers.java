@@ -29,6 +29,11 @@ public class ListOfTeachers
 		return teachers;
 	}
 	
+	public void addTeacher(final Teacher teacher)
+	{
+		teachers.add(teacher);
+	}
+	
 	public Teacher getTeacher(final String guid)
 	{
 		for (final Teacher teacher : teachers) {
