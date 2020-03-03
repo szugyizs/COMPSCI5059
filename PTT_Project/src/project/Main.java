@@ -27,7 +27,7 @@ public class Main
 	private PrintStream printStream;
 	private Scanner scanner;
 
-	private FileStorage storage;
+	private Storage storage;
 	private Controller controller;
 
 	public Main()
@@ -37,7 +37,7 @@ public class Main
 
 		storage = new FileStorage("");
 		storage.load();
-		storage.mockTeacher();
+		//storage.mockTeacher();
 	}
 
 	public PrintStream getPrintStream()
@@ -80,7 +80,7 @@ public class Main
 					printStream.println("In order to logout, you must first be logged in. See \"help\"");
 					continue;
 				}
-				controller.logout(); // TODO: just save?
+				controller.logout(); // TODO:  just save?
 				controller = null;
 				printStream.println("Successfully logged out! Work saved!");
 				continue;
@@ -120,8 +120,8 @@ public class Main
 
 		// General help commands.
 		printStream.println("General commands:");
-		printStream.println("login coursedirector <course id>");
-		printStream.println("login pttdirector - login as a PTT director.");
+		printStream.println("login cd <course id>");
+		printStream.println("login ptt - login as a PTT director.");
 		printStream.println("login admin - login as an administrator.");
 		printStream.println("logout - will save all work and logout of the current controller");
 		printStream.println("quit - will save and quit all work.");
@@ -137,11 +137,11 @@ public class Main
 		if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("login")) {
 			if (commandArgs[1].equalsIgnoreCase("admin")) {
 				return new AdministratorController(storage);
-			} else if (commandArgs[1].equalsIgnoreCase("pttdirector")) {
+			} else if (commandArgs[1].equalsIgnoreCase("ptt")) {
 
 				// Simply
 				return new PTTDirectorController(storage);
-			} else if (commandArgs.length == 3 && commandArgs[1].equalsIgnoreCase("coursedirector")
+			} else if (commandArgs.length == 3 && commandArgs[1].equalsIgnoreCase("cd")
 					&& !commandArgs[2].isEmpty()) {
 
 				// Attempt to find the course, if it exists, create a new course director for
@@ -167,7 +167,7 @@ public class Main
 		Main main = new Main();
 		// TODO: load file !!!
 		// main.storage.load();
-
+		
 		main.startParsing(args);
 
 //		Qualifications qualifications = new Qualifications();

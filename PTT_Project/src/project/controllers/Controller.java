@@ -3,6 +3,7 @@ package project.controllers;
 import java.io.PrintStream;
 
 import project.storage.FileStorage;
+import project.storage.Storage;
 import project.storage.lists.ListOfCourses;
 import project.storage.lists.ListOfTeachers;
 
@@ -10,22 +11,27 @@ public abstract class Controller
 {
 	// TODO - comment this class
 	// TODO - review functionality
-	private FileStorage storage;
+	private Storage storage;
 
-	private PrintStream printStream;
+	protected PrintStream printStream;
 
 	private ListOfTeachers listOfTeachers;
 	private ListOfCourses listOfCourses;
 
-	protected Controller(final FileStorage storage)
+	protected Controller(final Storage storage, final PrintStream printStream)
 	{
 		this.storage = storage;
+		this.printStream = printStream;
 
 		this.listOfTeachers = storage.getListOfTeachers();
 		this.listOfCourses = storage.getListOfCourses();
 	}
-
-	public FileStorage getStorage()
+	
+	protected Controller(final Storage storage)
+	{
+		this(storage, System.out);
+	}
+	public Storage getStorage()
 	{
 		return storage;
 	}

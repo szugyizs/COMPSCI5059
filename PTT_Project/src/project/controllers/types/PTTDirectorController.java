@@ -4,20 +4,19 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 import project.controllers.Controller;
-import project.storage.FileStorage;
+import project.storage.Storage;
 
 public class PTTDirectorController extends Controller
 {
 
 	//TODO - comment this class
 	//TODO - review functionality
-	private PrintStream printStream;
+	
 	private Scanner scanner;
 	
-	public PTTDirectorController(final FileStorage storage) 
+	public PTTDirectorController(final Storage storage) 
 	{
-		super(storage);
-		printStream = System.out;
+		super(storage, System.out);
 		scanner = new Scanner(System.in);
 	}
 	

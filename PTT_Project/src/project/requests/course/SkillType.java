@@ -1,5 +1,7 @@
 package project.requests.course;
 
+import java.io.PrintStream;
+
 /**
  * SkillType enumerator specifies the possible skills that a Teacher instance
  * can possess. Alternatively, these enumerators can be used to define the requirements
@@ -11,6 +13,8 @@ package project.requests.course;
 public enum SkillType
 {
 
+	SW("Software Engineering"), 
+	PL("Software Engineering"), 
 	SOFTWARE_ENGINEERING("Software Engineering"), 
 	PROGRAMMING_LANGUAGES("Programming Languages"),
 	ALGORITHMS_AND_DATA_STRUCTURES("Algorithms and Data Structures"),
@@ -52,6 +56,13 @@ public enum SkillType
 	public String getName()
 	{
 		return name;
+	}
+	
+	public static void printSkillTypes(final PrintStream printStream)
+	{
+		for(SkillType skillType : SkillType.values()) {
+			printStream.println(skillType.name());
+		}
 	}
 
 	@Override

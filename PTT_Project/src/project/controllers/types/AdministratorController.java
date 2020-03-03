@@ -14,7 +14,7 @@ import project.requests.course.Qualifications;
 import project.requests.course.SkillType;
 import project.requests.course.Teacher;
 import project.storage.FileStorage;
-
+import project.storage.Storage;
 import project.storage.lists.ListOfCourses;
 import project.storage.lists.ListOfTeachers;
 
@@ -23,17 +23,15 @@ public class AdministratorController extends Controller
 
 	// TODO - comment this class
 	// TODO - review functionality
-	private PrintStream printStream;
 	private Scanner scanner;
 	private FileStorage storage;
 
 	private ListOfTeachers listOfTeachers;
 	private ListOfCourses listOfCourses;
 
-	public AdministratorController(final FileStorage storage)
+	public AdministratorController(final Storage storage)
 	{
-		super(storage);
-		printStream = System.out;
+		super(storage, System.out);
 		scanner = new Scanner(System.in);
 		this.listOfTeachers = storage.getListOfTeachers();
 		this.listOfCourses = storage.getListOfCourses();
@@ -48,71 +46,71 @@ public class AdministratorController extends Controller
 		printStream.println("get req <teacher>:  get list of training requests for a teacher");
 		printStream.println("get teachers:       get list of teachers and their skills");
 		printStream.println("get courses:        get list of courses and their description");
-		printStream.println("set <courseID> <ContactType> <teacher>: adds a teacher to a course request");
-		printStream.println("set <teacher> <SkillType>: adds a training request to a teacher");
-		printStream.println("set <teacher> <SkillType> <Level>: changes the skill level of a teacher");
-		
+		printStream.println("set <courseID> <ContactType> <teacher>:  adds a teacher to a course request");
+		printStream.println("set <teacher> <SkillType>:               adds a training request to a teacher");
+		printStream.println("set <teacher> <SkillType> <Level>:       changes the skill level of a teacher");
+
 		printStream.println("");
-		
+
 	}
 
 	@Override
 	public boolean processCommand(final String command, final String... args)
 	{
 		String[] commandArgs;
-		
+
 		// Splits the command for further processing.
 		commandArgs = command.split(" ");
-		
-		if( commandArgs.length >=2 && commandArgs[0].equalsIgnoreCase("get"))
-		{
-			if (commandArgs[1].equalsIgnoreCase("teachers")) { //TODO: empty lists throws nullpointer exception
+
+		if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("get")) {
+			if (commandArgs[1].equalsIgnoreCase("teachers")) { // TODO: empty lists throws nullpointer exception
 				this.listOfTeachers.print(printStream);
 				return true;
-			}
-			else if (commandArgs[1].equalsIgnoreCase("courses")) {
+			} else if (commandArgs[1].equalsIgnoreCase("courses")) {
 				this.listOfCourses.print(printStream);
 				return true;
 			}
 //			else if{
 //				
 //			}
-			
-			
-		}
 
+		}
 
 		if (command.equalsIgnoreCase("get-teachingRequests")) {
 			this.listOfCourses.printUnfulfilledCourses(printStream);
 			return true;
 		}
-		
+
 		if (commandArgs.length == 3 && commandArgs[0].equalsIgnoreCase("set")) {
-					
+
 			Course course = this.listOfCourses.getCourse(commandArgs[1]);
-			if( course == null )
-			{
+			if (course == null) {
+				printStream.println("Course not found");
 				return false;
 			}
-			
+
 			Teacher teacher = this.listOfTeachers.getTeacher(commandArgs[3]);
-			if( teacher == null )
-			{
+			if (teacher == null) {
+				printStream.println("Teacher not found");
 				return false;
 			}
-			
+
 			ContactType type;
-			try{
+			try {
 				type = ContactType.valueOf(commandArgs[2]);// TODO: currently needs Try catch
 				course.addTeachingStaff(type, teacher);
+			} catch (NumberFormatException e) {
+				printStream.println("Invalid contact type, use LAB, TUTORIAL, LECTURE.");
+				return false;
 			}
-			catch(IllegalArgumentException e){	 
-					return false;
+
+			if (course.addTeachingStaff(type, teacher) == false) {
+				printStream.println("Teacher could not be added. Check requirements and skills.");
 			}
-			
+
 			return true;
 		}
-		
+
 		if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("make")) {
 			Teacher t = listOfTeachers.getTeacher(args[2]);
 			HashMap<SkillType, Short> sk = new HashMap<SkillType, Short>();// args[5], Short.parseShort(args[6]));
