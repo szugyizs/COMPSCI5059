@@ -93,7 +93,7 @@ public class CourseDirectorController extends Controller
 				return false;
 			}
 
-			qualifications = addQualifications();
+			qualifications = super.addQualifications(scanner);
 			if (qualifications.isEmpty() == true) {
 				printStream.println("Qualifications are empty.");
 				return false;
@@ -130,55 +130,7 @@ public class CourseDirectorController extends Controller
 		// destroy self?
 	}
 
-	private Qualifications addQualifications()
-	{
+	
 
-		String command = "help";
-		String[] commandArgs;
 
-		SkillType type = null;
-		Short level = null;
-
-		Qualifications qualificaitons = new Qualifications();
-
-		do {
-			commandArgs = command.split(" ");
-			// Always print help as the first command.
-			if (command.equalsIgnoreCase("help")) {
-				printHelp();
-				continue;
-			} else if (commandArgs.length == 2) {
-				try {
-					type = SkillType.valueOf(commandArgs[0]);
-				} catch (IllegalArgumentException e) {
-					printStream.println("Invalid contact type, use:");
-					SkillType.printSkillTypes(super.printStream);
-				}
-
-				try {
-					level = Short.parseShort(commandArgs[1]); // TODO: negative values?
-				} catch (NumberFormatException e) {
-					printStream.println("Level invalid, use 0-5.");
-				}
-
-				if (qualificaitons.setSkill(type, level) == true) {
-					printStream.println("Skill set.");
-					continue;
-				}
-			}
-
-			printStream.println("Failed to process command; type \"help\" or \"done\"");
-
-		} while (!(command = scanner.nextLine()).equalsIgnoreCase("done"));
-
-		return qualificaitons;
-	}
-
-	private void printHelp()
-	{
-
-		// General help commands.
-		super.printStream.println("Explain get qulaifications:");
-
-	}
 }

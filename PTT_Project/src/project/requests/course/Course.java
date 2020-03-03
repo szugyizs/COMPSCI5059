@@ -209,7 +209,7 @@ public class Course
 				return false;
 			}
 			// Potentially clear the teaching staff.
-			//this.teachingStaff.put(key, new ArrayList<Teacher>());
+			this.teachingStaff.put(key, new ArrayList<Teacher>());
 		}
 		
 		this.teachingStaffRequirementsRequests.put(key, new TeachingRequest(courseRequirement));
@@ -512,7 +512,11 @@ public class Course
 	public boolean areRequirementsFulfilled()
 	{
 		for (final ContactType contactType : teachingStaffRequirementsRequests.keySet()) {
-			if (!checkTeachersMeetRequirements(contactType, this.teachingStaff.get(contactType))) {
+			List<Teacher> listT = this.teachingStaff.get(contactType);
+			if(listT == null)
+			{
+				return false;
+			}else if (!checkTeachersMeetRequirements(contactType, this.teachingStaff.get(contactType))) {
 				return false;
 			}
 		}

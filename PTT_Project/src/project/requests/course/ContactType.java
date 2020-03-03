@@ -1,5 +1,7 @@
 package project.requests.course;
 
+import java.io.PrintStream;
+
 /**
  * ContactType enumerator specifies the possible contact types for a course i.e. a course
  * has lectures, tutorials and labs. These are most frequently used alongside the CourseRequirements
@@ -44,4 +46,11 @@ public enum ContactType
 		return name;
 	}
 	
+	public static void printContactTypes(final PrintStream printStream)
+	{
+		for(ContactType contactType : ContactType.values()) {
+			printStream.println(contactType.name());
+		}
+	}
+
 }

@@ -7,6 +7,8 @@ import java.util.ListIterator;
 import java.util.Scanner;
 
 import project.controllers.Controller;
+import project.requests.CourseRequirement;
+import project.requests.TrainingRequest;
 import project.requests.TrainingRequirement;
 import project.requests.course.ContactType;
 import project.requests.course.Course;
@@ -44,11 +46,12 @@ public class AdministratorController extends Controller
 		printStream.println("\nAdministrator commands:");
 		printStream.println("get req <courseId>: get list of teaching requests for a course");
 		printStream.println("get req <teacher>:  get list of training requests for a teacher");
-		printStream.println("get teachers:       get list of teachers and their skills");
-		printStream.println("get courses:        get list of courses and their description"); //TODO: fails currently if request is open
-		printStream.println("set <courseID> <ContactType> <teacher>:  adds a teacher to a course request");
-		printStream.println("set <teacher> <SkillType>:               adds a training request to a teacher");//TODO: 
-		printStream.println("set <teacher> <SkillType> <Level>:       changes the skill level of a teacher");//TODO: 
+		printStream.println("get courses:        get list of courses and their description"); // TODO: fails currently
+		printStream.println("get teachers:       get list of teachers and their qualifications");
+																								// if request is open
+		printStream.println("set course <courseID> <ContactType> <teacher>:  adds a teacher to a course request");
+		printStream.println("set req <teacher>                 adds a training request to a teacher");// TODO:untested, populate teachers
+		printStream.println("set quali <teacher> <ReqID>:        changes the skill level of a teacher");// TODO:not implemented
 
 		printStream.println("");
 
@@ -62,112 +65,150 @@ public class AdministratorController extends Controller
 		// Splits the command for further processing.
 		commandArgs = command.split(" ");
 
+		// Check all the get commands
 		if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("get")) {
+			
 			if (commandArgs[1].equalsIgnoreCase("teachers")) {
 				this.listOfTeachers.print(printStream);
 				return true;
-			} else if (commandArgs[1].equalsIgnoreCase("courses")) { // TODO: empty lists throws nullpointer exception
-				this.listOfCourses.printUnfulfilledCourses(printStream);
-				
-				//this.listOfCourses.print(printStream); //gives exception
+			} else if (commandArgs[1].equalsIgnoreCase("courses")) { 
+				this.listOfCourses.print(printStream);// TODO: empty lists throws nullpointer exception
 				return true;
-			}
-			else if (commandArgs[1].equalsIgnoreCase("req") )
-			{
-				
+			} else if ( commandArgs.length == 3 && commandArgs[1].equalsIgnoreCase("req")) {
+
 				Course course = this.listOfCourses.getCourse(commandArgs[2]);
-				if (course == null) {
-					printStream.println("Course not found");
+				Teacher teacher = this.listOfTeachers.getTeacher(commandArgs[2]);
+				if (teacher == null && course == null) {
+					printStream.println("No course or teacher not found");
 					return false;
-				}
-				else {
+				} else if(course != null){
 					course.printTeachingRequests(printStream);
+					return true;
+				} else if(teacher != null){
+					teacher.printTrainingRequests(printStream);
 					return true;
 				}
 			}
-//			
+
+		}
+		// Check all the set commands
+		else if (commandArgs.length >= 4 && commandArgs[0].equalsIgnoreCase("set")) {
+
+			if (commandArgs[1].equalsIgnoreCase("course")) {
+				return attemptAddTeacher(commandArgs);
+			} else if (commandArgs[1].equalsIgnoreCase("req")) {
+				return attemptAddTrainingReq(commandArgs);
+			} else if (commandArgs[1].equalsIgnoreCase("quali")) {
+				
+			}
 
 		}
 
-		if (command.equalsIgnoreCase("get-teachingRequests")) {
-			this.listOfCourses.printUnfulfilledCourses(printStream);
-			return true;
-		}
+		return false;
 
-		if (commandArgs.length == 3 && commandArgs[0].equalsIgnoreCase("set")) {
+	}
 
-			Course course = this.listOfCourses.getCourse(commandArgs[1]);
+	@Override
+	public void logout()
+	{
+		// TODO: storage save?
+		printStream.println("Administrator logged out.");
+	}
+
+	private boolean attemptAddTeacher(String[] commandArgs)
+	{
+		if (commandArgs.length != 5) {
+			printStream.println("Invalid number of arguments.");
+			return false;
+		} else {
+			Course course = this.listOfCourses.getCourse(commandArgs[2]);
 			if (course == null) {
-				printStream.println("Course not found");
+				printStream.println("Course not found, use course ID");
 				return false;
 			}
 
-			Teacher teacher = this.listOfTeachers.getTeacher(commandArgs[3]);
+			Teacher teacher = this.listOfTeachers.getTeacher(commandArgs[4]);
 			if (teacher == null) {
-				printStream.println("Teacher not found");
+				printStream.println("Teacher not found, use GUID");
 				return false;
 			}
 
-			ContactType type;
+			ContactType type = null;
 			try {
-				type = ContactType.valueOf(commandArgs[2]);// TODO: currently needs Try catch
+				type = ContactType.valueOf(commandArgs[3]);
 				course.addTeachingStaff(type, teacher);
 			} catch (NumberFormatException e) {
-				printStream.println("Invalid contact type, use LAB, TUTORIAL, LECTURE.");
+				printStream.println("Invalid contact type, use:");
+				ContactType.printContactTypes(super.printStream);
 				return false;
 			}
 
 			if (course.addTeachingStaff(type, teacher) == false) {
 				printStream.println("Teacher could not be added. Check requirements and skills.");
+				return false;
+			} else {
+
+				printStream.println("Teacher successfully added to course.");
+				course.printCourse(printStream);
 			}
 
-			return true;
 		}
 
-		if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("make")) {
-			Teacher t = listOfTeachers.getTeacher(args[2]);
-			HashMap<SkillType, Short> sk = new HashMap<SkillType, Short>();// args[5], Short.parseShort(args[6]));
-																			// //TODO do
-			Qualifications q = new Qualifications(sk);
-			TrainingRequirement tr = new TrainingRequirement(q);
-			t.addTrainingRequest(tr);
-		}
-
-		if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("update-skill")) {
-			Teacher t = listOfTeachers.getTeacher(args[1]);
-			// t.setSkill(args[2], Short.parseShort(args[3])); //TODO do
-		}
-
-		return false;
+		return true;
 	}
 
-	@Override
-	public void logout() // TODO do
+	private boolean attemptAddTrainingReq(String[] commandArgs)
 	{
-		// TODO: print message
-		
+		if (commandArgs.length != 3) {
+			printStream.println("Invalid number of arguments.");
+			return false;
+		} else {
+
+			Teacher teacher = this.listOfTeachers.getTeacher(commandArgs[2]);
+			if (teacher == null) {
+				printStream.println("Teacher not found, use GUID");
+				return false;
+			}
+
+			Qualifications qualifications = super.addQualifications(scanner);
+			
+			if (qualifications.isEmpty() == true) {
+				printStream.println("Qualifications are empty.");
+				return false;
+			}
+
+			TrainingRequirement trainingRequirement = new TrainingRequirement(qualifications);
+			TrainingRequest trainingRequest = teacher.addTrainingRequest(trainingRequirement);
+			if (trainingRequest == null) {
+				printStream.println("Training request could not be added.");
+				return false;
+			} else {
+
+				printStream.println("Training request  successfully added to course.");
+				trainingRequest.printRequest(printStream);
+			}
+
+		}
+
+		return true;
 	}
-
-//	public ListOfCourses getListOfCourses()
-//	{
-//		return this.listOfCourses;
-//	}
-//
-//	public ListOfTeachers getListOfTeachers()
-//	{
-//		return this.listOfTeachers;
-//	}
-
-//	public String getTeachingRequests() // TODO do
-//	{
-//		String out = "";
-//		LinkedList<Course> requests = getListOfCourses().getCourses();
-//		ListIterator listIterator = requests.listIterator();
-//		while (listIterator.hasNext()) {
-//			// out.concat(listIterator.next().getTeachingRequests());
-//		}
-//		return out;
-//	}
 	
-	//private 
+	private boolean attemptUpdateQulai(String[] commandArgs)
+	{
+		if (commandArgs.length != 4) {
+			printStream.println("Invalid number of arguments.");
+			return false;
+		} else {
+
+			Teacher teacher = this.listOfTeachers.getTeacher(commandArgs[2]);
+			if (teacher == null) {
+				printStream.println("Teacher not found, use GUID");
+				return false;
+			}
+
+			//TODO:
+		}
+
+		return true;
+	}
 }
