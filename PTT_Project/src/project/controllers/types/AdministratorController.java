@@ -45,10 +45,10 @@ public class AdministratorController extends Controller
 		printStream.println("get req <courseId>: get list of teaching requests for a course");
 		printStream.println("get req <teacher>:  get list of training requests for a teacher");
 		printStream.println("get teachers:       get list of teachers and their skills");
-		printStream.println("get courses:        get list of courses and their description");
+		printStream.println("get courses:        get list of courses and their description"); //TODO: fails currently if request is open
 		printStream.println("set <courseID> <ContactType> <teacher>:  adds a teacher to a course request");
-		printStream.println("set <teacher> <SkillType>:               adds a training request to a teacher");
-		printStream.println("set <teacher> <SkillType> <Level>:       changes the skill level of a teacher");
+		printStream.println("set <teacher> <SkillType>:               adds a training request to a teacher");//TODO: 
+		printStream.println("set <teacher> <SkillType> <Level>:       changes the skill level of a teacher");//TODO: 
 
 		printStream.println("");
 
@@ -63,16 +63,29 @@ public class AdministratorController extends Controller
 		commandArgs = command.split(" ");
 
 		if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("get")) {
-			if (commandArgs[1].equalsIgnoreCase("teachers")) { // TODO: empty lists throws nullpointer exception
+			if (commandArgs[1].equalsIgnoreCase("teachers")) {
 				this.listOfTeachers.print(printStream);
 				return true;
-			} else if (commandArgs[1].equalsIgnoreCase("courses")) {
-				this.listOfCourses.print(printStream);
+			} else if (commandArgs[1].equalsIgnoreCase("courses")) { // TODO: empty lists throws nullpointer exception
+				this.listOfCourses.printUnfulfilledCourses(printStream);
+				
+				//this.listOfCourses.print(printStream); //gives exception
 				return true;
 			}
-//			else if{
-//				
-//			}
+			else if (commandArgs[1].equalsIgnoreCase("req") )
+			{
+				
+				Course course = this.listOfCourses.getCourse(commandArgs[2]);
+				if (course == null) {
+					printStream.println("Course not found");
+					return false;
+				}
+				else {
+					course.printTeachingRequests(printStream);
+					return true;
+				}
+			}
+//			
 
 		}
 
@@ -131,29 +144,30 @@ public class AdministratorController extends Controller
 	@Override
 	public void logout() // TODO do
 	{
-		// TODO:
-		// storage.save();
-		// destroy self?
+		// TODO: print message
+		
 	}
 
-	public ListOfCourses getListOfCourses()
-	{
-		return this.listOfCourses;
-	}
+//	public ListOfCourses getListOfCourses()
+//	{
+//		return this.listOfCourses;
+//	}
+//
+//	public ListOfTeachers getListOfTeachers()
+//	{
+//		return this.listOfTeachers;
+//	}
 
-	public ListOfTeachers getListOfTeachers()
-	{
-		return this.listOfTeachers;
-	}
-
-	public String getTeachingRequests() // TODO do
-	{
-		String out = "";
-		LinkedList<Course> requests = getListOfCourses().getCourses();
-		ListIterator listIterator = requests.listIterator();
-		while (listIterator.hasNext()) {
-			// out.concat(listIterator.next().getTeachingRequests());
-		}
-		return out;
-	}
+//	public String getTeachingRequests() // TODO do
+//	{
+//		String out = "";
+//		LinkedList<Course> requests = getListOfCourses().getCourses();
+//		ListIterator listIterator = requests.listIterator();
+//		while (listIterator.hasNext()) {
+//			// out.concat(listIterator.next().getTeachingRequests());
+//		}
+//		return out;
+//	}
+	
+	//private 
 }

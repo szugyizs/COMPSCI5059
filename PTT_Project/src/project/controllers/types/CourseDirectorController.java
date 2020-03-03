@@ -27,12 +27,12 @@ public class CourseDirectorController extends Controller
 		this.course = course;
 		this.scanner = new Scanner(System.in);
 	}
-	
+
 	public CourseDirectorController(final Storage storage, final Course course)
 	{
 		this(storage, System.out, course);
 	}
-	
+
 	public Course getCourse()
 	{
 		return course;
@@ -87,36 +87,37 @@ public class CourseDirectorController extends Controller
 			}
 
 			try {
-				nbrStaff = Integer.parseInt(commandArgs[4]);
+				cHours = Integer.parseInt(commandArgs[4]);
 			} catch (NumberFormatException e) {
 				printStream.println("Contact hours invalid.");
 				return false;
 			}
 
 			qualifications = addQualifications();
-			if( qualifications.isEmpty() == true ) {
+			if (qualifications.isEmpty() == true) {
 				printStream.println("Qualifications are empty.");
 				return false;
 			}
-			if( type == null )
-			{
+			if (type == null) {
 				printStream.println("Type was not set.");
 				return false;
 			}
-			
-			CourseRequirement courseRequirement = new CourseRequirement(type, nbrStudents, nbrStaff, cHours, qualifications);
-			course.addCourseRequirement(courseRequirement);				
+
+			CourseRequirement courseRequirement = new CourseRequirement(type, nbrStudents, nbrStaff, cHours,
+					qualifications);
+			if (course.addCourseRequirement(courseRequirement) == false) {
+				printStream.println("Course requirements not set.");
+				return false;
+			}
 
 			printStream.println("Course requirements set successfully.");
+			course.printTeachingRequests(printStream);
 			return true;
 		}
 
-		if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("make")) { // TODO do
-
-		}
-
-		if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("show")) {
-			printStream.println(course.toString());
+		if (commandArgs.length == 1 && commandArgs[0].equalsIgnoreCase("show")) {
+			course.printTeachingRequests(printStream);
+			return true;
 		}
 
 		return false;

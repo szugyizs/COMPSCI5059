@@ -40,18 +40,18 @@ public class Course
 	 *                                          list of teachers i.e. teachers that
 	 *                                          teach for each of the ContactTypes.
 	 */
-	public Course(final String courseID, final String name, final String description,
-			final HashMap<ContactType, TeachingRequest> teachingStaffRequirementsRequests,
-			final HashMap<ContactType, List<Teacher>> teachingStaff)
-	{
-		this.courseID = courseID;
-		this.name = name;
-		this.description = description;
-
-		this.teachingStaffRequirementsRequests = teachingStaffRequirementsRequests;
-
-		this.teachingStaff = teachingStaff;
-	}
+//	public Course(final String courseID, final String name, final String description,
+//			final HashMap<ContactType, TeachingRequest> teachingStaffRequirementsRequests,
+//			final HashMap<ContactType, List<Teacher>> teachingStaff)
+//	{
+//		this.courseID = courseID;
+//		this.name = name;
+//		this.description = description;
+//
+//		this.teachingStaffRequirementsRequests = teachingStaffRequirementsRequests;
+//
+//		this.teachingStaff = teachingStaff;
+//	}
 
 	/**
 	 * Constructor instantiates an instance of Course. This constructor implicitly
@@ -209,7 +209,7 @@ public class Course
 				return false;
 			}
 			// Potentially clear the teaching staff.
-			this.teachingStaff.get(key).clear();
+			//this.teachingStaff.put(key, new ArrayList<Teacher>());
 		}
 		
 		this.teachingStaffRequirementsRequests.put(key, new TeachingRequest(courseRequirement));

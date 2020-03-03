@@ -93,10 +93,15 @@ public class ListOfCourses
 
 	public void print(final PrintStream printStream)
 	{
-		// Print all of the courses.
+
 		for (final Course course : this.courses) {
-			course.printCourse(printStream);
-			printStream.println();
+			course.printTeachingRequests(printStream);
 		}
+		
+//		// Print all of the courses.
+//		for (final Course course : this.courses) {
+//			course.printCourse(printStream); // TODO: NULLPOINTER EXCEPTION
+//			printStream.println(); 
+//		}
 	}
 }
