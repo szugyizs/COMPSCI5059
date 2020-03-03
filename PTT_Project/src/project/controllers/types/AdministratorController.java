@@ -64,20 +64,12 @@ public class AdministratorController extends Controller
 
 		// Splits the command for further processing.
 		commandArgs = command.split(" ");
-<<<<<<< HEAD
-		
-		if( commandArgs.length >=2 && commandArgs[0].equalsIgnoreCase("get"))
-		{
-			if (commandArgs[1].equalsIgnoreCase("teachers")) { //TODO: empty lists throws nullpointer exception
-				this.listOfTeachers.printTeachers(printStream);
-=======
 
 		// Check all the get commands
 		if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("get")) {
 			
 			if (commandArgs[1].equalsIgnoreCase("teachers")) {
-				this.listOfTeachers.print(printStream);
->>>>>>> branch 'master' of https://github.com/szugyizs/COMPSCI5059.git
+				this.listOfTeachers.printTeachers(printStream);
 				return true;
 			} else if (commandArgs[1].equalsIgnoreCase("courses")) { 
 				this.listOfCourses.print(printStream);// TODO: empty lists throws nullpointer exception
