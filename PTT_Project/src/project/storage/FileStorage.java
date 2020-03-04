@@ -64,12 +64,6 @@ public class FileStorage extends Storage
 			super.listOfTeachers = parseTeachers(jsonTeachers);
 			super.listOfCourses = parseCourses(listOfTeachers, jsonCourses);
 			
-			Teacher teacher = super.listOfTeachers.getTeachers().get(0);
-			System.out.println(teacher.getForename() + " " + teacher.getTrainingRequests().size());
-			super.listOfTeachers.printTrainingRequests(System.out);
-			
-			listOfCourses.print(System.out);
-			
 		} catch (IOException | org.json.simple.parser.ParseException e) {
 			e.printStackTrace();
 			return false;
