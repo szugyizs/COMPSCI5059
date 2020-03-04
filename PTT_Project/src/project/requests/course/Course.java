@@ -155,10 +155,10 @@ public class Course
 
 		ContactType key = courseRequirement.getContactType();
 
-		// Simply check that the requirements have not been denied, we assume that
+		// Simply check that the requirements have not been accepted, we assume that
 		// they're being overwritten.
 		if (this.teachingStaffRequirementsRequests.containsKey(key)) {
-			if (this.teachingStaffRequirementsRequests.get(key).getRequestStatus() == RequestStatusType.DENIED) {
+			if (this.teachingStaffRequirementsRequests.get(key).getRequestStatus() == RequestStatusType.ACCEPTED) {
 				return false;
 			}
 			// Potentially clear the teaching staff.
