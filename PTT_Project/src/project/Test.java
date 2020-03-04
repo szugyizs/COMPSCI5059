@@ -8,81 +8,65 @@ import project.controllers.types.PTTDirectorController;
 import project.storage.FileStorage;
 import project.storage.Storage;
 
-public class Test { // TODO ensure test class tests all user stories 
-	private Storage storage = new FileStorage("");
-	
-    public void testAdminCommands() { // TODO
-    	AdministratorController adminController = new AdministratorController(storage);
-    	boolean result = adminController.processCommand("logout", "");
-    	assertEquals(true, result);
-    	result = adminController.processCommand("get teachers", "");
-    	assertEquals(true, result);
-    	result = adminController.processCommand("get teaching-requests", "");
-    	assertEquals(true, result);
-    	result = adminController.processCommand("quit", "");
-    	assertEquals(false, result);
-    	}
-    
-    public void testPTTCommands() { // TODO
-    	PTTDirectorController pTTController = new PTTDirectorController(storage);
-    	boolean result = pTTController.processCommand("logout", "");
-    	assertEquals(true, result);
-    	result = pTTController.processCommand("get teaching-requests", "");
-    	assertEquals(true, result);
-    	result = pTTController.processCommand("get training-requests", "");
-    	assertEquals(true, result);
-    	
-    	result = pTTController.processCommand("quit", "");
-    	assertEquals(false, result);
-    	}
-    
-//    public void testCourseDirectorCommands() { // TODO
-//    	CourseDirectorController directorController = new CourseDirectorController(storage);
-//    	boolean result = directorController.processCommand("logout", "");
-//    	assertEquals(true, result);
-//    	result = directorController.processCommand("get teaching-requests", "");
-//    	assertEquals(true, result);
-//    	result = directorController.processCommand("get training-requests", "");
-//    	assertEquals(true, result);
-//    	
-//    	result = directorController.processCommand("quit", "");
-//    	assertEquals(false, result);
-//    	}
-    
-    public void testHelpMessages() {
-		// TODO
-	}
-    
-    
-//    public void testAddTeachingRequirement() { // TODO
-//    	CourseDirectorController directorController = new CourseDirectorController(storage);
-//    }
-//    
-    
-    public void testRequestGenerated() { // TODO
-    	
-    	
-    }
-    
-    public void testStartPrompt() { // TODO
-    	
-    }
-    
-    public void testCorrectRole () { // TODO
-    	
-    }
-    
-    // admin tests
-    
-    //	ptt tests
-    
-    // course director tests
-    
-    
-    
-    
-    
-        
+/**
+ * A test class to test certain methods
+ */
 
-    
+public class Test { 
+	private Storage storage = new FileStorage("lib/database.json");
+	PTTDirectorController pTTController = new PTTDirectorController(storage);
+	AdministratorController adminController = new AdministratorController(storage);
+	CourseDirectorController directorController = new CourseDirectorController(storage, null);
+	
+	/**
+	 * Tests that the administrator commands work as expected.
+	 */
+	public void testAdminCommands() { 
+
+		boolean result = adminController.processCommand("logout", "");
+		assertEquals(false, result);
+		result = adminController.processCommand("failTest", "");
+		assertEquals(false, result);
+		result = adminController.processCommand("get req COMPSCI5059", "");
+		assertEquals(true, result);
+		result = adminController.processCommand("get req 2500414V", "");
+		assertEquals(true, result);
+		result = adminController.processCommand("get courses", "");
+		assertEquals(true, result);
+		result = adminController.processCommand("get teachers", "");
+		assertEquals(true, result);
+	}
+	
+	/**
+	 * Tests that the PTT commands work as expected.
+	 */
+	public void testPTTCommands() { 
+		boolean result = pTTController.processCommand("logout", "");
+		assertEquals(false, result);
+		result = pTTController.processCommand("failTest", "");
+		assertEquals(false, result);
+		result = pTTController.processCommand("get teachreq COMPSCI5059", "");
+		assertEquals(true, result);
+		result = pTTController.processCommand("get trainreq 2500414V", "");
+		assertEquals(true, result);
+		result = pTTController.processCommand("set status teachreq COMPSCI5059 LAB ACCEPTED", "");
+		assertEquals(true, result);
+		result = pTTController.processCommand("quit", "");
+		assertEquals(false, result);
+	}
+	
+	/**
+	 * Tests that the course director commands work as expected.
+	 */
+	public void testCourseDirectorCommands() {  
+
+		boolean result = directorController.processCommand("logout", "");
+		assertEquals(false, result);
+		result = directorController.processCommand("failTest", "");
+		assertEquals(false, result);
+		result = directorController.processCommand("req LAB 1 1 1", "");
+		assertEquals(true, result);
+		result = directorController.processCommand("quit", "");
+		assertEquals(false, result);
+	}
 }
