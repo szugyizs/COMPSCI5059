@@ -2,9 +2,6 @@ package project.storage;
 
 import project.storage.lists.ListOfTeachers;
 
-import java.util.LinkedList;
-
-import project.requests.course.Course;
 import project.storage.lists.ListOfCourses;
 
 /**

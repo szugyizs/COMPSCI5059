@@ -9,7 +9,6 @@ import project.requests.course.ContactType;
 import project.requests.course.Course;
 import project.requests.course.Qualifications;
 import project.requests.course.Teacher;
-import project.storage.FileStorage;
 import project.storage.Storage;
 import project.storage.lists.ListOfCourses;
 import project.storage.lists.ListOfTeachers;
@@ -21,7 +20,6 @@ import project.storage.lists.ListOfTeachers;
 public class AdministratorController extends Controller
 {
 	private Scanner scanner;
-	private FileStorage storage;
 	private ListOfTeachers listOfTeachers;
 	private ListOfCourses listOfCourses;
 
@@ -35,7 +33,7 @@ public class AdministratorController extends Controller
 	public AdministratorController(final Storage storage)
 	{
 		super(storage, System.out);
-		scanner = new Scanner(System.in);
+		this.scanner = new Scanner(System.in);
 		this.listOfTeachers = storage.getListOfTeachers();
 		this.listOfCourses = storage.getListOfCourses();
 	}
@@ -48,17 +46,17 @@ public class AdministratorController extends Controller
 	public void printHelpMessages()
 	{
 		// Administrator Specific help commands
-		printStream.println("\nAdministrator commands:");
-		printStream.println("get req <courseId>: get list of teaching requests for a course");
-		printStream.println("get req <teacher>:  get list of training requests for a teacher");
-		printStream.println("get courses:        get list of courses and their description");
-		printStream.println("get teachers:       get list of teachers and their qualifications");
+		super.printStream.println("\nAdministrator commands:");
+		super.printStream.println("get req <courseId>: get list of teaching requests for a course");
+		super.printStream.println("get req <teacher>:  get list of training requests for a teacher (use GUID)");
+		super.printStream.println("get courses:        get list of courses and their description");
+		super.printStream.println("get teachers:       get list of teachers and their qualifications");
 
-		printStream.println("set course <courseID> <ContactType> <teacher>:  adds a teacher to a course request");
-		printStream.println("set req <teacher>:                              adds a training request to a teacher");
-		printStream.println("set quali <teacher> <ReqID>:                    changes the skill level of a teacher");
+		super.printStream.println("set course <courseID> <ContactType> <teacher>:  adds a teacher (use GUID) to a course request");
+		super.printStream.println("set req <teacher>:                              adds a training request to a teacher (use GUID)");
+		super.printStream.println("set quali <teacher> <ReqID>:                    changes the skill level of a teacher (use GUID) ");
 
-		printStream.println("");
+		super.printStream.println("");
 
 	}
 
@@ -82,12 +80,12 @@ public class AdministratorController extends Controller
 
 			// Print list of teachers
 			if (commandArgs[1].equalsIgnoreCase("teachers")) {
-				this.listOfTeachers.printTeachers(printStream);
+				this.listOfTeachers.printTeachers(super.printStream);
 				return true;
 			}
 			// Print list of courses
 			else if (commandArgs[1].equalsIgnoreCase("courses")) {
-				this.listOfCourses.print(printStream);
+				this.listOfCourses.print(super.printStream);
 				return true;
 			}
 			// Print request for a specific teacher or course
@@ -98,13 +96,13 @@ public class AdministratorController extends Controller
 				Teacher teacher = this.listOfTeachers.getTeacher(commandArgs[2]);
 
 				if (teacher == null && course == null) {
-					printStream.println("No course or teacher not found");
+					super.printStream.println("No course or teacher not found");
 					return false;
 				} else if (course != null) {
-					course.printTeachingRequests(printStream);
+					course.printTeachingRequests(super.printStream);
 					return true;
 				} else if (teacher != null) {
-					teacher.printTrainingRequests(printStream);
+					teacher.printTrainingRequests(super.printStream);
 					return true;
 				}
 			}
@@ -123,7 +121,7 @@ public class AdministratorController extends Controller
 			}
 			// Try to update a teacher qualification
 			else if (commandArgs[1].equalsIgnoreCase("quali")) {
-
+				return attemptUpdateQulai(commandArgs);
 			}
 
 		}
@@ -138,8 +136,7 @@ public class AdministratorController extends Controller
 	@Override
 	public void logout()
 	{
-		super.storage.save();
-		printStream.println("Administrator logged out.");
+		super.printStream.println("Administrator logged out.");
 	}
 
 	/**
@@ -151,20 +148,20 @@ public class AdministratorController extends Controller
 	private boolean attemptAddTeacher(String[] commandArgs)
 	{
 		if (commandArgs.length != 5) {
-			printStream.println("Invalid number of arguments.");
+			super.printStream.println("Invalid number of arguments.");
 			return false;
 		} else {
 			// Find the specified course
 			Course course = this.listOfCourses.getCourse(commandArgs[2]);
 			if (course == null) {
-				printStream.println("Course not found, use course ID");
+				super.printStream.println("Course not found, use course ID");
 				return false;
 			}
 
 			// Find the specified teacher
 			Teacher teacher = this.listOfTeachers.getTeacher(commandArgs[4]);
 			if (teacher == null) {
-				printStream.println("Teacher not found, use GUID");
+				super.printStream.println("Teacher not found, use GUID");
 				return false;
 			}
 
@@ -172,21 +169,19 @@ public class AdministratorController extends Controller
 			ContactType type = null;
 			try {
 				type = ContactType.valueOf(commandArgs[3]);
-				course.addTeachingStaff(type, teacher);
 			} catch (IllegalArgumentException e) {
-				printStream.println("Invalid contact type, use:");
+				super.printStream.println("Invalid contact type, use:");
 				ContactType.printContactTypes(super.printStream);
 				return false;
 			}
 
 			// Try to add the teacher, check requirements 
 			if (course.addTeachingStaff(type, teacher) == false) {
-				printStream.println("Teacher could not be added. Check requirements and skills.");
-				return false;
+				super.printStream.println("Teacher could not be added. Check requirements and skills.");
 			} else {
 
-				printStream.println("Teacher successfully added to course.");
-				course.printCourse(printStream);
+				super.printStream.println("Teacher successfully added to course.");
+				course.printCourse(super.printStream);
 			}
 
 		}
@@ -210,7 +205,7 @@ public class AdministratorController extends Controller
 			// Find the specified teacher
 			Teacher teacher = this.listOfTeachers.getTeacher(commandArgs[2]);
 			if (teacher == null) {
-				printStream.println("Teacher not found, use GUID");
+				super.printStream.println("Teacher not found, use GUID");
 				return false;
 			}
 
@@ -219,7 +214,7 @@ public class AdministratorController extends Controller
 			Qualifications qualifications = super.addQualifications(scanner);
 
 			if (qualifications.isEmpty() == true) {
-				printStream.println("Qualifications are empty.");
+				super.printStream.println("Qualifications are empty.");
 				return false;
 			}
 
@@ -227,12 +222,12 @@ public class AdministratorController extends Controller
 			TrainingRequirement trainingRequirement = new TrainingRequirement(qualifications);
 			TrainingRequest trainingRequest = teacher.addTrainingRequest(trainingRequirement);
 			if (trainingRequest == null) {
-				printStream.println("Training request could not be added.");
+				super.printStream.println("Training request could not be added.");
 				return false;
 			} else {
 
-				printStream.println("Training request  successfully added to teacher.");
-				trainingRequest.printRequest(printStream);
+				super.printStream.println("Training request  successfully added to teacher.");
+				trainingRequest.printRequest(super.printStream);
 			}
 
 		}
@@ -249,10 +244,10 @@ public class AdministratorController extends Controller
 	private boolean attemptUpdateQulai(String[] commandArgs)
 	{
 		if (commandArgs.length != 4) {
-			printStream.println("Invalid number of arguments.");
+			super.printStream.println("Invalid number of arguments.");
 			return false;
 		} else {
-			printStream.println("Updating of teacher qualifications currently not supported");
+			super.printStream.println("Updating of teacher qualifications currently not supported");
 		}
 
 		return true;

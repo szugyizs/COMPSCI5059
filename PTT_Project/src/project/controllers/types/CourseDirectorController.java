@@ -10,12 +10,8 @@ import project.requests.course.Course;
 import project.requests.course.Qualifications;
 import project.storage.Storage;
 
-//TODO: add super before every printStream
 public class CourseDirectorController extends Controller
 {
-
-	// TODO - comment this class
-	// TODO - review functionality
 	private Scanner scanner;
 	private Course course;
 
@@ -97,7 +93,7 @@ public class CourseDirectorController extends Controller
 				type = ContactType.valueOf(commandArgs[1]);
 			} catch (IllegalArgumentException e) {
 				super.printStream.println("Invalid contact type, use:");
-				ContactType.printContactTypes(printStream);
+				ContactType.printContactTypes(super.printStream);
 				return false;
 			}
 
@@ -105,7 +101,7 @@ public class CourseDirectorController extends Controller
 			try {
 				nbrStudents = Integer.parseInt(commandArgs[2]);
 			} catch (NumberFormatException e) {
-				printStream.println("Number of students invalid.");
+				super.printStream.println("Number of students invalid.");
 				return false;
 			}
 
@@ -113,7 +109,7 @@ public class CourseDirectorController extends Controller
 			try {
 				nbrStaff = Integer.parseInt(commandArgs[3]);
 			} catch (NumberFormatException e) {
-				printStream.println("Number of staff invalid.");
+				super.printStream.println("Number of staff invalid.");
 				return false;
 			}
 
@@ -121,7 +117,7 @@ public class CourseDirectorController extends Controller
 			try {
 				cHours = Integer.parseInt(commandArgs[4]);
 			} catch (NumberFormatException e) {
-				printStream.println("Contact hours invalid.");
+				super.printStream.println("Contact hours invalid.");
 				return false;
 			}
 
@@ -129,11 +125,11 @@ public class CourseDirectorController extends Controller
 			// <SkillType> <level> (level valid from 0-5)
 			qualifications = super.addQualifications(scanner);
 			if (qualifications.isEmpty() == true) {
-				printStream.println("Qualifications are empty.");
+				super.printStream.println("Qualifications are empty.");
 				return false;
 			}
 			if (type == null) {
-				printStream.println("Type was not set.");
+				super.printStream.println("Type was not set.");
 				return false;
 			}
 
@@ -141,18 +137,18 @@ public class CourseDirectorController extends Controller
 			CourseRequirement courseRequirement = new CourseRequirement(type, nbrStudents, nbrStaff, cHours,
 					qualifications);
 			if (course.addCourseRequirement(courseRequirement) == false) {
-				printStream.println("Course requirements not set.");
+				super.printStream.println("Course requirements not set.");
 				return false;
 			}
 
-			printStream.println("Course requirements set successfully.");
-			course.printTeachingRequests(printStream);
+			super.printStream.println("Course requirements set successfully.");
+			course.printTeachingRequests(super.printStream);
 			return true;
 		}
 
 		// show course requirements for this course
 		if (commandArgs.length == 1 && commandArgs[0].equalsIgnoreCase("show")) {
-			course.printTeachingRequests(printStream);
+			course.printTeachingRequests(super.printStream);
 			return true;
 		}
 
@@ -165,8 +161,7 @@ public class CourseDirectorController extends Controller
 	@Override
 	public void logout()
 	{
-		// storage.save(); //TODO
-		printStream.println("Course Director logged out.");
+		super.printStream.println("Course Director logged out.");
 	}
 
 }

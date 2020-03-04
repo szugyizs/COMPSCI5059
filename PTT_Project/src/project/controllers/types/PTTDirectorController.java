@@ -1,8 +1,5 @@
 package project.controllers.types;
 
-import java.io.PrintStream;
-import java.util.Scanner;
-
 import project.controllers.Controller;
 import project.requests.RequestStatusType;
 import project.requests.TeachingRequest;
@@ -19,7 +16,6 @@ import project.storage.lists.ListOfTeachers;
 
 public class PTTDirectorController extends Controller {
 
-	private Scanner scanner;
 	private ListOfTeachers listOfTeachers;
 	private ListOfCourses listOfCourses;
 
@@ -31,7 +27,6 @@ public class PTTDirectorController extends Controller {
 
 	public PTTDirectorController(final Storage storage) {
 		super(storage, System.out);
-		scanner = new Scanner(System.in);
 		this.listOfTeachers = storage.getListOfTeachers();
 		this.listOfCourses = storage.getListOfCourses();
 	}
@@ -40,14 +35,14 @@ public class PTTDirectorController extends Controller {
 	 * Prints a list of available commands
 	 */
 	@Override
-	public void printHelpMessages() // TODO
+	public void printHelpMessages()
 	{
 		// PTT Director Specific help commands
-		printStream.println("\nPTT Director commands:");
-		printStream.println("get teachreq <courseID>: get list of teaching requests for a course");
-		printStream.println("get trainreq <teacherID>: get list of training requests for a teacher");
-		printStream.println("set status teachreq <courseID> <type> <id status>");
-		printStream.println("set status trainreq <GUID> <id status>");
+		super.printStream.println("\nPTT Director commands:");
+		super.printStream.println("get teachreq <courseID>: get list of teaching requests for a course");
+		super.printStream.println("get trainreq <teacherID>: get list of training requests for a teacher");
+		super.printStream.println("set status teachreq <courseID> <type> <id status>");
+		super.printStream.println("set status trainreq <GUID> <id status>");
 	}
 
 	/**
@@ -87,9 +82,8 @@ public class PTTDirectorController extends Controller {
 
 			// Approves/Rejects a training request (not implemented)
 			if (commandArgs[2].equalsIgnoreCase("trainreq")) {
-				printStream.println("Approving training requests currently not supported");
-//				setStatusTrainReq("");
-//				return true;
+				super.printStream.println("Approving training requests currently not supported");
+				return true;
 			}
 
 		}
@@ -101,7 +95,7 @@ public class PTTDirectorController extends Controller {
 	 * Print logout message.
 	 */
 	public void logout() {
-		printStream.println("PTT logged out.");
+		super.printStream.println("PTT logged out.");
 	}
 
 	/**
@@ -113,10 +107,10 @@ public class PTTDirectorController extends Controller {
 	public boolean getTeachingRequests(String courseID) {
 		Course course = this.listOfCourses.getCourse(courseID);
 		if (course == null) {
-			printStream.println("Course not found, use course ID");
+			super.printStream.println("Course not found, use course ID");
 			return false;
 		}
-		course.printTeachingRequests(printStream);
+		course.printTeachingRequests(super.printStream);
 		return true;
 	}
 
@@ -129,10 +123,10 @@ public class PTTDirectorController extends Controller {
 	public boolean getTrainingRequests(String teacherID) {
 		Teacher teacher = this.listOfTeachers.getTeacher(teacherID);
 		if (teacher == null) {
-			printStream.println("Teacher not found, use GUID");
+			super.printStream.println("Teacher not found, use GUID");
 			return false;
 		}
-		teacher.printTrainingRequests(printStream);
+		teacher.printTrainingRequests(super.printStream);
 		return true;
 	}
 
@@ -149,15 +143,15 @@ public class PTTDirectorController extends Controller {
 	public boolean setStatusTeachReq(String courseID, String type, String status) {
 		Course course = this.listOfCourses.getCourse(courseID);
 		if (course == null) {
-			printStream.println("Course not found, use course ID");
+			super.printStream.println("Course not found, use course ID");
 			return false;
 		}
 		RequestStatusType eStatus = null;
 		try {
 			eStatus = RequestStatusType.valueOf(status);
 		} catch (IllegalArgumentException e) {
-			printStream.println("Invalid request type, use:");
-			// TODO ContactType.printContactTypes(super.printStream);
+			super.printStream.println("Invalid request type, use:");
+			ContactType.printContactTypes(super.printStream);
 			return false;
 		}
 
@@ -165,13 +159,16 @@ public class PTTDirectorController extends Controller {
 		try {
 			eType = ContactType.valueOf(type);
 		} catch (IllegalArgumentException e) {
-			printStream.println("Invalid request type, use:");
+			super.printStream.println("Invalid request type, use:");
 			ContactType.printContactTypes(super.printStream);
 			return false;
 		}
 
 		TeachingRequest temp = course.getTeachingStaffRequirementsRequests().get(eType);
 		temp.setRequestStatus(eStatus);
+
+		super.printStream.println("Request status set:");
+		course.printTeachingRequests(printStream, eType);
 
 		return true;
 
