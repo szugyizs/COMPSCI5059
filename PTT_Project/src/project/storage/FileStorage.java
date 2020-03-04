@@ -36,7 +36,7 @@ import project.storage.lists.ListOfTeachers;
 public class FileStorage extends Storage
 {
 
-	String path;
+	private String path;
 
 	/**
 	 * The constructor to the FileStorage class. It not only specifies the path but
@@ -58,7 +58,7 @@ public class FileStorage extends Storage
 	 * but only accepts Object types. Because every class in Java implicitly inherits from Object,
 	 * we can ignore this warning.
 	 * 
-	 * @return boolean: a binary value signalling the success of the operation
+	 * @return boolean: a binary value signaling the success of the operation
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
@@ -67,7 +67,6 @@ public class FileStorage extends Storage
 		JSONObject jsonRoot = new JSONObject();
 
 		LinkedList<Teacher> teachersJSON = listOfTeachers.getTeachers();
-		ListIterator listIterator = teachersJSON.listIterator();
 		JSONArray teacherListArray = new JSONArray();
 
 		// call the teacher specific data parser
@@ -80,7 +79,6 @@ public class FileStorage extends Storage
 		}
 
 		LinkedList<Course> coursesJSON = listOfCourses.getCourses();
-		listIterator = coursesJSON.listIterator();
 		JSONArray courseListArray = new JSONArray();
 
 		// call the course specific data parser
@@ -123,7 +121,7 @@ public class FileStorage extends Storage
 	 *         written to a file
 	 */
 	@SuppressWarnings("unchecked")
-	public JSONArray teacherConvert(LinkedList<Teacher> teacherList)
+	private JSONArray teacherConvert(LinkedList<Teacher> teacherList)
 	{
 		JSONArray allTeachers = new JSONArray();
 		ListIterator<Teacher> listIterator = teacherList.listIterator();
@@ -143,9 +141,6 @@ public class FileStorage extends Storage
 
 			Map<SkillType, Short> qualificationSkills = qualificationList.getSkills();
 
-			for (SkillType skillType : qualificationSkills.keySet()) {
-
-			}
 			Iterator mapIterator = qualificationSkills.entrySet().iterator();
 
 			while (mapIterator.hasNext()) {
@@ -237,7 +232,7 @@ public class FileStorage extends Storage
 	 *         written to a file
 	 */
 	@SuppressWarnings("unchecked")
-	public JSONArray courseConvert(LinkedList<Course> courseList)
+	private JSONArray courseConvert(LinkedList<Course> courseList)
 	{
 		JSONArray allCourses = new JSONArray();
 		ListIterator<Course> listIterator = courseList.listIterator();

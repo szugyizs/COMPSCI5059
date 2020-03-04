@@ -147,53 +147,6 @@ public class Course
 	}
 
 	/**
-	 * Setter for the map of teachingStaffRequirementsRequests. This represents the
-	 * requests and therefore the requirements that teachers must meet.
-	 * 
-	 * @param teachingStaffRequirementsRequest Represents the map of teaching
-	 *                                         requirements requests.
-	 * @param clearTeachers                    If true, this means that teachers
-	 *                                         requirements check will be bypassed,
-	 *                                         the teachers will be cleared, and the
-	 *                                         new requirements will be set.
-	 * @return True if the teaching staff requirements have been successfully set.
-	 */
-	public boolean setTeachingStaffRequirementsRequests(
-			final HashMap<ContactType, TeachingRequest> teachingStaffRequirementsRequests, final boolean clearTeachers)
-	{
-
-		if (clearTeachers) {
-
-			// Simply check that the requirements have not been denied, we assume that
-			// they're being overwritten.
-			for (final ContactType contactType : teachingStaffRequirementsRequests.keySet()) {
-				if (this.teachingStaffRequirementsRequests.get(contactType)
-						.getRequestStatus() == RequestStatusType.DENIED) {
-					return false;
-				}
-			}
-		} else {
-
-			// Check that all teachers present within meet the teaching requirements
-			// requests.
-			for (final ContactType contactType : teachingStaffRequirementsRequests.keySet()) {
-				if (!checkTeachersMeetRequirements(teachingStaffRequirementsRequests.get(contactType),
-						this.teachingStaff.get(contactType))) {
-					return false;
-				}
-			}
-		}
-
-		// Set the staff requirements.
-		this.teachingStaffRequirementsRequests = teachingStaffRequirementsRequests;
-		if (clearTeachers) {
-			this.teachingStaff.clear();
-		}
-
-		return true;
-	}
-
-	/**
 	 * Sets the TeachingRequest for a given ContactType from a course request.
 	 * 
 	 */
@@ -211,13 +164,12 @@ public class Course
 			// Potentially clear the teaching staff.
 			this.teachingStaff.put(key, new ArrayList<Teacher>());
 		}
-		
+
 		this.teachingStaffRequirementsRequests.put(key, new TeachingRequest(courseRequirement));
 		return true;
 
 	}
 
-	
 	/**
 	 * Checks whether or not the course has a ContactType TeachingRequest.
 	 * 
@@ -258,24 +210,6 @@ public class Course
 	}
 
 	/**
-	 * Set the map of teachers for the course. However, they must meet the
-	 * requirements defined by the teachingStaffRequirementsRequests.
-	 * 
-	 * @param teachingStaff The map containing teachers for each of the content
-	 *                      types.
-	 * @return True if the teaching staff has been successfully set, false
-	 *         otherwise.
-	 */
-	public boolean setTeachingStaff(final HashMap<ContactType, List<Teacher>> teachingStaff)
-	{
-		if (teachingStaff != null && checkTeachersMeetRequirements(teachingStaff)) {
-			this.teachingStaff = teachingStaff;
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Add a teacher for the given contact type. Also, check if the teacher meets
 	 * the requirements for the contact type.
 	 * 
@@ -307,33 +241,6 @@ public class Course
 
 		// Finally, add the teacher.
 		return this.teachingStaff.get(contactType).add(teacher);
-	}
-
-	/**
-	 * Remove a teacher from a given contact type.
-	 * 
-	 * @param contactType The contact type from which the teacher instance is being
-	 *                    removed from.
-	 * @param guid        The GUID of the teacher that's to be removed from the
-	 *                    ContactType.
-	 * @return True if successful, false otherwise.
-	 */
-	public boolean removeTeacher(final ContactType contactType, final String guid)
-	{
-
-		// Check that there is teaching staff present for the contact type.
-		if (!this.teachingStaff.containsKey(contactType)) {
-			return false;
-		}
-
-		// Find the teacher and remove them.
-		for (final Teacher teacher : this.teachingStaff.get(contactType)) {
-			if (teacher.getGUID().equalsIgnoreCase(guid) == true) {
-				return removeTeacher(contactType, teacher);
-			}
-		}
-
-		return false;
 	}
 
 	/**
@@ -405,13 +312,14 @@ public class Course
 	 */
 	public boolean checkTeachersMeetRequirements(final TeachingRequest teachingRequest, final List<Teacher> teachers)
 	{
-		// Check whether or not there are teachers present, if not, requirements are _not_ met.
+		// Check whether or not there are teachers present, if not, requirements are
+		// _not_ met.
 		if (teachingRequest == null || teachers == null) {
 			return false;
 		} else if (teachers.isEmpty()) {
 			return false;
 		}
-		
+
 		// Check whether individual teachers meet the teaching requirements.
 		for (final Teacher teacher : teachers) {
 			if (!checkTeacherMeetsRequirements(teachingRequest, teacher)) {
@@ -454,7 +362,8 @@ public class Course
 	 */
 	public boolean checkTeacherMeetsRequirements(final TeachingRequest teachingRequest, final Teacher teacher)
 	{
-		// Teaching request and teacher must not be null; the teaching request must be accepted.
+		// Teaching request and teacher must not be null; the teaching request must be
+		// accepted.
 		if (teachingRequest == null || teacher == null) {
 			return false;
 		} else if (teachingRequest.getRequestStatus() != RequestStatusType.ACCEPTED) {
@@ -463,11 +372,11 @@ public class Course
 
 		// Check that the number of teaching staff does not exceed the new requirements.
 		final ContactType contactType = teachingRequest.getCourseRequirement().getContactType();
-		if (!this.teachingStaff.containsKey(contactType) 
-				|| teachingRequest.getCourseRequirement().getNumberOfStaff() < this.teachingStaff.get(contactType).size()) {
+		if (!this.teachingStaff.containsKey(contactType) || teachingRequest.getCourseRequirement()
+				.getNumberOfStaff() < this.teachingStaff.get(contactType).size()) {
 			return false;
 		}
-		
+
 		// Finally, check the teachers qualifications.
 		return checkTeacherMeetsQualifications(contactType, teacher);
 	}
@@ -519,16 +428,17 @@ public class Course
 	 */
 	public boolean areRequirementsFulfilled()
 	{
-		
+
 		// If there are no teaching staff requirements, return null.
 		if (this.teachingStaffRequirementsRequests.isEmpty()) {
 			return false;
 		}
-		
-		// Loop through any requirements checking if the corresponding list of teachers meet the requirements.
+
+		// Loop through any requirements checking if the corresponding list of teachers
+		// meet the requirements.
 		for (final ContactType contactType : teachingStaffRequirementsRequests.keySet()) {
 			List<Teacher> teachersList = this.teachingStaff.get(contactType);
-			if(teachersList == null) {
+			if (teachersList == null) {
 				return false;
 			} else if (!checkTeachersMeetRequirements(contactType, teachersList)) {
 				return false;
@@ -536,7 +446,7 @@ public class Course
 		}
 		return true;
 	}
-	
+
 	public void printCourse(final PrintStream printStream)
 	{
 		printStream.println(String.format("Course ID: %s\nName: %s\nDescription: %s\nFulfilled: %b", this.courseID,
@@ -548,28 +458,30 @@ public class Course
 
 	public void printTeachers(final PrintStream printStream)
 	{
-		
-		// Prompt the user that teachers are being displayed; checks if any teachers are present. If not, prints a message and returns. 
+
+		// Prompt the user that teachers are being displayed; checks if any teachers are
+		// present. If not, prints a message and returns.
 		printStream.println(String.format("Teachers for course %s:", this.courseID));
 		if (this.teachingStaff.isEmpty()) {
 			printStream.println("There are no allocated teachers for any of the contact types.");
 			return;
 		}
-		
+
 		// Print the teachers for each of the contact types.
 		for (final ContactType contactType : ContactType.values()) {
 			printTeachers(contactType, printStream);
 		}
 	}
-	
+
 	public void printTeachers(final ContactType contactType, final PrintStream printStream)
 	{
 		// If there are no teachers, print an appropriate message.
 		if (!this.teachingStaff.containsKey(contactType) || this.teachingStaff.get(contactType).isEmpty()) {
-			printStream.println(String.format("There are no allocated teachers for the courses %s", contactType.getName()));
-				return;
+			printStream.println(
+					String.format("There are no allocated teachers for the courses %s", contactType.getName()));
+			return;
 		}
-					
+
 		// Print each of the teachers.
 		printStream.println(String.format("Teachers for %s:", contactType.getName()));
 		for (final Teacher teacher : this.teachingStaff.get(contactType)) {
@@ -588,15 +500,6 @@ public class Course
 		}
 	}
 
-	public void printTeachingRequests(final PrintStream printStream, final RequestStatusType requestStatusType)
-	{
-		for (final ContactType contactType : this.teachingStaffRequirementsRequests.keySet()) {
-			if (this.teachingStaffRequirementsRequests.get(contactType).getRequestStatus() == requestStatusType) {
-				printTeachingRequests(printStream, contactType);
-			}
-		}
-	}
-
 	public void printTeachingRequests(final PrintStream printStream, final ContactType contactType)
 	{
 		if (!this.teachingStaffRequirementsRequests.containsKey(contactType)) {
@@ -607,14 +510,4 @@ public class Course
 		this.teachingStaffRequirementsRequests.get(contactType).printRequest(printStream);
 	}
 
-	public void printUnfulfillments(final PrintStream printStream)
-	{
-		for (final ContactType contactType : this.teachingStaffRequirementsRequests.keySet()) {
-			if (!checkTeachersMeetRequirements(contactType, this.teachingStaff.get(contactType))) {
-				printStream
-						.println(String.format("Allocated teachers: %d", this.teachingStaff.get(contactType).size()));
-				this.teachingStaffRequirementsRequests.get(contactType).printRequest(printStream);
-			}
-		}
-	}
 }

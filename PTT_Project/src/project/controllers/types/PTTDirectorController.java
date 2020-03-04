@@ -122,7 +122,7 @@ public class PTTDirectorController extends Controller
 	 * @param courseID A String containing the course ID.
 	 * @return True if the course was found and displayed successfully
 	 */
-	public boolean getTeachingRequests(String courseID)
+	private boolean getTeachingRequests(String courseID)
 	{
 		Course course = this.listOfCourses.getCourse(courseID);
 		if (course == null) {
@@ -139,7 +139,7 @@ public class PTTDirectorController extends Controller
 	 * @param teacherID A String containing the teacher ID.
 	 * @return True if the request was found and displayed successfully
 	 */
-	public boolean getTrainingRequests(String teacherID)
+	private boolean getTrainingRequests(String teacherID)
 	{
 		Teacher teacher = this.listOfTeachers.getTeacher(teacherID);
 		if (teacher == null) {
@@ -160,7 +160,7 @@ public class PTTDirectorController extends Controller
 	 * 
 	 * @return True if the request was accepted/rejected successfully.
 	 */
-	public boolean setStatusTeachReq(String courseID, String type, String status)
+	private boolean setStatusTeachReq(String courseID, String type, String status)
 	{
 		Course course = this.listOfCourses.getCourse(courseID);
 		if (course == null) {

@@ -34,17 +34,6 @@ public abstract class Controller
 		this.listOfCourses = storage.getListOfCourses();
 	}
 
-	/**
-	 * Constructor explicitly instantiates the instance, informing about the needed
-	 * data parameters in the process.
-	 * 
-	 * @param storage The storage class, that holds the list of teachers and
-	 *                courses.
-	 */
-	protected Controller(final Storage storage)
-	{
-		this(storage, System.out);
-	}
 
 	/**
 	 * Getter for the storage instance.

@@ -13,14 +13,13 @@ import project.storage.FileStorage;
 
 public class Main
 {
-	// TODO - comment this class
 	private PrintStream printStream;
 	private Scanner scanner;
 
 	private Storage storage;
 	private Controller controller;
 	// Tests, comment in to perform
-//  private Test test;
+//	private Test test;
 
 	public Main()
 	{
@@ -30,7 +29,7 @@ public class Main
 		storage = new FileStorage("lib/database.json");
 		storage.load();
 
-		// Tests, comment in to perform
+//		// Tests, comment in to perform
 //		test = new Test();
 //		test.testAdminCommands();
 //		test.testCourseDirectorCommands();
@@ -79,7 +78,7 @@ public class Main
 				}
 				controller.logout();
 				controller = null;
-				printStream.println("Successfully logged out! Work saved!");
+				printStream.println("Successfully logged out!");
 				continue;
 			}
 
@@ -123,7 +122,7 @@ public class Main
 		printStream.println("login cd <course id>");
 		printStream.println("login ptt - login as a PTT director.");
 		printStream.println("login admin - login as an administrator.");
-		printStream.println("logout - will save all work and logout of the current controller");
+		printStream.println("logout - will logout of the current controller");
 		printStream.println("quit - will save and quit all work.");
 
 		// Controller specific help commands (if not null).

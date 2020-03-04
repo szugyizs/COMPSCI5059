@@ -2,11 +2,11 @@ package project.requests;
 
 import java.io.PrintStream;
 
-public abstract class Request 
+public abstract class Request
 {
-	
+
 	private RequestStatusType requestStatus; // The status of the request.
-	
+
 	protected Request(final RequestStatusType requestStatus)
 	{
 		this.requestStatus = requestStatus;
@@ -16,7 +16,7 @@ public abstract class Request
 	{
 		return this.requestStatus;
 	}
-	
+
 	/**
 	 * Explicitly set the state of the request.
 	 * 
@@ -26,23 +26,7 @@ public abstract class Request
 	{
 		this.requestStatus = requestStatus;
 	}
-	
-	/**
-	 * Accept the request i.e. implicitly set the request state to ACCEPTED.
-	 */
-	public void acceptRequest()
-	{
-		this.requestStatus = RequestStatusType.ACCEPTED;
-	}
-	
-	/**
-	 * Deny the request i.e. implicitly set the request state to DENIED.
-	 */
-	public void denyRequest()
-	{
-		requestStatus = RequestStatusType.DENIED;
-	}
-	
+
 	/**
 	 * Called to print the status of the request to the print stream.
 	 * 
@@ -52,11 +36,11 @@ public abstract class Request
 	{
 		printStream.println(String.format("Request Status: %s", this.requestStatus.getName()));
 	}
-	
+
 	@Override
 	public String toString()
 	{
-		return String.format("Request status: %s - %s",requestStatus.getName(), requestStatus.getMessage());
+		return String.format("Request status: %s - %s", requestStatus.getName(), requestStatus.getMessage());
 	}
 
 }
