@@ -9,6 +9,7 @@ import project.requests.course.ContactType;
 import project.requests.course.Course;
 import project.requests.course.Qualifications;
 import project.requests.course.Teacher;
+import project.storage.FileStorage;
 import project.storage.Storage;
 import project.storage.lists.ListOfCourses;
 import project.storage.lists.ListOfTeachers;
@@ -20,6 +21,7 @@ import project.storage.lists.ListOfTeachers;
 public class AdministratorController extends Controller
 {
 	private Scanner scanner;
+	private FileStorage storage;
 	private ListOfTeachers listOfTeachers;
 	private ListOfCourses listOfCourses;
 
@@ -136,7 +138,7 @@ public class AdministratorController extends Controller
 	@Override
 	public void logout()
 	{
-		// TODO: storage save?
+		super.storage.save();
 		printStream.println("Administrator logged out.");
 	}
 

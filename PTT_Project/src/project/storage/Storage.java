@@ -34,8 +34,6 @@ public abstract class Storage
 		this.listOfCourses = listOfCourses;
 	}
 	
-	// test
-	
 	public abstract boolean load();
 	
 	public abstract boolean save();

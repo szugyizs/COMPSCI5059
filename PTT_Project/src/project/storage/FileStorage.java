@@ -2,27 +2,20 @@ package project.storage;
 
 import static org.junit.Assert.assertThrows;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
+import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.sql.Array;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
-import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 
 import project.requests.CourseRequirement;
@@ -48,7 +41,276 @@ public class FileStorage extends Storage
 		this.path = path;
 		load();
 	}
+	
+	@Override
+	public boolean save()
+	{
+		JSONObject jsonRoot = new JSONObject();
+		
+		LinkedList<Teacher> teachersJSON = listOfTeachers.getTeachers();
+		ListIterator listIterator = teachersJSON.listIterator(); 
+		JSONArray teacherListArray = new JSONArray();
+		
+		try {
+			teacherListArray = teacherConvert(teachersJSON);
+			jsonRoot.put("teachers", teacherListArray);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		LinkedList<Course> coursesJSON = listOfCourses.getCourses();
+		listIterator = coursesJSON.listIterator(); 
+		JSONArray courseListArray = new JSONArray();
 
+		try {
+	        courseListArray = courseConvert(coursesJSON); 
+	        jsonRoot.put("courses", courseListArray);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		 try {
+			 BufferedWriter file=new BufferedWriter(new FileWriter(path));
+			 
+		     file.write(jsonRoot.toJSONString());
+		     
+		     file.flush();
+		     file.close();
+		     
+		    } catch (IOException e) {
+		        System.out.println("Error saving JSON into "+path);
+		        e.printStackTrace();
+		    } 
+		
+		return false;
+	}
+
+	public JSONArray teacherConvert(LinkedList<Teacher> teacherList) {
+		JSONArray allTeachers = new JSONArray();
+		ListIterator<Teacher> listIterator = teacherList.listIterator();
+		
+		while(listIterator.hasNext()){
+	        	Teacher teacher = (Teacher)listIterator.next(); 
+	        	JSONObject teacherObject = new JSONObject();
+	        	
+	        	teacherObject.put("guid", teacher.getGUID());
+	        	teacherObject.put("surname", teacher.getSurname());
+	        	teacherObject.put("forename", teacher.getForename());
+	        	
+	        	//qualifications
+			    JSONArray qualifications = new JSONArray();
+			    Qualifications qualificationList = teacher.getQualifications();
+
+			    Map<SkillType, Short> qualificationSkills = qualificationList.getSkills();
+			    
+			    for (SkillType skillType : qualificationSkills.keySet()) {
+			    	
+			    }
+			    Iterator mapIterator = qualificationSkills.entrySet().iterator();
+				    
+		        while (mapIterator.hasNext()) { 
+				    JSONObject skillInfo = new JSONObject();
+			        Map.Entry mapElement = (Map.Entry)mapIterator.next();
+			        
+				    
+				    //skilltype
+				    SkillType skillType = (SkillType)mapElement.getKey();
+				    String skillTypeString = skillType.name();
+				    skillInfo.put("skillType", skillTypeString);
+				    
+				    //level
+				    String level = Short.toString(qualificationList.getSkillLevel(skillType));
+				    skillInfo.put("level", level);
+				    
+					qualifications.add(skillInfo);
+			    }
+	        	
+	        	teacherObject.put("qualifications", qualifications);
+
+	        	//trainingRequests
+	        	JSONArray trainingRequests = new JSONArray();
+	        	List<TrainingRequest> trainingRequestList = teacher.getTrainingRequests();
+	    		ListIterator<TrainingRequest> listIterator2 = trainingRequestList.listIterator();
+	        	
+	    		while(listIterator2.hasNext()){
+		        	
+	    			TrainingRequest trainingRequest = (TrainingRequest)listIterator2.next(); 
+		        	JSONObject trainingRequestObject = new JSONObject();
+		        	
+		        	//status
+					RequestStatusType requestStatusType = trainingRequest.getRequestStatus();
+			        String requestStatus = requestStatusType.name();
+			        trainingRequestObject.put("status", requestStatus);
+		        	
+		        	//trainingRequest
+			        JSONObject requestObject = new JSONObject();
+			        
+			        //id
+			        requestObject.put("id", trainingRequest.getId());
+			        
+			        //trainingRequirement
+		        	//qualifications
+				    qualifications = new JSONArray();
+				    qualificationList = trainingRequest.getTrainingRequirement().getQualifications();
+
+				    qualificationSkills = qualificationList.getSkills();
+				    mapIterator = qualificationSkills.entrySet().iterator();
+					    
+			        while (mapIterator.hasNext()) { 
+					    JSONObject skillInfo = new JSONObject();
+				        Map.Entry mapElement = (Map.Entry)mapIterator.next();
+					    
+					    //skilltype
+					    SkillType skillType = (SkillType)mapElement.getKey();
+					    String skillTypeString = skillType.name();
+					    skillInfo.put("skillType", skillTypeString);
+					    
+					    //level
+					    String level = Short.toString(qualificationList.getSkillLevel(skillType));
+					    skillInfo.put("level", level);
+					    
+						qualifications.add(skillInfo);
+				    }
+		        	
+		        	requestObject.put("qualifications", qualifications);
+			        
+			        trainingRequestObject.put("trainingRequest", requestObject);
+			        
+	    		}
+	        	teacherObject.put("trainingRequests", trainingRequests);
+	        	allTeachers.add(teacherObject);
+		}
+	
+		return allTeachers;
+	}
+	
+	
+	public JSONArray courseConvert(LinkedList<Course> courseList) {
+		JSONArray allCourses = new JSONArray();
+		ListIterator<Course> listIterator = courseList.listIterator();
+		
+		while(listIterator.hasNext()){
+	        Course course = (Course)listIterator.next(); 
+	        JSONObject courseObject = new JSONObject();
+	        	
+	        courseObject.put("courseID", course.getCourseID());
+	        courseObject.put("name", course.getName());
+	        courseObject.put("description", course.getDescription());
+		
+	        
+	        //teachingStaff
+	        JSONObject teachingStaff = new JSONObject();
+	        HashMap<ContactType, List<Teacher>> teachingStaffMap = course.getTeachingStaff();
+	        Iterator mapIterator = teachingStaffMap.entrySet().iterator();
+	        
+	        while (mapIterator.hasNext()) { 
+		        
+		        Map.Entry mapElement = (Map.Entry)mapIterator.next();
+		        ContactType contactType = (ContactType)mapElement.getKey();
+		        String contactLabel = contactType.name();
+		        
+		        JSONArray teachingStaffTeachers = new JSONArray();
+		        List<Teacher> teachers = new LinkedList<Teacher>();
+		        ListIterator teacherListIterator = teachers.listIterator(); 
+		        
+		        while(teacherListIterator.hasNext()){ 
+		        	Teacher teacherItem = (Teacher)teacherListIterator.next();
+		        	teachingStaffTeachers.add(teacherItem.getGUID()); 
+		        } 
+		        
+		        teachingStaff.put(contactLabel, teachingStaffTeachers);
+	        }
+
+		    courseObject.put("teachingStaff", teachingStaff);
+	        
+	        //teachingRequests
+		    JSONObject teachingRequirements = new JSONObject();
+	        
+	        HashMap<ContactType, TeachingRequest> teachingRequestMap = new HashMap <ContactType, TeachingRequest>();
+	        teachingRequestMap = course.getTeachingStaffRequirementsRequests();
+	        mapIterator = teachingRequestMap.entrySet().iterator();
+	        
+	        //contact+teachingreq
+	        while (mapIterator.hasNext()) { 
+		        
+		        Map.Entry mapElement  = (Map.Entry)mapIterator.next();
+		        ContactType contactType = (ContactType)mapElement.getKey();
+		        String contactLabel = contactType.name();
+		        
+		        JSONObject contactDetails = new JSONObject();
+		        TeachingRequest request = (TeachingRequest)mapElement.getValue();
+		        
+			        //status
+					RequestStatusType requestStatusType = request.getRequestStatus();
+			        String requestStatus = requestStatusType.getName();
+			        contactDetails.put("status", requestStatus);
+			        
+			        //teachingrequest
+				    JSONObject teachingRequest = new JSONObject();
+				    
+				    	//courseRequirement
+					    JSONObject courseRequirements = new JSONObject();
+					    CourseRequirement courseRequirement = request.getCourseRequirement();
+					    
+					    	//contacttype
+					    	String contactTypeString = courseRequirement.getContactType().getName();
+					    	courseRequirements.put("contactType", contactTypeString);
+						    
+						    //numberOfStudents
+						    String numberOfStudents = Integer.toString(courseRequirement.getNumberOfStudents());
+					    	courseRequirements.put("numberOfStudents", numberOfStudents);
+						    
+						    //numberOfStaff
+					    	String numberOfStaff = Integer.toString(courseRequirement.getNumberOfStaff());
+					    	courseRequirements.put("numberOfStaff", numberOfStaff);
+						    
+						    //contactHours
+					    	String contactHours = Integer.toString(courseRequirement.getContactHours());
+					    	courseRequirements.put("contactHours", contactHours);
+						    
+						    //qualifications
+						    JSONArray qualifications = new JSONArray();
+						    Qualifications qualificationList = courseRequirement.getRequiredStaffQualifications();
+
+						    Map<SkillType, Short> qualificationSkills = new HashMap<SkillType, Short>();
+						    qualificationSkills = qualificationList.getSkills();
+					        mapIterator = qualificationSkills.entrySet().iterator();
+					        
+					        //contact+teachingreq
+					        while (mapIterator.hasNext()) { 
+							    JSONObject skillInfo = new JSONObject();
+						        mapElement = (Map.Entry)mapIterator.next();
+							    
+							    //skilltype
+							    SkillType skillType = (SkillType)mapElement.getKey();
+							    String skillTypeString = skillType.name();
+							    skillInfo.put("skillType", skillTypeString);
+							    
+							    //level
+							    String level = Short.toString(qualificationList.getSkillLevel(skillType));
+							    skillInfo.put("level", level);
+							    
+								qualifications.add(skillInfo);
+						    }
+						    
+					    	courseRequirements.put("qualifications", qualifications);
+					    		
+					    teachingRequest.put("courseRequirement", courseRequirements);
+					
+				    contactDetails.put("teachingRequest", teachingRequest);
+
+		        teachingRequirements.put(contactLabel, contactDetails);
+	        }
+	        
+		    courseObject.put("teachingRequests", teachingRequirements);
+			allCourses.add(courseObject);
+		}
+		return allCourses;
+	}
+	
+	
 	@Override
 	public boolean load()
 	{	
@@ -77,8 +339,6 @@ public class FileStorage extends Storage
 		return true;
 	}
 	
-	// test
-	
 	private ListOfTeachers parseTeachers(final JSONArray jsonTeachers)
 	{
 		ListOfTeachers listOfTeachers = new ListOfTeachers();
@@ -105,7 +365,6 @@ public class FileStorage extends Storage
 	
 	private Teacher parseTeacher(final JSONObject jsonTeacher)
 	{
-		
 		// Get the basic teacher information.
 		final String teacherGUID = (String) jsonTeacher.get("guid");
 		final String teacherForename = (String) jsonTeacher.get("forename");
@@ -281,14 +540,11 @@ public class FileStorage extends Storage
 			teachingStaff = new HashMap<ContactType, List<Teacher>>();
 		}
 		
-		System.out.println("PRINTING TEACHING STAFF!!!");
 		for (ContactType contactType : teachingStaff.keySet()) {
 			for (Teacher t : teachingStaff.get(contactType)) {
 				t.printTeacher(System.out);
 			}
 		}
-		
-		System.out.println("HERE!!!!!!!!!");
 		
 		// Get the JSON object containing the teachingRequests.
 		final JSONObject jsonTeachingRequests = (JSONObject) jsonCourse.get("teachingRequests");
@@ -296,14 +552,12 @@ public class FileStorage extends Storage
 		if (jsonTeachingRequests != null) {
 			teachingRequests = parseTeachingRequests(jsonTeachingRequests);
 			if (teachingRequests == null) {
-				System.out.println("FAILS HERE!");
 				return null;
 			}
 		} else {
 			teachingRequests = new HashMap<ContactType, TeachingRequest>();
 		}
 		
-		System.out.println("GOT TO HERE!!");
 		
 		// Finally, create the course based on the parsed values.
 		return new Course(courseID, courseName, courseDescription,
@@ -377,7 +631,6 @@ public class FileStorage extends Storage
 	private TeachingRequest parseTeachingRequest(final JSONObject jsonRequest)
 	{
 		
-		System.out.println("JIDSJIDJSIAODJIAS DOASJ");
 		System.out.println(jsonRequest.toJSONString());
 		
 		// Parse the status of the teaching request.
@@ -385,14 +638,11 @@ public class FileStorage extends Storage
 		if (jsonRequestStatus == null) {
 			return null;
 		}
-		System.out.println("HERE, OKAY!");
 		
 		final RequestStatusType requestStatus = RequestStatusType.valueOf(jsonRequestStatus);
 		if (requestStatus == null) {
 			return null;
 		}
-		
-		System.out.println("HERE, OKAY!");
 		
 		// Get the course requirement for parsing.
 		final JSONObject jsonTeachingRequest = (JSONObject) jsonRequest.get("teachingRequest");
@@ -450,11 +700,7 @@ public class FileStorage extends Storage
 				contactHours, qualifications);
 	}
 
-	@Override
-	public boolean save()
-	{
-		return false;
-	}
+
 
 	@Override
 	public boolean isAvailable() 

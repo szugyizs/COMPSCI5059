@@ -11,7 +11,7 @@ import project.storage.lists.ListOfTeachers;
 
 public abstract class Controller
 {
-	private Storage storage;
+	protected Storage storage;
 
 	protected PrintStream printStream;
 
