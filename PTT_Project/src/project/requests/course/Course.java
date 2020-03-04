@@ -405,7 +405,14 @@ public class Course
 	 */
 	public boolean checkTeachersMeetRequirements(final TeachingRequest teachingRequest, final List<Teacher> teachers)
 	{
+		// Check whether or not there are teachers present, if not, requirements are _not_ met.
+		if (teachingRequest == null || teachers == null) {
+			return false;
+		} else if (teachers.isEmpty()) {
+			return false;
+		}
 		
+		// Check whether individual teachers meet the teaching requirements.
 		for (final Teacher teacher : teachers) {
 			if (!checkTeacherMeetsRequirements(teachingRequest, teacher)) {
 				return false;
@@ -447,19 +454,20 @@ public class Course
 	 */
 	public boolean checkTeacherMeetsRequirements(final TeachingRequest teachingRequest, final Teacher teacher)
 	{
-
-		// The teaching request must be accepted.
-		if (teachingRequest.getRequestStatus() != RequestStatusType.ACCEPTED) {
+		// Teaching request and teacher must not be null; the teaching request must be accepted.
+		if (teachingRequest == null || teacher == null) {
+			return false;
+		} else if (teachingRequest.getRequestStatus() != RequestStatusType.ACCEPTED) {
 			return false;
 		}
 
 		// Check that the number of teaching staff does not exceed the new requirements.
 		final ContactType contactType = teachingRequest.getCourseRequirement().getContactType();
-		if (!this.teachingStaff.containsKey(contactType) || teachingRequest.getCourseRequirement()
-				.getNumberOfStaff() < this.teachingStaff.get(contactType).size()) {
+		if (!this.teachingStaff.containsKey(contactType) 
+				|| teachingRequest.getCourseRequirement().getNumberOfStaff() < this.teachingStaff.get(contactType).size()) {
 			return false;
 		}
-
+		
 		// Finally, check the teachers qualifications.
 		return checkTeacherMeetsQualifications(contactType, teacher);
 	}
@@ -511,22 +519,62 @@ public class Course
 	 */
 	public boolean areRequirementsFulfilled()
 	{
+		
+		// If there are no teaching staff requirements, return null.
+		if (this.teachingStaffRequirementsRequests.isEmpty()) {
+			return false;
+		}
+		
+		// Loop through any requirements checking if the corresponding list of teachers meet the requirements.
 		for (final ContactType contactType : teachingStaffRequirementsRequests.keySet()) {
-			List<Teacher> listT = this.teachingStaff.get(contactType);
-			if(listT == null)
-			{
+			List<Teacher> teachersList = this.teachingStaff.get(contactType);
+			if(teachersList == null) {
 				return false;
-			}else if (!checkTeachersMeetRequirements(contactType, this.teachingStaff.get(contactType))) {
+			} else if (!checkTeachersMeetRequirements(contactType, teachersList)) {
 				return false;
 			}
 		}
 		return true;
 	}
-
+	
 	public void printCourse(final PrintStream printStream)
 	{
 		printStream.println(String.format("Course ID: %s\nName: %s\nDescription: %s\nFulfilled: %b", this.courseID,
 				this.name, this.description, areRequirementsFulfilled()));
+		printStream.println();
+		printTeachers(printStream);
+		printStream.println("\n----------------------------------------\n");
+	}
+
+	public void printTeachers(final PrintStream printStream)
+	{
+		
+		// Prompt the user that teachers are being displayed; checks if any teachers are present. If not, prints a message and returns. 
+		printStream.println(String.format("Teachers for course %s:", this.courseID));
+		if (this.teachingStaff.isEmpty()) {
+			printStream.println("There are no allocated teachers for any of the contact types.");
+			return;
+		}
+		
+		// Print the teachers for each of the contact types.
+		for (final ContactType contactType : ContactType.values()) {
+			printTeachers(contactType, printStream);
+		}
+	}
+	
+	public void printTeachers(final ContactType contactType, final PrintStream printStream)
+	{
+		// If there are no teachers, print an appropriate message.
+		if (!this.teachingStaff.containsKey(contactType) || this.teachingStaff.get(contactType).isEmpty()) {
+			printStream.println(String.format("There are no allocated teachers for the courses %s", contactType.getName()));
+				return;
+		}
+					
+		// Print each of the teachers.
+		printStream.println(String.format("Teachers for %s:", contactType.getName()));
+		for (final Teacher teacher : this.teachingStaff.get(contactType)) {
+			teacher.printTeacher(printStream);
+		}
 	}
 
 	public void printTeachingRequests(final PrintStream printStream)

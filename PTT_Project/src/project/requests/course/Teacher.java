@@ -325,7 +325,7 @@ public class Teacher
 	public void printTeacher(final PrintStream printStream)
 	{
 		printStream.print(String.format("Teacher GUID: %s Forename: %s Surname: %s", guid, forename, surname));
-		printStream.print(" Qualifications: ");
+		printStream.print("; Qualifications: ");
 		qualifications.printSkills(printStream);
 		printStream.println();
 	}

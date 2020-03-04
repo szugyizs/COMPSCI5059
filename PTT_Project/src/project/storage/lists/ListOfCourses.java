@@ -6,33 +6,53 @@ import project.requests.RequestStatusType;
 import project.requests.course.ContactType;
 import project.requests.course.Course;
 
+/**
+ * Class for List of Courses. It collects and manages a list of course objects.
+ */
 public class ListOfCourses 
 {
-
-	//TODO - comment this class
-	//TODO - review functionality
 	private LinkedList<Course> courses;
 	
+	/**
+	 * Constructor for the List of Courses, which creates a ListOfCourses object with a pre-supplied list of courses.
+	 * @param courses
+	 */
 	public ListOfCourses(final LinkedList<Course> courses)
 	{
 		this.courses = courses;
 	}
 	
+	/**
+	 * Constructor for the List of Courses, which creates an empty ListOfCourses object.
+	 */
 	public ListOfCourses()
 	{
 		this(new LinkedList<Course>());
 	}
 	
+	/**
+	 * A getter method to access the courses variable from outside.
+	 * @return courses: a linked list of courses.
+	 */
 	public LinkedList<Course> getCourses()
 	{
 		return this.courses;
 	}
 	
+	/**
+	 * A method to add a course to the list of courses.
+	 * @param course: the course object to be added.
+	 */
 	public void addCourse(final Course course)
 	{
 		courses.add(course);
 	}
 
+	/**
+	 * A method to get a list of courses which have a specific request status type.
+	 * @param requestStatusType: a type of request status
+	 * @return coursesWithRequestStatusTypes: a Linked List of Course objects which have a specific request status type
+	 */
 	public LinkedList<Course> getCoursesWithContactTypesState(final RequestStatusType requestStatusType)
 	{
 		LinkedList<Course> coursesWithRequestStatusTypes = new LinkedList<Course>();
@@ -46,6 +66,12 @@ public class ListOfCourses
 		return coursesWithRequestStatusTypes;
 	}
 	
+	/**
+	 * A method to get a list of courses which have a specific type of class contact and request status type.
+	 * @param contactType: the type of course contact component (lab, tutorial or lecture)
+	 * @param requestStatusType: the type of request status
+	 * @return coursesWithStatus: a linked list of course objects which have specific contact and status types
+	 */
 	public LinkedList<Course> getCoursesWithContactTypeState(final ContactType contactType, final RequestStatusType requestStatusType)
 	{
 		LinkedList<Course> coursesWithStatus = new LinkedList<Course>();
@@ -57,6 +83,10 @@ public class ListOfCourses
 		return coursesWithStatus;
 	}
 	
+	/**
+	 * A method to get a list of courses with unfulfilled teaching requirements.
+	 * @return: a linked list of course objects with requirements that have not been met.
+	 */
 	public LinkedList<Course> getUnfulfilledCourses()
 	{
 		LinkedList<Course> unfulfilledCourses = new LinkedList<Course>();
@@ -68,6 +98,11 @@ public class ListOfCourses
 		return unfulfilledCourses;
 	}
 	
+	/**
+	 * A method to get a course by ID.
+	 * @param courseId: the course ID
+	 * @return course: a course object which has a specific course ID
+	 */
 	public Course getCourse(final String courseId)
 	{
 		for (final Course course : this.courses) {
@@ -78,6 +113,10 @@ public class ListOfCourses
 		return null;
 	}
 
+	/**
+	 * A method to print out all the courses with unfulfilled teaching requirements.
+	 * @param printStream: the print stream to which the data should be added, and through which it should be printed
+	 */
 	public void printUnfulfilledCourses(final PrintStream printStream)
 	{
 		
@@ -95,16 +134,17 @@ public class ListOfCourses
 		}
 	}
 	
-
+	/**
+	 * A method to print a complete course.
+	 * @param printStream: the printing stream object to which the data should be passed and through which it should be printed.
+	 */
 	public void print(final PrintStream printStream)
 	{
+
+		//	Print all of the courses.
 		for (final Course course : this.courses) {
-			printStream.println(course.getCourseID());
+			course.printCourse(printStream);
+			printStream.println();
 		}
-		// Print all of the courses.
-//		for (final Course course : this.courses) {
-//			course.printCourse(printStream);
-//			printStream.println();
-//		}
 	}
 }

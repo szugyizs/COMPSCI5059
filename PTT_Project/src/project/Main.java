@@ -7,28 +7,20 @@ import project.controllers.Controller;
 import project.controllers.types.AdministratorController;
 import project.controllers.types.CourseDirectorController;
 import project.controllers.types.PTTDirectorController;
-import project.requests.CourseRequirement;
-import project.requests.TeachingRequest;
-import project.requests.TrainingRequest;
-import project.requests.TrainingRequirement;
-import project.requests.course.ContactType;
 import project.requests.course.Course;
-import project.requests.course.Qualifications;
-import project.requests.course.SkillType;
-import project.requests.course.Teacher;
 import project.storage.Storage;
 import project.storage.FileStorage;
 
 public class Main
 {
-
 	// TODO - comment this class
-	// TODO - review functionality
 	private PrintStream printStream;
 	private Scanner scanner;
 
 	private Storage storage;
 	private Controller controller;
+	// Tests, comment in to perform
+//  private Test test;
 
 	public Main()
 	{
@@ -37,6 +29,12 @@ public class Main
 
 		storage = new FileStorage("lib/database.json");
 		storage.load();
+
+		// Tests, comment in to perform
+//		test = new Test();
+//		test.testAdminCommands();
+//		test.testCourseDirectorCommands();
+//		test.testPTTCommands();
 	}
 
 	public PrintStream getPrintStream()
@@ -79,7 +77,7 @@ public class Main
 					printStream.println("In order to logout, you must first be logged in. See \"help\"");
 					continue;
 				}
-				controller.logout(); // TODO:  just save?
+				controller.logout();
 				controller = null;
 				printStream.println("Successfully logged out! Work saved!");
 				continue;
@@ -91,7 +89,7 @@ public class Main
 					printStream.println(String.format("Failed to process command \"%s\"; type \"help\"", command));
 					continue;
 				}
-				continue;// TODO:check with dan
+				continue;
 			}
 			// The controller is null, therefore process the login code.
 			else if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("login")) {
@@ -102,16 +100,19 @@ public class Main
 				}
 			}
 
-			// We failed to process the command, pass it on. //TODO: ?? sure?
+			// We failed to process the command, pass it on.
 			printStream.println("Failed to process command; type \"help\" and login as a user!");
 		} while (!(command = scanner.nextLine()).equalsIgnoreCase("quit"));
 
+		printStream.println("Successfully quit the program.");
 		// If we quit and a controller exists, save the storage.
 		if (controller != null) {
 			controller.logout();
-			printStream.println("Successfully logged out! Work saved!");
+			printStream.println("Successfully logged out!");
 		}
-		printStream.println("Successfully quit the program.");
+
+		storage.save();
+		printStream.println("Work saved.");
 	}
 
 	private void printHelp()
@@ -140,8 +141,7 @@ public class Main
 
 				// Simply
 				return new PTTDirectorController(storage);
-			} else if (commandArgs.length == 3 && commandArgs[1].equalsIgnoreCase("cd")
-					&& !commandArgs[2].isEmpty()) {
+			} else if (commandArgs.length == 3 && commandArgs[1].equalsIgnoreCase("cd") && !commandArgs[2].isEmpty()) {
 
 				// Attempt to find the course, if it exists, create a new course director for
 				// it.
@@ -164,43 +164,8 @@ public class Main
 	public static void main(String... args)
 	{
 		Main main = new Main();
-		// TODO: load file !!!
-		// main.storage.load();
-		
 		main.startParsing(args);
 
-//		Qualifications qualifications = new Qualifications();
-//		qualifications.setSkill(SkillType.ALGORITHMS_AND_DATA_STRUCTURES, (short) 2);
-//		qualifications.setSkill(SkillType.BIG_DATA, (short) 3);
-//		qualifications.setSkill(SkillType.CYBER_SECURITY, (short) 2);
-//		
-//		TrainingRequirement trainingRequirement = new TrainingRequirement(qualifications);
-//		TrainingRequest trainingRequest = new TrainingRequest(0, trainingRequirement);
-//		trainingRequest.printRequest(System.out);
-//		
-//		System.out.println();
-//		
-//		Teacher teacher = new Teacher("123", "Daniels", "Vasiljevs", qualifications);
-//		teacher.printTeacher(System.out);
-//		
-//		System.out.println();
-//		teacher.printTrainingRequests(System.out);
-//		
-//		System.out.println();
-//		
-//		// TODO: We dont need a parameter for contact type because it's defined within course requirement.
-//		CourseRequirement courseRequirement = new CourseRequirement(ContactType.LAB, 10, 20, 200, qualifications);
-//		TeachingRequest teachingRequest = new TeachingRequest(courseRequirement);
-//		teachingRequest.printRequest(System.out);
-//		
-//		System.out.println();
-//		
-//		Course course = new Course("COMPSCI", "Software Engineering", "Basics of software engineering");
-//		course.printCourse(System.out);
-//		
-//		System.out.println();
-//		
-//		course.printTeachingRequests(System.out);
 	}
 
 }
