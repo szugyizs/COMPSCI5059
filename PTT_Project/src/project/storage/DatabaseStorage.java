@@ -6,6 +6,7 @@ package project.storage;
  */
 public class DatabaseStorage extends Storage
 {
+	
 	/**
 	 * A method to load data from the database to the system.
 	 * @return boolean: status, based on whether the operation was successful.
