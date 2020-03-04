@@ -30,18 +30,29 @@ import project.requests.course.SkillType;
 import project.requests.course.Teacher;
 import project.storage.lists.ListOfCourses;
 import project.storage.lists.ListOfTeachers;
-
+/**
+ * A class to handle the file storage data management.
+ * This class provides methods to load and save system data to and from an external JSON File.
+ */
 public class FileStorage extends Storage
 {
 
 	String path;
-	
+	/**
+	 * The constructor to the FileStorage class. It not only specifies the path but 
+	 * loads the data into the system at "bootup".
+	 * @param path: the path to the file which serves as the storage
+	 */
 	public FileStorage(final String path)
 	{
 		this.path = path;
 		load();
 	}
-	
+	/**
+	 * A method to save all the data to the file storage from the system, it parses java objects and converts them into
+	 * JSON Data.
+	 * @return boolean: a binary value signalling the success of the operation
+	 */
 	@Override
 	public boolean save()
 	{
@@ -50,7 +61,8 @@ public class FileStorage extends Storage
 		LinkedList<Teacher> teachersJSON = listOfTeachers.getTeachers();
 		ListIterator listIterator = teachersJSON.listIterator(); 
 		JSONArray teacherListArray = new JSONArray();
-		
+
+		//call the teacher specific data parser
 		try {
 			teacherListArray = teacherConvert(teachersJSON);
 			jsonRoot.put("teachers", teacherListArray);
@@ -63,6 +75,7 @@ public class FileStorage extends Storage
 		listIterator = coursesJSON.listIterator(); 
 		JSONArray courseListArray = new JSONArray();
 
+		//call the course specific data parser
 		try {
 	        courseListArray = courseConvert(coursesJSON); 
 	        jsonRoot.put("courses", courseListArray);
@@ -70,7 +83,8 @@ public class FileStorage extends Storage
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
+
+		//write to file, and possibly catch errors
 		 try {
 			 BufferedWriter file=new BufferedWriter(new FileWriter(path));
 			 
@@ -87,10 +101,18 @@ public class FileStorage extends Storage
 		return false;
 	}
 
+	/**
+	 * A method to convert the list of teachers from java objects to JSON Objects which can then
+	 * be written to a JSON file.
+	 * 
+	 * @param teacherList: the list of teachers contained in the system, as a Java object
+	 * @return allTeachers: A JSONArray which can be added to a root JSON file to be written to a file
+	 */
 	public JSONArray teacherConvert(LinkedList<Teacher> teacherList) {
 		JSONArray allTeachers = new JSONArray();
 		ListIterator<Teacher> listIterator = teacherList.listIterator();
 		
+		//do the data processing for each teacher object in the list
 		while(listIterator.hasNext()){
 	        	Teacher teacher = (Teacher)listIterator.next(); 
 	        	JSONObject teacherObject = new JSONObject();
@@ -99,7 +121,7 @@ public class FileStorage extends Storage
 	        	teacherObject.put("surname", teacher.getSurname());
 	        	teacherObject.put("forename", teacher.getForename());
 	        	
-	        	//qualifications
+	        	//parse qualifications
 			    JSONArray qualifications = new JSONArray();
 			    Qualifications qualificationList = teacher.getQualifications();
 
@@ -115,12 +137,12 @@ public class FileStorage extends Storage
 			        Map.Entry mapElement = (Map.Entry)mapIterator.next();
 			        
 				    
-				    //skilltype
+				    //parse skilltype
 				    SkillType skillType = (SkillType)mapElement.getKey();
 				    String skillTypeString = skillType.name();
 				    skillInfo.put("skillType", skillTypeString);
 				    
-				    //level
+				    //parse level
 				    String level = Short.toString(qualificationList.getSkillLevel(skillType));
 				    skillInfo.put("level", level);
 				    
@@ -129,7 +151,7 @@ public class FileStorage extends Storage
 	        	
 	        	teacherObject.put("qualifications", qualifications);
 
-	        	//trainingRequests
+	        	//parse trainingRequests
 	        	JSONArray trainingRequests = new JSONArray();
 	        	List<TrainingRequest> trainingRequestList = teacher.getTrainingRequests();
 	    		ListIterator<TrainingRequest> listIterator2 = trainingRequestList.listIterator();
@@ -139,19 +161,19 @@ public class FileStorage extends Storage
 	    			TrainingRequest trainingRequest = (TrainingRequest)listIterator2.next(); 
 		        	JSONObject trainingRequestObject = new JSONObject();
 		        	
-		        	//status
+		        	//parse status
 					RequestStatusType requestStatusType = trainingRequest.getRequestStatus();
 			        String requestStatus = requestStatusType.name();
 			        trainingRequestObject.put("status", requestStatus);
 		        	
-		        	//trainingRequest
+		        	//parse trainingRequest
 			        JSONObject requestObject = new JSONObject();
 			        
-			        //id
+			        //parse id
 			        requestObject.put("id", trainingRequest.getId());
 			        
-			        //trainingRequirement
-		        	//qualifications
+			        //parse trainingRequirement
+		        	//parse qualifications
 				    qualifications = new JSONArray();
 				    qualificationList = trainingRequest.getTrainingRequirement().getQualifications();
 
@@ -162,12 +184,12 @@ public class FileStorage extends Storage
 					    JSONObject skillInfo = new JSONObject();
 				        Map.Entry mapElement = (Map.Entry)mapIterator.next();
 					    
-					    //skilltype
+					    //parse skilltype
 					    SkillType skillType = (SkillType)mapElement.getKey();
 					    String skillTypeString = skillType.name();
 					    skillInfo.put("skillType", skillTypeString);
 					    
-					    //level
+					    //parse level
 					    String level = Short.toString(qualificationList.getSkillLevel(skillType));
 					    skillInfo.put("level", level);
 					    
@@ -186,11 +208,18 @@ public class FileStorage extends Storage
 		return allTeachers;
 	}
 	
-	
+	/**
+	 * A method to convert the list of courses from java objects to JSON Objects which can then
+	 * be written to a JSON file.
+	 * 
+	 * @param courseList: the list of courses contained in the system, as a Java object
+	 * @return allCourses: A JSONArray which can be added to a root JSON file to be written to a file
+	 */
 	public JSONArray courseConvert(LinkedList<Course> courseList) {
 		JSONArray allCourses = new JSONArray();
 		ListIterator<Course> listIterator = courseList.listIterator();
 		
+		//do the data translation for each of the course objects in the list
 		while(listIterator.hasNext()){
 	        Course course = (Course)listIterator.next(); 
 	        JSONObject courseObject = new JSONObject();
@@ -200,7 +229,7 @@ public class FileStorage extends Storage
 	        courseObject.put("description", course.getDescription());
 		
 	        
-	        //teachingStaff
+	        //parse teachingStaff
 	        JSONObject teachingStaff = new JSONObject();
 	        HashMap<ContactType, List<Teacher>> teachingStaffMap = course.getTeachingStaff();
 	        Iterator mapIterator = teachingStaffMap.entrySet().iterator();
@@ -225,14 +254,14 @@ public class FileStorage extends Storage
 
 		    courseObject.put("teachingStaff", teachingStaff);
 	        
-	        //teachingRequests
+	        //parse teachingRequests
 		    JSONObject teachingRequirements = new JSONObject();
 	        
 	        HashMap<ContactType, TeachingRequest> teachingRequestMap = new HashMap <ContactType, TeachingRequest>();
 	        teachingRequestMap = course.getTeachingStaffRequirementsRequests();
 	        mapIterator = teachingRequestMap.entrySet().iterator();
 	        
-	        //contact+teachingreq
+	        //parse contact and teaching req
 	        while (mapIterator.hasNext()) { 
 		        
 		        Map.Entry mapElement  = (Map.Entry)mapIterator.next();
@@ -242,35 +271,35 @@ public class FileStorage extends Storage
 		        JSONObject contactDetails = new JSONObject();
 		        TeachingRequest request = (TeachingRequest)mapElement.getValue();
 		        
-			        //status
+			        //parse status
 					RequestStatusType requestStatusType = request.getRequestStatus();
-			        String requestStatus = requestStatusType.getName();
+			        String requestStatus = requestStatusType.name();
 			        contactDetails.put("status", requestStatus);
 			        
-			        //teachingrequest
+			        //parse teaching request
 				    JSONObject teachingRequest = new JSONObject();
 				    
-				    	//courseRequirement
+				    	//parse course Requirement
 					    JSONObject courseRequirements = new JSONObject();
 					    CourseRequirement courseRequirement = request.getCourseRequirement();
 					    
-					    	//contacttype
-					    	String contactTypeString = courseRequirement.getContactType().getName();
+					    	//parse contact type
+					    	String contactTypeString = courseRequirement.getContactType().name();
 					    	courseRequirements.put("contactType", contactTypeString);
 						    
-						    //numberOfStudents
+						    //parse numberOfStudents
 						    String numberOfStudents = Integer.toString(courseRequirement.getNumberOfStudents());
 					    	courseRequirements.put("numberOfStudents", numberOfStudents);
 						    
-						    //numberOfStaff
+						    //parse numberOfStaff
 					    	String numberOfStaff = Integer.toString(courseRequirement.getNumberOfStaff());
 					    	courseRequirements.put("numberOfStaff", numberOfStaff);
 						    
-						    //contactHours
+						    //parse contactHours
 					    	String contactHours = Integer.toString(courseRequirement.getContactHours());
 					    	courseRequirements.put("contactHours", contactHours);
 						    
-						    //qualifications
+						    //parse qualifications
 						    JSONArray qualifications = new JSONArray();
 						    Qualifications qualificationList = courseRequirement.getRequiredStaffQualifications();
 
@@ -278,17 +307,17 @@ public class FileStorage extends Storage
 						    qualificationSkills = qualificationList.getSkills();
 					        mapIterator = qualificationSkills.entrySet().iterator();
 					        
-					        //contact+teachingreq
+					        //parse contact and teaching req
 					        while (mapIterator.hasNext()) { 
 							    JSONObject skillInfo = new JSONObject();
 						        mapElement = (Map.Entry)mapIterator.next();
 							    
-							    //skilltype
+							    //parse skilltype
 							    SkillType skillType = (SkillType)mapElement.getKey();
 							    String skillTypeString = skillType.name();
 							    skillInfo.put("skillType", skillTypeString);
 							    
-							    //level
+							    //parse level
 							    String level = Short.toString(qualificationList.getSkillLevel(skillType));
 							    skillInfo.put("level", level);
 							    
@@ -310,7 +339,11 @@ public class FileStorage extends Storage
 		return allCourses;
 	}
 	
-	
+	/**
+	 * A method to load all the data from the file storage to the system, it parses JSON data and converts them into
+	 * Java objects and fills the required lists in the system.
+	 * @return boolean: a binary value signalling the success of the operation
+	 */
 	@Override
 	public boolean load()
 	{	
@@ -339,6 +372,11 @@ public class FileStorage extends Storage
 		return true;
 	}
 	
+	/**
+	 * A method to convert a list of teachers from a JSON Object to a ListOfTeachers Object.
+	 * @param jsonTeachers: the JSON data read in, to be formatted
+	 * @return ListOfTeachers: the ListOfTeachers object which can be handled more easily by the program
+	 */
 	private ListOfTeachers parseTeachers(final JSONArray jsonTeachers)
 	{
 		ListOfTeachers listOfTeachers = new ListOfTeachers();
@@ -363,6 +401,11 @@ public class FileStorage extends Storage
 		return listOfTeachers;
 	}
 	
+	/**
+	 * A method to convert a teacher from a JSON Object to a teacher Object.
+	 * @param jsonTeacher: the JSON data read in, to be formatted
+	 * @return Teacher: the Teacher object which can be handled more easily by the program
+	 */
 	private Teacher parseTeacher(final JSONObject jsonTeacher)
 	{
 		// Get the basic teacher information.
@@ -414,6 +457,11 @@ public class FileStorage extends Storage
 				qualifications, teacherTrainingRequests);
 	}
 	
+	/**
+	 * A method to convert qualifications from a JSON Object to a Qualifications Object.
+	 * @param jsonQualifications: the JSON data read in, to be formatted
+	 * @return Qualifications: the Qualifications object which can be handled more easily by the program
+	 */
 	private Qualifications parseQualifications(final JSONArray jsonQualifications)
 	{
 		HashMap<SkillType, Short> skills = new HashMap<SkillType, Short>();
@@ -449,6 +497,11 @@ public class FileStorage extends Storage
 		return new Qualifications(skills);
 	}
 	
+	/**
+	 * A method to convert a training request from a JSON Object to a TrainingRequest Object.
+	 * @param jsonRequest: the JSON data read in, to be formatted
+	 * @return tr: the TrainingRequest object which can be handled more easily by the program
+	 */
 	private TrainingRequest parseTrainingRequest(final JSONObject jsonRequest)
 	{
 		
@@ -489,14 +542,25 @@ public class FileStorage extends Storage
 		System.out.println("\n\n");
 		return tr;
 	}
-	
+
+	/**
+	 * A method to convert a training requirement from a JSON Object to a TrainingRequirement Object.
+	 * @param jsonTrainingRequirement: the JSON data read in, to be formatted
+	 * @return TrainingRequirement: the training requirement object which can be handled more easily by the program
+	 */
 	private TrainingRequirement parseTrainingRequirement(final JSONObject jsonTrainingRequirement)
 	{
 		final JSONArray jsonQualifications = (JSONArray) jsonTrainingRequirement.get("qualifications");
 		final Qualifications teacherQualifications = parseQualifications(jsonQualifications);
 		return new TrainingRequirement(teacherQualifications);
 	}
-	
+
+	/**
+	 * A method to convert a list of courses from a JSON Object to a ListOfCourses Object.
+	 * @param listOfTeachers: a list of teachers to be associated with the courses
+	 * @param jsonCourses: the JSON data read in, to be formatted
+	 * @return ListOfCourses: the list of Course objects which can be handled more easily by the program
+	 */
 	private ListOfCourses parseCourses(final ListOfTeachers listOfTeachers, final JSONArray jsonCourses)
 	{
 		ListOfCourses listOfCourses = new ListOfCourses();
@@ -515,6 +579,12 @@ public class FileStorage extends Storage
 		return listOfCourses;
 	}
 	
+	/**
+	 * A method to convert a course from a JSON Object to a Course Object.
+	 * @param listOfTeachers: a list of teachers to be associated with the course
+	 * @param jsonCourse: the JSON data read in, to be formatted
+	 * @return Course: the Course object which can be handled more easily by the program
+	 */
 	private Course parseCourse(final ListOfTeachers listOfTeachers, final JSONObject jsonCourse)
 	{
 		
@@ -563,7 +633,15 @@ public class FileStorage extends Storage
 		return new Course(courseID, courseName, courseDescription,
 				teachingRequests, teachingStaff);
 	}
-	
+
+	/**
+	 * A method to convert the list of teaching staff for a course, and their associated types of contact, 
+	 * from a JSON Object to a java hashmap of contacttype and list of teacher objects.
+	 * @param listOfTeachers: the list of teachers class for the JSON data to be loaded into
+	 * @param jsonTeachingStaff: the JSON data read in, to be formatted
+	 * @return teachingStaff: the contactType and teacher list hashmap object which can 
+	 * 		   be handled more easily by the program
+	 */
 	private HashMap<ContactType, List<Teacher>> parseTeachingStaff(final ListOfTeachers listOfTeachers, final JSONObject jsonTeachingStaff)
 	{
 		
@@ -598,6 +676,13 @@ public class FileStorage extends Storage
 		return teachingStaff;
 	}
 	
+	/**
+	 * A method to convert the list of teaching requests and their associated types of contact, 
+	 * from a JSON Object to a java hashmap of contacttype and teachingrequest objects.
+	 * @param jsonTeachingRequests: the JSON data read in, to be formatted
+	 * @return teachingRequests: the contactType and TeachingRequest hashmap object which can 
+	 * 		   be handled more easily by the program
+	 */
 	private HashMap<ContactType, TeachingRequest> parseTeachingRequests(final JSONObject jsonTeachingRequests)
 	{
 		HashMap<ContactType, TeachingRequest> teachingRequests = new HashMap<ContactType, TeachingRequest>();
@@ -627,7 +712,12 @@ public class FileStorage extends Storage
 		}
 		return teachingRequests;
 	}
-	
+
+	/**
+	 * A method to convert a teaching request from a JSON Object to a TeachingRequest Object.
+	 * @param jsonRequest: the JSON data read in, to be formatted
+	 * @return TeachingRequest: the TeachingRequest object which can be handled more easily by the program
+	 */
 	private TeachingRequest parseTeachingRequest(final JSONObject jsonRequest)
 	{
 		
@@ -662,6 +752,11 @@ public class FileStorage extends Storage
 		return new TeachingRequest(requestStatus, courseRequirement);
 	}
 	
+	/**
+	 * A method to convert course requirement from a JSON Object to a CourseRequirement Object.
+	 * @param jsonCourseRequirement: the JSON data read in, to be formatted
+	 * @return CourseRequirement: the Course Requirement object which can be handled more easily by the program
+	 */
 	private CourseRequirement parseCourseRequirement(final JSONObject jsonCourseRequirement)
 	{
 		
@@ -700,8 +795,10 @@ public class FileStorage extends Storage
 				contactHours, qualifications);
 	}
 
-
-
+	/**
+	 * A rudimentary error-checking method to ensure the lists to be saved from/to in the system actually exist.
+	 * @return boolean: a status variable signalling whether there were any errors detected with this operation
+	 */
 	@Override
 	public boolean isAvailable() 
 	{
