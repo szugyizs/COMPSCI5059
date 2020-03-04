@@ -16,7 +16,7 @@ public class Test {
 	private Storage storage = new FileStorage("lib/database.json");
 	PTTDirectorController pTTController = new PTTDirectorController(storage);
 	AdministratorController adminController = new AdministratorController(storage);
-	CourseDirectorController directorController = new CourseDirectorController(storage, null);
+	CourseDirectorController directorController = new CourseDirectorController(storage, adminController.getListOfCourses().getCourse("COMPSCI5059"));
 	
 	/**
 	 * Tests that the administrator commands work as expected.
@@ -49,8 +49,12 @@ public class Test {
 		assertEquals(true, result);
 		result = pTTController.processCommand("get trainreq 2500414V", "");
 		assertEquals(true, result);
+		result = pTTController.processCommand("get trainreq 25414V", "");
+		assertEquals(false, result);
 		result = pTTController.processCommand("set status teachreq COMPSCI5059 LAB ACCEPTED", "");
 		assertEquals(true, result);
+		result = pTTController.processCommand("set status teachreq COMPSCI5059 ACCEPTED LAB", "");
+		assertEquals(false, result);
 		result = pTTController.processCommand("quit", "");
 		assertEquals(false, result);
 	}
@@ -64,6 +68,7 @@ public class Test {
 		assertEquals(false, result);
 		result = directorController.processCommand("failTest", "");
 		assertEquals(false, result);
+		// This test needs user input by the tester: e.g. "SOFTWARE_ENGINEERING 1" and "done"
 		result = directorController.processCommand("req LAB 1 1 1", "");
 		assertEquals(true, result);
 		result = directorController.processCommand("quit", "");

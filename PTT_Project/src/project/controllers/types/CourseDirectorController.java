@@ -62,7 +62,7 @@ public class CourseDirectorController extends Controller
 	{
 		// Course Director Specific help commands
 		super.printStream.println("\nCourse Director commands:");
-		super.printStream.println("req <contactType> <numberOfStudents> <numberOfStaff> <contactHours>: ");
+		super.printStream.println("req <contactType> <numberOfStudents> <numberOfStaff> <contactHours>:  Enter a reqirement");
 		super.printStream.println("show:   view the teaching request and its details");
 
 	}

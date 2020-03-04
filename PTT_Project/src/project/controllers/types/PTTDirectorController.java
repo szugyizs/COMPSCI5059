@@ -14,7 +14,8 @@ import project.storage.lists.ListOfTeachers;
  * PTTController handles the input from the PPT Director
  */
 
-public class PTTDirectorController extends Controller {
+public class PTTDirectorController extends Controller
+{
 
 	private ListOfTeachers listOfTeachers;
 	private ListOfCourses listOfCourses;
@@ -25,7 +26,8 @@ public class PTTDirectorController extends Controller {
 	 * @param storage The storage class, containing the list of teachers and courses
 	 */
 
-	public PTTDirectorController(final Storage storage) {
+	public PTTDirectorController(final Storage storage)
+	{
 		super(storage, System.out);
 		this.listOfTeachers = storage.getListOfTeachers();
 		this.listOfCourses = storage.getListOfCourses();
@@ -39,34 +41,50 @@ public class PTTDirectorController extends Controller {
 	{
 		// PTT Director Specific help commands
 		super.printStream.println("\nPTT Director commands:");
-		super.printStream.println("get teachreq <courseID>: get list of teaching requests for a course");
+		super.printStream.println("get teachreq <courseID>:  get list of teaching requests for a course");
 		super.printStream.println("get trainreq <teacherID>: get list of training requests for a teacher");
-		super.printStream.println("set status teachreq <courseID> <type> <id status>");
-		super.printStream.println("set status trainreq <GUID> <id status>");
+		super.printStream.println("get courses:              get list of courses and their description");
+		super.printStream.println("get teachers:             get list of teachers and their qualifications");
+
+		super.printStream.println("set status teachreq <courseID> <type> <id status>:  accept/deny teaching request");
+		super.printStream.println("set status trainreq <GUID> <id status>:             accept/deny training request");
 	}
 
 	/**
-	 * Processes commands inputted by the PTT
+	 * Processes commands inputed by the PTT
 	 * 
 	 * @param command A string of the command that was inputed.
 	 * @param args    An array of optional String command arguments.
 	 * @return True if the command was successfully processed.
 	 */
 	@Override
-	public boolean processCommand(final String command, final String... args) {
+	public boolean processCommand(final String command, final String... args)
+	{
 		String[] commandArgs;
 
 		// Splits the command for further processing.
 		commandArgs = command.split(" ");
 
 		// Checks if a get command was input
-		if (commandArgs.length >= 3 && commandArgs[0].equalsIgnoreCase("get")) {
+		if (commandArgs.length >= 2 && commandArgs[0].equalsIgnoreCase("get")) {
 
-			if (commandArgs[1].equalsIgnoreCase("teachreq")) {
+			// Print list of teachers
+			if (commandArgs[1].equalsIgnoreCase("teachers")) {
+				this.listOfTeachers.printTeachers(super.printStream);
+				return true;
+			}
+			// Print list of courses
+			else if (commandArgs[1].equalsIgnoreCase("courses")) {
+				this.listOfCourses.print(super.printStream);
+				return true;
+			}
+			// Print teaching requests for a specific course
+			else if (commandArgs.length >= 3 && commandArgs[1].equalsIgnoreCase("teachreq")) {
 				getTeachingRequests(commandArgs[2]);
 				return true;
 			}
-			if (commandArgs[1].equalsIgnoreCase("trainreq")) {
+			// Print training requests for a specific teacher
+			else if (commandArgs.length >= 3 && commandArgs[1].equalsIgnoreCase("trainreq")) {
 				getTrainingRequests(commandArgs[2]);
 
 				return true;
@@ -74,14 +92,13 @@ public class PTTDirectorController extends Controller {
 		}
 
 		// Check if a set command was input
-		else if (commandArgs.length >= 4 && commandArgs[0].equalsIgnoreCase("set")) {
-			if (commandArgs[2].equalsIgnoreCase("teachreq")) {
+		else if (commandArgs.length >= 5 && commandArgs[0].equalsIgnoreCase("set")) {
+			if (commandArgs.length >= 6 && commandArgs[2].equalsIgnoreCase("teachreq")) {
 				setStatusTeachReq(commandArgs[3], commandArgs[4], commandArgs[5]);
 				return true;
 			}
-
 			// Approves/Rejects a training request (not implemented)
-			if (commandArgs[2].equalsIgnoreCase("trainreq")) {
+			else if (commandArgs[2].equalsIgnoreCase("trainreq")) {
 				super.printStream.println("Approving training requests currently not supported");
 				return true;
 			}
@@ -94,7 +111,8 @@ public class PTTDirectorController extends Controller {
 	/**
 	 * Print logout message.
 	 */
-	public void logout() {
+	public void logout()
+	{
 		super.printStream.println("PTT logged out.");
 	}
 
@@ -104,7 +122,8 @@ public class PTTDirectorController extends Controller {
 	 * @param courseID A String containing the course ID.
 	 * @return True if the course was found and displayed successfully
 	 */
-	public boolean getTeachingRequests(String courseID) {
+	public boolean getTeachingRequests(String courseID)
+	{
 		Course course = this.listOfCourses.getCourse(courseID);
 		if (course == null) {
 			super.printStream.println("Course not found, use course ID");
@@ -120,7 +139,8 @@ public class PTTDirectorController extends Controller {
 	 * @param teacherID A String containing the teacher ID.
 	 * @return True if the request was found and displayed successfully
 	 */
-	public boolean getTrainingRequests(String teacherID) {
+	public boolean getTrainingRequests(String teacherID)
+	{
 		Teacher teacher = this.listOfTeachers.getTeacher(teacherID);
 		if (teacher == null) {
 			super.printStream.println("Teacher not found, use GUID");
@@ -140,7 +160,8 @@ public class PTTDirectorController extends Controller {
 	 * 
 	 * @return True if the request was accepted/rejected successfully.
 	 */
-	public boolean setStatusTeachReq(String courseID, String type, String status) {
+	public boolean setStatusTeachReq(String courseID, String type, String status)
+	{
 		Course course = this.listOfCourses.getCourse(courseID);
 		if (course == null) {
 			super.printStream.println("Course not found, use course ID");
@@ -168,7 +189,7 @@ public class PTTDirectorController extends Controller {
 		temp.setRequestStatus(eStatus);
 
 		super.printStream.println("Request status set:");
-		course.printTeachingRequests(printStream, eType);
+		course.printTeachingRequests(super.printStream, eType);
 
 		return true;
 
