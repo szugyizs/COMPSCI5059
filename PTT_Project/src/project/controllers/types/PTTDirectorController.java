@@ -47,7 +47,7 @@ public class PTTDirectorController extends Controller
 		super.printStream.println("get teachers:             get list of teachers and their qualifications");
 
 		super.printStream.println("set status teachreq <courseID> <type> <id status>:  accept/deny teaching request");
-		super.printStream.println("set status trainreq <GUID> <id status>:             accept/deny training request");
+		super.printStream.println("set status trainreq <GUID> <ReqID> <id status>:     accept/deny training request");
 	}
 
 	/**
@@ -92,8 +92,8 @@ public class PTTDirectorController extends Controller
 		}
 
 		// Check if a set command was input
-		else if (commandArgs.length >= 5 && commandArgs[0].equalsIgnoreCase("set")) {
-			if (commandArgs.length >= 6 && commandArgs[2].equalsIgnoreCase("teachreq")) {
+		else if (commandArgs.length >= 6 && commandArgs[0].equalsIgnoreCase("set")) {
+			if (commandArgs[2].equalsIgnoreCase("teachreq")) {
 				setStatusTeachReq(commandArgs[3], commandArgs[4], commandArgs[5]);
 				return true;
 			}

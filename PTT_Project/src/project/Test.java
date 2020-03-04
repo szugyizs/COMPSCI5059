@@ -35,6 +35,12 @@ public class Test {
 		assertEquals(true, result);
 		result = adminController.processCommand("get teachers", "");
 		assertEquals(true, result);
+		// Needs correct database with teaching requirement and fitting teacher
+		result = adminController.processCommand("set status teachreq COMPSCI1023 LAB ACCEPTED", "");
+		assertEquals(true, result);
+		// Prints "not implemented" but passes
+		result = pTTController.processCommand("set status trainreq 2504756K 0 DENIED", ""); 
+		assertEquals(true, result);
 	}
 	
 	/**
@@ -55,8 +61,18 @@ public class Test {
 		assertEquals(true, result);
 		result = pTTController.processCommand("set status teachreq COMPSCI5059 ACCEPTED LAB", "");
 		assertEquals(false, result);
+		// Needs correct database with teaching requirement and fitting teacher
+		result = pTTController.processCommand("set course COMPSCI1023 LAB 2504756K", ""); 
+		assertEquals(true, result);
+		// This test needs user input by the tester: e.g. "SOFTWARE_ENGINEERING 1" and "done"
+		result = pTTController.processCommand("set req 2504756K", ""); 
+		assertEquals(true, result);
+		// Prints "not implemented" but passes
+		result = pTTController.processCommand("set quali 2504756K 0", ""); 
+		assertEquals(true, result);
 		result = pTTController.processCommand("quit", "");
 		assertEquals(false, result);
+
 	}
 	
 	/**
