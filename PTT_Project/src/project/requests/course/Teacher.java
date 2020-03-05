@@ -61,20 +61,6 @@ public class Teacher
 		this(guid, forename, surname, qualifications, new ArrayList<TrainingRequest>());
 	}
 
-//	/**
-//	 * Constructor instantiates the Teacher instance with basic values. The
-//	 * qualifications will be instantiated with no skills. Moreover, the
-//	 * trainingRequests array will be instantiated to an empty array, implicitly.
-//	 * 
-//	 * @param guid     The unique GUID of the teacher; a means of identification.
-//	 * @param forename The first name of the teacher.
-//	 * @param surname  The last name of the teacher.
-//	 */
-//	public Teacher(final String guid, String forename, final String surname)
-//	{
-//		this(guid, forename, surname, new Qualifications(), new ArrayList<TrainingRequest>());
-//	}
-
 	/**
 	 * Getter for the GUI.
 	 * 
@@ -178,7 +164,6 @@ public class Teacher
 		return this.qualifications.getMissingSkills(qualifications);
 	}
 
-
 	/**
 	 * Adds a training request to the teachers trainingRequests list. Fundamentally,
 	 * this function wraps the parameter trainingRequirements in a TrainingRequest
@@ -223,20 +208,6 @@ public class Teacher
 		}
 		return statusTrainingRequests;
 	}
-
-//	/**
-//	 * Checks whether or not the teacher has any training requests with a given
-//	 * state.
-//	 * 
-//	 * @param requestStatusType Defines the TrainingRequest states that are being
-//	 *                          searched for.
-//	 * @return True if there are TrainingRequests with the state requestStatusType,
-//	 *         false otherwise.
-//	 */
-//	public boolean hasTrainingRequestsWithState(final RequestStatusType requestStatusType)
-//	{
-//		return !getTrainingRequests(requestStatusType).isEmpty();
-//	}
 
 	/**
 	 * Fundamentally, this function is responsible for generating the next

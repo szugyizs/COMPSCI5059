@@ -131,7 +131,7 @@ public abstract class Controller
 				}
 
 				// Try to set a skill
-				if (qualificaitons.setSkill(type, level) == true) {
+				if (type != null && qualificaitons.setSkill(type, level) == true) {
 					printStream.println("Skill set, add another or \"done\".");
 					continue;
 				}

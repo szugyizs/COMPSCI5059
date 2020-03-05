@@ -258,7 +258,7 @@ public class FileStorage extends Storage
 				String contactLabel = contactType.name();
 
 				JSONArray teachingStaffTeachers = new JSONArray();
-				List<Teacher> teachers = new LinkedList<Teacher>();
+				List<Teacher> teachers = (List<Teacher>) mapElement.getValue();
 				ListIterator teacherListIterator = teachers.listIterator();
 
 				while (teacherListIterator.hasNext()) {
